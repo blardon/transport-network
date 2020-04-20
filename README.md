@@ -21,7 +21,8 @@ As an administrator I need to import a prefabricated schedule in order to save t
 As format for the import we will use the following json-format:
 ...
 example:
-```{
+```
+{
   "stops": [
     {
       "stopId": 1,
