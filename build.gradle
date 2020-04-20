@@ -37,6 +37,19 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.3.+'
     testImplementation 'org.mockito:mockito-junit-jupiter:3.3.+'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
+
+    // LOMBOK
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    //Spring web
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+
 }
 
 test {
