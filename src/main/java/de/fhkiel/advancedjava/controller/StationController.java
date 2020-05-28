@@ -2,6 +2,7 @@ package de.fhkiel.advancedjava.controller;
 
 import de.fhkiel.advancedjava.model.node.Station;
 import de.fhkiel.advancedjava.model.node.dto.StationDto;
+import de.fhkiel.advancedjava.service.ConversionService;
 import de.fhkiel.advancedjava.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.support.GenericConversionService;
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class StationController {
 
     private StationService stationService;
-    private GenericConversionService conversionService;
+    private ConversionService conversionService;
+    //private GenericConversionService conversionService;
 
     @Autowired
-    public StationController(StationService stationService, GenericConversionService conversionService){
+    public StationController(StationService stationService, ConversionService conversionService){
         this.stationService = stationService;
         this.conversionService = conversionService;
     }
