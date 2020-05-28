@@ -36,7 +36,10 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
             " WITH [station in pathNodes where station:Station] as stations, [stop in pathNodes where stop:Stop] as stops, [leg in pathNodes where leg:Leg] as legs, collect(r) as relationships" +
             " UNWIND legs as leg" +
             " MATCH (leg)<-[:CARRIES_OUT]-(line:Line)" +
-            " RETURN COLLECT(DISTINCT line) as lines, stations, stops, legs, relationships"
+            " WITH COLLECT(DISTINCT line) as lines, stops, legs, relationships" +
+            " UNWIND stops as stop" +
+            " MATCH (stop)<-[r:HAS_STOP]-(station:Station)" +
+            " RETURN COLLECT(DISTINCT station) as stations, lines, stops, legs, relationships, COLLECT(r)"
     )
     ConnectionResult findFastestPathWithTransferTime(String fromStationName, String toStationName);
 

@@ -13,7 +13,7 @@ import java.util.Set;
 @QueryResult
 public class ConnectionResult {
 
-    private ArrayList<Stop> stops;
+    private ArrayList<Station> stations;
     private ArrayList<Leg> legs;
     private ArrayList<Line> lines;
 
@@ -33,11 +33,11 @@ public class ConnectionResult {
         this.legs = legs;
     }
 
-    public ArrayList<Stop> getStops() {
-        return stops;
+    public ArrayList<Station> getStations() {
+        return stations;
     }
 
-    public void setStops(ArrayList<Stop> stops) {
-        this.stops = stops;
+    public void setStations(ArrayList<Station> stations) {
+        this.stations = stations;
     }
 }
