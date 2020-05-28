@@ -44,7 +44,18 @@ public class StationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/set/outoforder/{name}")
+    @GetMapping(path = "/{name}/set/transfertime/{time}")
+    public ResponseEntity<StationDto> setStationTransferTime(@PathVariable String name, @PathVariable Long time){
+        Station atStation = this.stationService.setStationTransferTime(name, time);
+
+        StationDto response = this.conversionService.convert(atStation, StationDto.class);
+        if (response == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/{name}/set/outoforder")
     public ResponseEntity<StationDto> setStationOutOfOrder(@PathVariable String name){
         Station newStation = this.stationService.setStationOutOfOrder(name, true);
 
@@ -55,7 +66,7 @@ public class StationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/resolve/outoforder/{name}")
+    @GetMapping(path = "/{name}/resolve/outoforder")
     public ResponseEntity<StationDto> resolveStationOutOfOrder(@PathVariable String name){
         Station newStation = this.stationService.setStationOutOfOrder(name, false);
 

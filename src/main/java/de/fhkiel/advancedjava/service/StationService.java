@@ -3,7 +3,9 @@ package de.fhkiel.advancedjava.service;
 import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.node.Station;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
+import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import de.fhkiel.advancedjava.repository.StationRepository;
+import de.fhkiel.advancedjava.repository.TransferToRepository;
 import org.apache.commons.lang3.text.translate.NumericEntityUnescaper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.CastUtils;
@@ -18,10 +20,12 @@ import java.util.stream.StreamSupport;
 public class StationService {
 
     private StationRepository stationRepository;
+    private TransferToRepository transferToRepository;
 
     @Autowired
-    public StationService(StationRepository stationRepository){
+    public StationService(StationRepository stationRepository, TransferToRepository transferToRepository){
         this.stationRepository = stationRepository;
+        this.transferToRepository = transferToRepository;
     }
 
     public void deleteAllStations(){
@@ -44,6 +48,27 @@ public class StationService {
         // TODO: Provide custom exception
         Optional<Station> optionalStation = this.stationRepository.findStationByName(name);
         return optionalStation.orElseThrow();
+    }
+
+    public Station setStationTransferTime(String name, Long time){
+        Optional<Station> station = this.stationRepository.findStationByName(name, 2);
+        if (station.isEmpty()){
+            throw new NoSuchElementException("Station with name " + name + " does not exist");
+        }
+
+        if (time < 0){
+            throw new NoSuchElementException("Time cannot be negative");
+        }
+
+        Collection<TransferTo> transferTos = this.transferToRepository.findAllToStationByStationName(name);
+        ArrayList<TransferTo> newTransferTos = transferTos.stream()
+                .peek(transferTo -> transferTo.setTime(time))
+                .collect(Collectors.toCollection(ArrayList::new));
+        if (newTransferTos.size() == 0){
+            throw new NoSuchElementException("Could not find transfers");
+        }
+        this.transferToRepository.saveAll(newTransferTos);
+        return station.get();
     }
 
     public Station setStationOutOfOrder(String name, boolean set){
