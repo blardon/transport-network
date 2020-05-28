@@ -2,27 +2,41 @@ package de.fhkiel.advancedjava.model.node;
 
 import de.fhkiel.advancedjava.model.StopType;
 import de.fhkiel.advancedjava.model.relationship.TransferTo;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
+import lombok.*;
+import org.neo4j.ogm.annotation.*;
 
 import java.util.HashSet;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @NodeEntity
 public class Stop {
 
-    @Id
-    private Long stopId;
+    @Id @GeneratedValue
+    private Long id;
 
     private StopType type;
-
-    @Relationship(type = "HAS_LEG", direction = Relationship.OUTGOING)
-    private HashSet<Leg> legs;
 
     @Relationship(type = "TRANSFER_TO", direction = Relationship.OUTGOING)
     private TransferTo transferTo;
 
+    public Long getStopId() {
+        return id;
+    }
+
+    public StopType getType() {
+        return type;
+    }
+
+    public void setType(StopType type) {
+        this.type = type;
+    }
+
+    public TransferTo getTransferTo() {
+        return transferTo;
+    }
+
+    public void setTransferTo(TransferTo transferTo) {
+        this.transferTo = transferTo;
+    }
 }
