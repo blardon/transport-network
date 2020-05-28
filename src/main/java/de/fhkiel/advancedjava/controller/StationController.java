@@ -22,7 +22,7 @@ public class StationController {
         this.conversionService = conversionService;
     }
 
-    @GetMapping(path = "/find/{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<StationDto> findStation(@PathVariable Long id){
         Station station = this.stationService.findStationById(id);
         return ResponseEntity.ok(conversionService.convert(station, StationDto.class));
@@ -32,12 +32,38 @@ public class StationController {
     public ResponseEntity<StationDto> addNewStation(@RequestBody StationDto stationDto){
 
         Station newStation = conversionService.convert(stationDto, Station.class);
-
-        if (newStation != null){
-            this.stationService.addNewStation(newStation);
-            return ResponseEntity.ok(stationDto);
+        if (newStation == null){
+            return ResponseEntity.badRequest().body(stationDto);
         }
-        return ResponseEntity.badRequest().body(stationDto);
+
+        Station savedStation = this.stationService.addNewStation(newStation);
+        StationDto response = this.conversionService.convert(savedStation, StationDto.class);
+        if (response == null){
+            return ResponseEntity.badRequest().body(stationDto);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/set/outoforder/{name}")
+    public ResponseEntity<StationDto> setStationOutOfOrder(@PathVariable String name){
+        Station newStation = this.stationService.setStationOutOfOrder(name, true);
+
+        StationDto response = this.conversionService.convert(newStation, StationDto.class);
+        if (response == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/resolve/outoforder/{name}")
+    public ResponseEntity<StationDto> resolveStationOutOfOrder(@PathVariable String name){
+        Station newStation = this.stationService.setStationOutOfOrder(name, false);
+
+        StationDto response = this.conversionService.convert(newStation, StationDto.class);
+        if (response == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(response);
     }
 
 }

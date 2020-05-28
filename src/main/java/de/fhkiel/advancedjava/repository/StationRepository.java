@@ -9,9 +9,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public interface StationRepository extends Neo4jRepository<Station, Long> {
+
+    Optional<Station> findStationByName(String name);
 
     @Query( "MATCH (from:Station {name:$fromStationName}), (to:Station {name:$toStationName})" +
             " CALL apoc.algo.dijkstra(from, to, 'HAS_STOP|HAS_LEG>|CONNECTING_TO>', 'time') yield path as path" +

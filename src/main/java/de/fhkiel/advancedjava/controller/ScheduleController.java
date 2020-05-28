@@ -50,12 +50,6 @@ public class ScheduleController {
         this.conversionService = conversionService;
  }
 
-    @PostMapping(path = "/test", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Station testIt(@RequestBody StationDto stationDto){
-        Station newStation = this.conversionService.convert(stationDto, Station.class);
-        return newStation;
-    }
-
     @PostMapping(path = "/import", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduleDto> importSchedule(@RequestBody ScheduleDto scheduleDto){
         this.stationService.deleteAllStations();
@@ -65,12 +59,12 @@ public class ScheduleController {
 
         scheduleDto.getStationDTOs().forEach(stationDto -> {
             Station newStation = conversionService.convert(stationDto, Station.class);
-            this.stationService.addNewStation(newStation);
+            this.stationService.saveStation(newStation);
         });
 
         scheduleDto.getLineDTOs().forEach(lineDto -> {
             Line newLine = conversionService.convert(lineDto, Line.class);
-            this.lineService.addNewLine(newLine);
+            this.lineService.saveLine(newLine);
         });
 
         return ResponseEntity.ok(scheduleDto);
@@ -105,99 +99,4 @@ public class ScheduleController {
 
         return ResponseEntity.ok(scheduleDto);
     }
-/*
-    private LineDto convertToLineDTO(Line line){
-        LineDto lineDto = new LineDto();
-
-        lineDto.setType(line.getType());
-        lineDto.setName(line.getName());
-        lineDto.setLineId(line.getLineId());
-
-        // Collect all legDtos for Legs in the Line
-        ArrayList<LegDto> legDtos = line.getLegs().stream().map(leg -> {
-            LegDto legDto = new LegDto();
-            legDto.setCost(leg.getCost());
-            legDto.setTime(leg.getConnectingTo().getTime());
-            legDto.setBeginStopId(leg.getStop().getTransferTo().getToStation().getStationId());
-            legDto.setEndStopId(leg.getConnectingTo().getConnectingToStop().getTransferTo().getToStation().getStationId());
-            return legDto;
-        }).collect(Collectors.toCollection(ArrayList::new));
-        lineDto.setLegs(legDtos);
-
-        return lineDto;
-    }
-
-    private Line convertToLineEntity(LineDto lineDto){
-        Line newLine = new Line();
-
-        newLine.setLineId(lineDto.getLineId());
-        newLine.setName(lineDto.getName());
-        newLine.setType(lineDto.getType());
-
-        // Create a new leg entity for every section in the line
-        lineDto.getLegDTOs().forEach(legDto -> {
-            Leg newLeg = new Leg();
-            Stop fromStop = this.stopService.findStopByTypeAtStationById(legDto.getBeginStopId(), lineDto.getType());
-
-            newLeg.setState(AccessState.OPENED);
-            newLeg.setCost(legDto.getCost());
-            newLeg.setStop(fromStop);
-
-            ConnectingTo connectingTo = new ConnectingTo();
-            Stop toStop = this.stopService.findStopByTypeAtStationById(legDto.getEndStopId(), lineDto.getType());
-            connectingTo.setTime(legDto.getTime());
-            connectingTo.setConnectingWithLeg(newLeg);
-            connectingTo.setConnectingToStop(toStop);
-
-            newLeg.setConnectingTo(connectingTo);
-
-            newLine.getLegs().add(newLeg);
-        });
-
-        return newLine;
-    }
-
-    private StationDto convertToStationDTO(Station station){
-        StationDto stationDto = new StationDto();
-
-        stationDto.setCity(station.getCity());
-        stationDto.setName(station.getName());
-        stationDto.setState(station.getState());
-        stationDto.setStationId(station.getStationId());
-
-        ArrayList<StopType> types = station.getStops().stream()
-                .map(stop -> {
-                    stationDto.setTransferTime(stop.getTransferTo().getTime());
-                    return stop.getType();
-                }).collect(Collectors.toCollection(ArrayList::new));
-        stationDto.setTypes(types);
-
-        return stationDto;
-    }
-
-    private Station convertToStationEntity(StationDto stationDto){
-        Station newStation = new Station();
-
-        newStation.setStationId(stationDto.getStationId());
-        newStation.setCity(stationDto.getCity());
-        newStation.setName(stationDto.getName());
-        newStation.setState(stationDto.getState());
-
-        // Create a new stop entity and transfer relationship for every StopType in the station
-        stationDto.getTypes().forEach(stopType -> {
-            Stop newStop = new Stop();
-            TransferTo transferTo = new TransferTo();
-
-            newStop.setType(stopType);
-
-            transferTo.setFromStop(newStop);
-            transferTo.setToStation(newStation);
-            transferTo.setTime(stationDto.getTransferTime());
-            newStop.setTransferTo(transferTo);
-
-            newStation.getStops().add(newStop);
-        });
-        return newStation;
-    }*/
-
 }

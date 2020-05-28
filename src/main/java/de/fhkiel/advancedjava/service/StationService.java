@@ -4,14 +4,12 @@ import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.node.Station;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
 import de.fhkiel.advancedjava.repository.StationRepository;
+import org.apache.commons.lang3.text.translate.NumericEntityUnescaper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -30,29 +28,45 @@ public class StationService {
         this.stationRepository.deleteAll();
     }
 
-    public void saveStation(Station station){
-        this.stationRepository.save(station, 2);
+    public Station saveStationWithStops(Station station){
+        return this.stationRepository.save(station, 2);
+    }
+
+    public Station saveStation(Station station){
+        return this.stationRepository.save(station);
     }
 
     public Station findStationById(Long id){
         return this.stationRepository.findById(id, 2).orElseThrow();
     }
 
-    public void addNewStation(Station station){
-        if (!this.stationRepository.existsById(station.getStationId())){
-            if (station.getState() == null){
-                station.setState(AccessState.CLOSED);
-            }
-            this.saveStation(station);
+    public Station findStationByName(String name){
+        // TODO: Provide custom exception
+        Optional<Station> optionalStation = this.stationRepository.findStationByName(name);
+        return optionalStation.orElseThrow();
+    }
+
+    public Station setStationOutOfOrder(String name, boolean set){
+        Station station = this.findStationByName(name);
+        if (set){
+            station.setState(AccessState.CLOSED);
+        }else{
+            station.setState(AccessState.OPENED);
         }
+        return this.saveStation(station);
+    }
+
+    public Station addNewStation(Station station){
+        Optional<Station> optionalStation = this.stationRepository.findById(station.getStationId());
+        if (optionalStation.isEmpty()){
+            station.setState(AccessState.CLOSED);
+            return this.saveStationWithStops(station);
+        }
+        throw new NoSuchElementException("This station id already exists");
     }
 
     public Iterable<Station> findAllStationsWithStops(){
         return this.stationRepository.findAll(2);
-    }
-
-    public void saveAllStations(Collection<Station> stations){
-        this.stationRepository.save(stations, 2);
     }
 
     public Iterable<Map<String, Object>> findFastestPathWithoutTransferTime(String from, String to){
