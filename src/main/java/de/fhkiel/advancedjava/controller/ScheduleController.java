@@ -1,29 +1,16 @@
 package de.fhkiel.advancedjava.controller;
 
-import de.fhkiel.advancedjava.model.AccessState;
-import de.fhkiel.advancedjava.model.StopType;
-import de.fhkiel.advancedjava.model.node.Leg;
 import de.fhkiel.advancedjava.model.node.Line;
 import de.fhkiel.advancedjava.model.node.Station;
-import de.fhkiel.advancedjava.model.node.Stop;
-import de.fhkiel.advancedjava.model.node.dto.LegDto;
 import de.fhkiel.advancedjava.model.node.dto.LineDto;
 import de.fhkiel.advancedjava.model.node.dto.ScheduleDto;
 import de.fhkiel.advancedjava.model.node.dto.StationDto;
-import de.fhkiel.advancedjava.model.relationship.ConnectingTo;
-import de.fhkiel.advancedjava.model.relationship.TransferTo;
-import de.fhkiel.advancedjava.service.LegService;
-import de.fhkiel.advancedjava.service.LineService;
-import de.fhkiel.advancedjava.service.StationService;
-import de.fhkiel.advancedjava.service.StopService;
+import de.fhkiel.advancedjava.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,11 +25,11 @@ public class ScheduleController {
     private LineService lineService;
     private LegService legService;
 
-    private GenericConversionService conversionService;
+    private DtoConversionService conversionService;
 
     @Autowired
     public ScheduleController(StationService stationService, StopService stopService, LineService lineService,
-                              LegService legService, GenericConversionService conversionService){
+                              LegService legService, DtoConversionService conversionService){
         this.stationService = stationService;
         this.stopService = stopService;
         this.lineService = lineService;
@@ -58,12 +45,14 @@ public class ScheduleController {
         this.legService.deleteAllLegs();
 
         scheduleDto.getStationDTOs().forEach(stationDto -> {
-            Station newStation = conversionService.convert(stationDto, Station.class);
+            //Station newStation = conversionService.convert(stationDto, Station.class);
+            Station newStation = this.conversionService.convert(stationDto);
             this.stationService.saveStation(newStation);
         });
 
         scheduleDto.getLineDTOs().forEach(lineDto -> {
-            Line newLine = conversionService.convert(lineDto, Line.class);
+            //Line newLine = conversionService.convert(lineDto, Line.class);
+            Line newLine = this.conversionService.convert(lineDto);
             this.lineService.saveLine(newLine);
         });
 
@@ -74,27 +63,18 @@ public class ScheduleController {
     public ResponseEntity<ScheduleDto> exportSchedule(){
         ScheduleDto scheduleDto = new ScheduleDto();
 
-        // Get all Stations with their Stops from the StationService
-        List<Station> allStationsWithStops = StreamSupport
-                .stream(this.stationService.findAllStationsWithStops().spliterator(), false)
-                .collect(Collectors.toList());
-
-        // Get all Lines with their Legs from the LineService
-        List<Line> allLinesWithStations = StreamSupport
-                .stream(this.lineService.findAllLinesWithLegs().spliterator(), false)
-                .collect(Collectors.toList());
-
         // Convert all Stations to StationDTOs and collect them
-        ArrayList<StationDto> stationDTOs = allStationsWithStops.stream()
-                .map(station -> conversionService.convert(station, StationDto.class))
+        ArrayList<StationDto> stationDtos = this.stationService.findAllStationsWithStops()
+                .stream()
+                .map(station -> this.conversionService.convert(station))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         // Convert all Lines to LineDTOs and collect them
-        ArrayList<LineDto> lineDtos = allLinesWithStations.stream()
-                .map(line -> conversionService.convert(line, LineDto.class))
+        ArrayList<LineDto> lineDtos = this.lineService.findAllLinesWithLegs().stream()
+                .map(line -> this.conversionService.convert(line))
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        scheduleDto.setStations(stationDTOs);
+        scheduleDto.setStations(stationDtos);
         scheduleDto.setLines(lineDtos);
 
         return ResponseEntity.ok(scheduleDto);

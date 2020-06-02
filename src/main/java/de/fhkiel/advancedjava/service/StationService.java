@@ -90,8 +90,10 @@ public class StationService {
         throw new NoSuchElementException("This station id already exists");
     }
 
-    public Iterable<Station> findAllStationsWithStops(){
-        return this.stationRepository.findAll(2);
+    public Collection<Station> findAllStationsWithStops(){
+        final Collection<Station> stations = new ArrayList<>();
+        this.stationRepository.findAll(2).forEach(stations::add);
+        return stations;
     }
 
     public Iterable<Map<String, Object>> findFastestPathWithoutTransferTime(String from, String to){

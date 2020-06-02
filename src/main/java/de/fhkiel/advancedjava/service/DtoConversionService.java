@@ -9,12 +9,12 @@ import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ConversionService {
+public class DtoConversionService {
 
     private GenericConversionService genericConversionService;
 
     @Autowired
-    public ConversionService(GenericConversionService genericConversionService){
+    public void setGenericConversionService(GenericConversionService genericConversionService){
         this.genericConversionService = genericConversionService;
     }
 

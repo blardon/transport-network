@@ -1,31 +1,26 @@
 package de.fhkiel.advancedjava.controller;
 
-import de.fhkiel.advancedjava.model.node.dto.StationDto;
-import de.fhkiel.advancedjava.model.node.dto.StopDto;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
-import de.fhkiel.advancedjava.model.queryresult.ConnectionResultDto;
+import de.fhkiel.advancedjava.service.DtoConversionService;
 import de.fhkiel.advancedjava.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/connection")
 public class ConnectionController {
 
     private StationService stationService;
-    private GenericConversionService conversionService;
+    private DtoConversionService conversionService;
 
     @Autowired
-    public ConnectionController(StationService stationService, GenericConversionService conversionService){
+    public ConnectionController(StationService stationService, DtoConversionService conversionService){
         this.stationService = stationService;
         this.conversionService = conversionService;
     }

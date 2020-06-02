@@ -5,6 +5,7 @@ import de.fhkiel.advancedjava.repository.LineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
@@ -35,8 +36,10 @@ public class LineService {
         return this.lineRepository.save(lines, 2);
     }
 
-    public Iterable<Line> findAllLinesWithLegs(){
-        return this.lineRepository.findAll(2);
+    public Collection<Line> findAllLinesWithLegs(){
+        final Collection<Line> lines = new ArrayList<>();
+        this.lineRepository.findAll(3).forEach(lines::add);
+        return lines;
     }
 
 }

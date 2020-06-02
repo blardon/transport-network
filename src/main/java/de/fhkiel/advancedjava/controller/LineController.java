@@ -2,9 +2,9 @@ package de.fhkiel.advancedjava.controller;
 
 import de.fhkiel.advancedjava.model.node.Line;
 import de.fhkiel.advancedjava.model.node.dto.LineDto;
+import de.fhkiel.advancedjava.service.DtoConversionService;
 import de.fhkiel.advancedjava.service.LineService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class LineController {
 
     private LineService lineService;
-    private GenericConversionService conversionService;
+    private DtoConversionService conversionService;
 
     @Autowired
-    public LineController(LineService lineService, GenericConversionService conversionService){
+    public LineController(LineService lineService, DtoConversionService conversionService){
         this.lineService = lineService;
         this.conversionService = conversionService;
     }
@@ -28,7 +28,8 @@ public class LineController {
     @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LineDto> addNewLine(@RequestBody LineDto lineDto){
 
-        Line newLine = conversionService.convert(lineDto, Line.class);
+        //Line newLine = conversionService.convert(lineDto, Line.class);
+        Line newLine = this.conversionService.convert(lineDto);
 
         if (newLine != null){
             this.lineService.addNewLine(newLine);
