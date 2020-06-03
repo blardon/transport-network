@@ -1,7 +1,5 @@
 package de.fhkiel.advancedjava.model.node;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import de.fhkiel.advancedjava.deserializer.StationDeserializer;
 import de.fhkiel.advancedjava.model.AccessState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
