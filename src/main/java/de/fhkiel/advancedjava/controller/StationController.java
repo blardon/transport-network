@@ -27,7 +27,6 @@ public class StationController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<StationDto> findStation(@PathVariable Long id){
         Station station = this.stationService.findStationById(id);
-
         StationDto response = this.conversionService.convert(station);
 
         return ResponseEntity.ok(response);
@@ -36,20 +35,10 @@ public class StationController {
     @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StationDto> addNewStation(@Valid @RequestBody StationDto stationDto){
 
-        //Station newStation = conversionService.convert(stationDto, Station.class);
         Station newStation = this.conversionService.convert(stationDto);
-        //if (newStation == null){
-        //    return ResponseEntity.badRequest().body(stationDto);
-        //}
-
         Station savedStation = this.stationService.addNewStation(newStation);
 
-        //StationDto response = this.conversionService.convert(savedStation, StationDto.class);
         StationDto response = this.conversionService.convert(savedStation);
-
-        if (response == null){
-            return ResponseEntity.badRequest().body(stationDto);
-        }
         return ResponseEntity.ok(response);
     }
 
@@ -57,12 +46,7 @@ public class StationController {
     public ResponseEntity<StationDto> setStationTransferTime(@PathVariable String name, @PathVariable Long time){
         Station atStation = this.stationService.setStationTransferTime(name, time);
 
-        //StationDto response = this.conversionService.convert(atStation, StationDto.class);
         StationDto response = this.conversionService.convert(atStation);
-
-        if (response == null){
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(response);
     }
 
@@ -70,12 +54,7 @@ public class StationController {
     public ResponseEntity<StationDto> setStationOutOfOrder(@PathVariable String name){
         Station newStation = this.stationService.setStationOutOfOrder(name, true);
 
-        //StationDto response = this.conversionService.convert(newStation, StationDto.class);
         StationDto response = this.conversionService.convert(newStation);
-
-        if (response == null){
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(response);
     }
 
@@ -83,12 +62,7 @@ public class StationController {
     public ResponseEntity<StationDto> resolveStationOutOfOrder(@PathVariable String name){
         Station newStation = this.stationService.setStationOutOfOrder(name, false);
 
-        //StationDto response = this.conversionService.convert(newStation, StationDto.class);
         StationDto response = this.conversionService.convert(newStation);
-
-        if (response == null){
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(response);
     }
 

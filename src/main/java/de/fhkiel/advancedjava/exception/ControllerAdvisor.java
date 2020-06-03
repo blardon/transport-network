@@ -25,21 +25,26 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(StationNotFoundException.class)
     public ResponseEntity<Object> handleStationNotFoundException(StationNotFoundException ex, WebRequest request){
-        return getExceptionResponseEntity(ex);
+        return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(StopNotFoundException.class)
     public ResponseEntity<Object> handleStopNotFoundException(StopNotFoundException ex, WebRequest request){
-        return getExceptionResponseEntity(ex);
+        return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
-    private ResponseEntity<Object> getExceptionResponseEntity(RuntimeException ex) {
+    @ExceptionHandler(WrongInputException.class)
+    public ResponseEntity<Object> handleWrongInputException(WrongInputException ex, WebRequest request){
+        return getExceptionResponseEntity(ex, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    private ResponseEntity<Object> getExceptionResponseEntity(RuntimeException ex, HttpStatus status) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.NOT_FOUND);
+        body.put("status", status);
         body.put("message", ex.getMessage());
 
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(body, status);
     }
 
     @Override

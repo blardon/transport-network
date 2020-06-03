@@ -1,6 +1,7 @@
 package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.exception.StationNotFoundException;
+import de.fhkiel.advancedjava.exception.WrongInputException;
 import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.node.Station;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
@@ -53,21 +54,19 @@ public class StationService {
     public Station setStationTransferTime(String name, Long time){
         Optional<Station> station = this.stationRepository.findStationByName(name, 2);
         if (station.isEmpty()){
-            throw new NoSuchElementException("Station with name " + name + " does not exist");
+            throw new StationNotFoundException(name);
         }
 
         if (time < 0){
-            throw new NoSuchElementException("Time cannot be negative");
+            throw new WrongInputException("Transfer time cannot be negative.");
         }
 
         Collection<TransferTo> transferTos = this.transferToRepository.findAllToStationByStationName(name);
         ArrayList<TransferTo> newTransferTos = transferTos.stream()
                 .peek(transferTo -> transferTo.setTime(time))
                 .collect(Collectors.toCollection(ArrayList::new));
-        if (newTransferTos.size() == 0){
-            throw new NoSuchElementException("Could not find transfers");
-        }
         this.transferToRepository.saveAll(newTransferTos);
+
         return station.get();
     }
 
@@ -83,11 +82,13 @@ public class StationService {
 
     public Station addNewStation(Station station){
         Optional<Station> optionalStation = this.stationRepository.findById(station.getStationId());
-        if (optionalStation.isEmpty()){
-            station.setState(AccessState.CLOSED);
-            return this.saveStationWithStops(station);
+
+        if (optionalStation.isPresent()){
+            throw new WrongInputException(String.format("Station with ID %d already exists.", station.getStationId()));
         }
-        throw new NoSuchElementException("This station id already exists");
+
+        station.setState(AccessState.CLOSED);
+        return this.saveStationWithStops(station);
     }
 
     public Collection<Station> findAllStationsWithStops(){
