@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/station")
 public class StationController {
@@ -32,7 +34,7 @@ public class StationController {
     }
 
     @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StationDto> addNewStation(@RequestBody StationDto stationDto){
+    public ResponseEntity<StationDto> addNewStation(@Valid @RequestBody StationDto stationDto){
 
         //Station newStation = conversionService.convert(stationDto, Station.class);
         Station newStation = this.conversionService.convert(stationDto);

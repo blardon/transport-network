@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -19,15 +21,22 @@ import java.util.Optional;
 public class LegDto {
 
     @JsonProperty("beginStopId")
+    @NotNull
+    @Min(0)
     private Long beginStopId;
 
     @JsonProperty("endStopId")
+    @NotNull
+    @Min(0)
     private Long endStopId;
 
     @JsonProperty("durationInMinutes")
+    @NotNull
+    @Min(0)
     private Long time;
 
     @JsonProperty("cost")
+    @Min(0)
     private BigDecimal cost = BigDecimal.valueOf(0.00);
 
     public Long getBeginStopId() {

@@ -1,5 +1,6 @@
 package de.fhkiel.advancedjava.service;
 
+import de.fhkiel.advancedjava.exception.StationNotFoundException;
 import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.node.Station;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
@@ -45,9 +46,8 @@ public class StationService {
     }
 
     public Station findStationByName(String name){
-        // TODO: Provide custom exception
         Optional<Station> optionalStation = this.stationRepository.findStationByName(name);
-        return optionalStation.orElseThrow();
+        return optionalStation.orElseThrow( () -> new StationNotFoundException(name));
     }
 
     public Station setStationTransferTime(String name, Long time){

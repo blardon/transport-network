@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ public class ScheduleController {
  }
 
     @PostMapping(path = "/import", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ScheduleDto> importSchedule(@RequestBody ScheduleDto scheduleDto){
+    public ResponseEntity<ScheduleDto> importSchedule(@Valid @RequestBody ScheduleDto scheduleDto){
         this.stationService.deleteAllStations();
         this.stopService.deleteAllStops();
         this.lineService.deleteAllLines();

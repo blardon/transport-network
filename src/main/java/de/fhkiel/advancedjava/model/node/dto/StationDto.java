@@ -7,8 +7,11 @@ import de.fhkiel.advancedjava.model.StopType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.neo4j.ogm.annotation.typeconversion.EnumString;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -23,21 +26,28 @@ import java.util.Optional;
 public class StationDto {
 
     @JsonProperty("stopId")
+    @NotNull
+    @Min(0)
     private Long stationId;
 
     @JsonProperty("types")
+    @NotEmpty
     private ArrayList<StopType> types;
 
     @JsonProperty("state")
+    @NotNull
     private AccessState state;
 
     @JsonProperty("name")
+    @NotBlank
     private String name;
 
     @JsonProperty("city")
+    @NotBlank
     private String city;
 
     @JsonProperty("transferTime")
+    @Min(0)
     private Long transferTime = 0L;
 
     public Long getStationId() {

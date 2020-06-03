@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
+
 @Component
 public class LineDtoToLine implements Converter<LineDto, Line> {
 

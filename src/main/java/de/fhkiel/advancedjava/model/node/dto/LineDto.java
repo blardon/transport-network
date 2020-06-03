@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,15 +24,20 @@ import java.util.LinkedHashSet;
 public class LineDto {
 
     @JsonProperty("lineId")
+    @NotNull
+    @Min(0)
     private Long lineId;
 
     @JsonProperty("name")
+    @NotBlank(message = "TEST")
     private String name;
 
     @JsonProperty("type")
+    @NotNull
     private StopType type;
 
     @JsonProperty("sections")
+    @Valid
     private ArrayList<LegDto> legs;
 
     public Long getLineId() {

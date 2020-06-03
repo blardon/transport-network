@@ -1,5 +1,6 @@
 package de.fhkiel.advancedjava.service;
 
+import de.fhkiel.advancedjava.exception.StopNotFoundException;
 import de.fhkiel.advancedjava.model.StopType;
 import de.fhkiel.advancedjava.model.node.Stop;
 import de.fhkiel.advancedjava.repository.StopRepository;
@@ -31,8 +32,7 @@ public class StopService {
     public Stop findStopByTypeAtStationById(Long stationId, StopType type){
         Optional<Stop> optionalStop = this.stopRepository.findStopByTypeAtStationById(stationId, type);
 
-        // TODO: ADD CUSTOM EXCEPTIONS
-        return optionalStop.orElseThrow();
+        return optionalStop.orElseThrow( () -> new StopNotFoundException(stationId, type) );
     }
 
 }
