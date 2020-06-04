@@ -10,4 +10,5 @@ class PublicTransportationPlatformApplicationTests {
 	void contextLoads() {
 	}
 
+
 }

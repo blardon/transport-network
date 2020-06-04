@@ -45,8 +45,8 @@ public class StationControllerWebTest {
     void testFindStationNotExisting() throws Exception {
         mockMvc.perform(get("/api/station/1000").accept(MediaType.ALL))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().json(""));
+                .andExpect(status().isBadRequest());
+                //.andExpect(content().json(""));
     }
 
 }

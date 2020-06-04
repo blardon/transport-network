@@ -47,8 +47,7 @@ public class StationService {
     }
 
     public Station findStationByName(String name){
-        Optional<Station> optionalStation = this.stationRepository.findStationByName(name);
-        return optionalStation.orElseThrow( () -> new StationNotFoundException(name));
+        return this.stationRepository.findStationByName(name).orElseThrow( () -> new StationNotFoundException(name));
     }
 
     public Station setStationTransferTime(String name, Long time){

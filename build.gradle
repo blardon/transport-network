@@ -6,6 +6,9 @@ plugins {
 
     // for pitest
     id 'info.solidsoft.pitest' version '1.4.7'
+
+    // plugin to calculate code coverage on unit tests -> it creates synthetic methods
+    id 'jacoco'
 }
 
 group = 'de.fhkiel.advancedjava'
@@ -62,6 +65,11 @@ dependencies {
 
     testImplementation group: 'org.neo4j', name: 'neo4j', version: '3.5.5'
     testImplementation group: 'org.neo4j', name: 'neo4j-ogm-embedded-driver', version: '3.2.11'
+
+    // https://mvnrepository.com/artifact/org.neo4j/neo4j-kernel-api
+    testImplementation group: 'org.neo4j', name: 'neo4j-kernel-api', version: '3.5.5'
+    implementation group: 'org.neo4j', name: 'neo4j-kernel-api', version: '3.5.5'
+
 }
 
 test {
