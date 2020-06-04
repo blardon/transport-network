@@ -3,6 +3,9 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'idea'
+
+    // for pitest
+    id 'info.solidsoft.pitest' version '1.4.7'
 }
 
 group = 'de.fhkiel.advancedjava'
@@ -50,6 +53,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     implementation 'org.hibernate.validator:hibernate-validator:6.1.2.Final'
+
+    // for archunit
+    //testImplementation 'com.tngtech.archunit:archunit-junit5:0.13.1'
+
+    implementation group: 'org.neo4j', name: 'neo4j', version: '3.5.5'
+    implementation group: 'org.neo4j', name: 'neo4j-ogm-embedded-driver', version: '3.2.11'
+
+    testImplementation group: 'org.neo4j', name: 'neo4j', version: '3.5.5'
+    testImplementation group: 'org.neo4j', name: 'neo4j-ogm-embedded-driver', version: '3.2.11'
 }
 
 test {
@@ -57,4 +69,12 @@ test {
     testLogging {
         events 'PASSED', 'FAILED', 'SKIPPED'
     }
+}
+
+// for pitest
+pitest {
+    testPlugin = 'junit5'
+    junit5PluginVersion = '0.12'
+    targetClasses = ['de.fhkiel.advancedjava.*']
+    timestampedReports = false
 }

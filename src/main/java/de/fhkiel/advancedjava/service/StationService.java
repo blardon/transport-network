@@ -43,7 +43,7 @@ public class StationService {
     }
 
     public Station findStationById(Long id){
-        return this.stationRepository.findById(id, 2).orElseThrow();
+        return this.stationRepository.findById(id, 2).orElseThrow( () -> new StationNotFoundException(id) );
     }
 
     public Station findStationByName(String name){
