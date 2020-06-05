@@ -1,6 +1,7 @@
 package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.exception.StationNotFoundException;
+import de.fhkiel.advancedjava.exception.StationServiceException;
 import de.fhkiel.advancedjava.exception.WrongInputException;
 import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.node.Station;
@@ -35,11 +36,11 @@ public class StationService {
     }
 
     public Station saveStationWithStops(Station station){
-        return this.stationRepository.save(station, 2);
+        return this.stationRepository.save(Optional.ofNullable(station).orElseThrow( () -> new StationServiceException("Could not save station.")), 2);
     }
 
     public Station saveStation(Station station){
-        return this.stationRepository.save(station);
+        return this.stationRepository.save(Optional.ofNullable(station).orElseThrow( () -> new StationServiceException("Could not save station.")));
     }
 
     public Station findStationById(Long id){

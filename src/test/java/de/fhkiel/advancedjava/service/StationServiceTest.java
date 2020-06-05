@@ -1,8 +1,12 @@
 package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.exception.StationNotFoundException;
+import de.fhkiel.advancedjava.exception.StationServiceException;
 import de.fhkiel.advancedjava.model.AccessState;
+import de.fhkiel.advancedjava.model.StopType;
 import de.fhkiel.advancedjava.model.node.Station;
+import de.fhkiel.advancedjava.model.node.Stop;
+import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import de.fhkiel.advancedjava.repository.StationRepository;
 import de.fhkiel.advancedjava.repository.TransferToRepository;
 import org.assertj.core.api.Assert;
@@ -114,6 +118,7 @@ public class StationServiceTest {
 
         when(stationRepository.findById(1L, 2)).thenReturn(Optional.of(station));
 
+        //when
         Station result = stationService.findStationById(1L);
 
         //then
@@ -121,6 +126,73 @@ public class StationServiceTest {
         assertEquals(station, result);
 
         verify(stationRepository, times(1)).findById(1L, 2);
+        verifyNoMoreInteractions(stationRepository);
+    }
+
+    @Test
+    void testSaveStation_valid(){
+        //given
+        Station station = new Station();
+        station.setState(AccessState.OPENED);
+        station.setStops(new ArrayList<>());
+        station.setCity("TestCity");
+        station.setName("TestName");
+        station.setStationId(1L);
+
+        when(stationRepository.save(station)).thenReturn(station);
+
+        //when
+        Station result = stationService.saveStation(station);
+
+        assertNotNull(result);
+        assertEquals(station, result);
+
+        verify(stationRepository, times(1)).save(station);
+        verifyNoMoreInteractions(stationRepository);
+    }
+
+    @Test
+    void testSaveStation_invalid(){
+        assertThrows(StationServiceException.class, () -> {stationService.saveStation(null);});
+
+        verify(stationRepository, times(0)).save(any());
+        verifyNoMoreInteractions(stationRepository);
+    }
+
+    @Test
+    void testSaveStationWithStops_valid(){
+        //given
+        Station station = new Station();
+        station.setState(AccessState.OPENED);
+        station.setCity("TestCity");
+        station.setName("TestName");
+        station.setStationId(1L);
+
+        Stop stop = new Stop();
+        stop.setType(StopType.SUBWAY);
+        TransferTo transferTo = new TransferTo();
+        transferTo.setTime(5L);
+        transferTo.setToStation(station);
+        transferTo.setFromStop(stop);
+        stop.setTransferTo(transferTo);
+        station.setStops(new ArrayList<>(List.of(stop)));
+
+        when(stationRepository.save(station, 2)).thenReturn(station);
+
+        //when
+        Station result = stationService.saveStationWithStops(station);
+
+        assertNotNull(result);
+        assertEquals(station, result);
+
+        verify(stationRepository, times(1)).save(station, 2);
+        verifyNoMoreInteractions(stationRepository);
+    }
+
+    @Test
+    void testSaveStationWithStops_invalid(){
+        assertThrows(StationServiceException.class, () -> {stationService.saveStationWithStops(null);});
+
         verifyNoMoreInteractions(stationRepository);
     }
 }
