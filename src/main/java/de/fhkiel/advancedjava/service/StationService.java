@@ -73,7 +73,7 @@ public class StationService {
     public Station setStationOutOfOrder(String name, boolean set){
         Station station = this.findStationByName(name);
         if (set){
-            station.setState(AccessState.CLOSED);
+            station.setState(AccessState.OUT_OF_ORDER);
         }else{
             station.setState(AccessState.OPENED);
         }
