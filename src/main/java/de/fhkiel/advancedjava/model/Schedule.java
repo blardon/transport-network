@@ -3,31 +3,34 @@ package de.fhkiel.advancedjava.model;
 import de.fhkiel.advancedjava.model.node.Line;
 import de.fhkiel.advancedjava.model.node.Station;
 
+import javax.validation.Valid;
 import java.util.LinkedHashSet;
 
 public class Schedule {
 
-    private LinkedHashSet<Station> stations;
-    private LinkedHashSet<Line> lines;
+    @Valid
+    private LinkedHashSet<Station> stops;
 
-    public Schedule(LinkedHashSet<Station> stations, LinkedHashSet<Line> lines) {
-        this.stations = stations;
-        this.lines = lines;
+    private LinkedHashSet<Line> trafficLines;
+
+    public Schedule(LinkedHashSet<Station> stops, LinkedHashSet<Line> trafficLines) {
+        this.stops = stops;
+        this.trafficLines = trafficLines;
     }
 
-    public LinkedHashSet<Station> getStations() {
-        return stations;
+    public LinkedHashSet<Station> getStops() {
+        return stops;
     }
 
-    public void setStations(LinkedHashSet<Station> stations) {
-        this.stations = stations;
+    public void setStops(LinkedHashSet<Station> stops) {
+        this.stops = stops;
     }
 
-    public LinkedHashSet<Line> getLines() {
-        return lines;
+    public LinkedHashSet<Line> getTrafficLines() {
+        return trafficLines;
     }
 
-    public void setLines(LinkedHashSet<Line> lines) {
-        this.lines = lines;
+    public void setTrafficLines(LinkedHashSet<Line> trafficLines) {
+        this.trafficLines = trafficLines;
     }
 }

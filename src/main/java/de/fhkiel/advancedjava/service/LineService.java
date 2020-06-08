@@ -1,5 +1,6 @@
 package de.fhkiel.advancedjava.service;
 
+import de.fhkiel.advancedjava.exception.LineNotFoundException;
 import de.fhkiel.advancedjava.model.node.Line;
 import de.fhkiel.advancedjava.repository.LineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class LineService {
@@ -26,14 +28,22 @@ public class LineService {
         return this.lineRepository.save(line, 2);
     }
 
-    public void addNewLine(Line line){
-        if (!this.lineRepository.existsById(line.getLineId())){
-            this.saveLine(line);
+    public Line addNewLine(Line line){
+        Optional<Line> optionalLine = this.lineRepository.findById(line.getLineId(), 3);
+
+        if (optionalLine.isEmpty()){
+            return this.saveLine(line);
+        }else{
+            return optionalLine.get();
         }
     }
 
     public Iterable<Line> saveAllLines(Collection<Line> lines){
         return this.lineRepository.save(lines, 2);
+    }
+
+    public Line findLineByName(String lineName){
+        return this.lineRepository.findLineByName(lineName).orElseThrow( () -> new LineNotFoundException(lineName) );
     }
 
     public Collection<Line> findAllLinesWithLegs(){

@@ -16,6 +16,9 @@ public interface StopRepository extends Neo4jRepository<Stop, Long> {
     @Query("MATCH (station:Station {stationId:$stationId})-[r:HAS_STOP]->(stop:Stop {type:$type}) RETURN stop")
     Optional<Stop> findStopByTypeAtStationById(Long stationId, StopType type);
 
-    Collection<Stop> findStopsByType(StopType type);
+    @Query("MATCH (station:Station {name:$stationName})<-[r:TRANSFER_TO]-(stop:Stop {type:$type}) RETURN stop, r, station")
+    Optional<Stop> findStopByTypeAtStationByName(String stationName, StopType type);
+
+    Iterable<Stop> findStopsByType(StopType type);
 
 }

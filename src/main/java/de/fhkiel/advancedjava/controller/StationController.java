@@ -4,6 +4,7 @@ import de.fhkiel.advancedjava.model.node.Station;
 import de.fhkiel.advancedjava.model.node.dto.StationDto;
 import de.fhkiel.advancedjava.service.DtoConversionService;
 import de.fhkiel.advancedjava.service.StationService;
+import de.fhkiel.advancedjava.service.statistics.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +17,23 @@ import javax.validation.Valid;
 public class StationController {
 
     private StationService stationService;
+    private StatisticsService statisticsService;
     private DtoConversionService conversionService;
 
     @Autowired
-    public StationController(StationService stationService, DtoConversionService conversionService){
+    public StationController(StationService stationService, StatisticsService statisticsService, DtoConversionService conversionService){
         this.stationService = stationService;
+        this.statisticsService = statisticsService;
         this.conversionService = conversionService;
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<StationDto> findStation(@PathVariable Long id){
+    public ResponseEntity<Station> findStation(@PathVariable Long id){
         Station station = this.stationService.findStationById(id);
-        StationDto response = this.conversionService.convert(station);
+        return ResponseEntity.ok(station);
+        //StationDto response = this.conversionService.convert(station);
 
-        return ResponseEntity.ok(response);
+        //return ResponseEntity.ok(response);
     }
 
     @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,6 +57,7 @@ public class StationController {
     @GetMapping(path = "/{name}/set/outoforder")
     public ResponseEntity<StationDto> setStationOutOfOrder(@PathVariable String name){
         Station newStation = this.stationService.setStationOutOfOrder(name, true);
+        this.statisticsService.addDisturbanceCreated(newStation);
 
         StationDto response = this.conversionService.convert(newStation);
         return ResponseEntity.ok(response);

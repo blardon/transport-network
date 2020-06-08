@@ -10,4 +10,8 @@ public class StopNotFoundException extends RuntimeException{
     public StopNotFoundException(Long stationId, StopType type){
         super(String.format("Stop with type %s and ID %d not found.", type.name(), stationId));
     }
+
+    public StopNotFoundException(String stationName, StopType type){
+        super(String.format("Stop with type %s and name %s not found.", type.name(), stationName));
+    }
 }

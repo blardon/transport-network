@@ -32,4 +32,10 @@ public class LineController {
         return ResponseEntity.ok(lineDto);
     }
 
+    @PostMapping(path = "/test", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Line> testLine(@RequestBody Line line){
+        Line res = this.lineService.addNewLine(line);
+        return ResponseEntity.ok(res);
+    }
+
 }

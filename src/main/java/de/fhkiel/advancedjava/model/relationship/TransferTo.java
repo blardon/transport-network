@@ -5,6 +5,9 @@ import de.fhkiel.advancedjava.model.node.Stop;
 import lombok.*;
 import org.neo4j.ogm.annotation.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @RelationshipEntity(type = "TRANSFER_TO")

@@ -1,5 +1,6 @@
 package de.fhkiel.advancedjava.controller;
 
+import de.fhkiel.advancedjava.model.Schedule;
 import de.fhkiel.advancedjava.model.node.Line;
 import de.fhkiel.advancedjava.model.node.Station;
 import de.fhkiel.advancedjava.model.node.dto.LineDto;
@@ -36,7 +37,13 @@ public class ScheduleController {
         this.lineService = lineService;
         this.legService = legService;
         this.conversionService = conversionService;
- }
+    }
+
+    @PostMapping(path = "/importtest", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Schedule> testImportSchedule(@Valid @RequestBody Schedule schedule){
+
+        return ResponseEntity.ok(schedule);
+    }
 
     @PostMapping(path = "/import", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduleDto> importSchedule(@Valid @RequestBody ScheduleDto scheduleDto){

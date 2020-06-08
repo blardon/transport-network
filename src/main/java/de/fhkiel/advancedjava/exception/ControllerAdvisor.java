@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -33,9 +34,24 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(LegNotFoundException.class)
+    public ResponseEntity<Object> handleLegNotFoundException(LegNotFoundException ex, WebRequest request){
+        return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(WrongInputException.class)
     public ResponseEntity<Object> handleWrongInputException(WrongInputException ex, WebRequest request){
         return getExceptionResponseEntity(ex, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(LineNotFoundException.class)
+    public ResponseEntity<Object> handleLineNotFoundException(LineNotFoundException ex, WebRequest request){
+        return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(VehicleNotFoundException.class)
+    public ResponseEntity<Object> handleVehicleNotFoundException(VehicleNotFoundException ex, WebRequest request){
+        return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<Object> getExceptionResponseEntity(RuntimeException ex, HttpStatus status) {

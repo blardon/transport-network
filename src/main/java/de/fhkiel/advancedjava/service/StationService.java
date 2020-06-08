@@ -6,7 +6,6 @@ import de.fhkiel.advancedjava.exception.WrongInputException;
 import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.node.Station;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
-import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import de.fhkiel.advancedjava.repository.StationRepository;
 import de.fhkiel.advancedjava.repository.TransferToRepository;
 import org.apache.commons.lang3.text.translate.NumericEntityUnescaper;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -23,12 +23,10 @@ import java.util.stream.StreamSupport;
 public class StationService {
 
     private StationRepository stationRepository;
-    private TransferToRepository transferToRepository;
 
     @Autowired
-    public StationService(StationRepository stationRepository, TransferToRepository transferToRepository){
+    public StationService(StationRepository stationRepository){
         this.stationRepository = stationRepository;
-        this.transferToRepository = transferToRepository;
     }
 
     public void deleteAllStations(){
@@ -51,23 +49,40 @@ public class StationService {
         return this.stationRepository.findStationByName(name).orElseThrow( () -> new StationNotFoundException(name));
     }
 
+    public Station findStationByNameWithStops(String name){
+        return this.stationRepository.findStationByName(name, 2).orElseThrow( () -> new StationNotFoundException(name));
+    }
+
+    public Collection<Station> findAllStations(){
+        final Collection<Station> stations = new ArrayList<>();
+        this.stationRepository.findAll().forEach(stations::add);
+        return stations;
+    }
+
+    public Collection<Station> findAllStationsWithStops(){
+        final Collection<Station> stations = new ArrayList<>();
+        this.stationRepository.findAll(2).forEach(stations::add);
+        return stations;
+    }
+
     public Station setStationTransferTime(String name, Long time){
-        Optional<Station> station = this.stationRepository.findStationByName(name, 2);
-        if (station.isEmpty()){
-            throw new StationNotFoundException(name);
-        }
+        Station station = this.findStationByNameWithStops(name);
 
         if (time < 0){
             throw new WrongInputException("Transfer time cannot be negative.");
         }
 
-        Collection<TransferTo> transferTos = this.transferToRepository.findAllToStationByStationName(name);
+        station.getStops().forEach(stop -> {
+            stop.getTransferTo().setTime(time);
+        });
+
+        /*Collection<TransferTo> transferTos = this.transferToRepository.findAllToStationByStationName(name);
         ArrayList<TransferTo> newTransferTos = transferTos.stream()
                 .peek(transferTo -> transferTo.setTime(time))
                 .collect(Collectors.toCollection(ArrayList::new));
-        this.transferToRepository.saveAll(newTransferTos);
+        this.transferToRepository.saveAll(newTransferTos);*/
 
-        return station.get();
+        return this.saveStationWithStops(station);
     }
 
     public Station setStationOutOfOrder(String name, boolean set){
@@ -89,12 +104,6 @@ public class StationService {
 
         station.setState(AccessState.CLOSED);
         return this.saveStationWithStops(station);
-    }
-
-    public Collection<Station> findAllStationsWithStops(){
-        final Collection<Station> stations = new ArrayList<>();
-        this.stationRepository.findAll(2).forEach(stations::add);
-        return stations;
     }
 
     public Iterable<Map<String, Object>> findFastestPathWithoutTransferTime(String from, String to){
