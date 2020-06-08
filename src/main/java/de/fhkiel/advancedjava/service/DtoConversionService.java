@@ -73,13 +73,15 @@ public class DtoConversionService {
                 .map(Stop::getType).collect(Collectors.toCollection(ArrayList::new));
         stationDto.setTypes(types);
 
-        // Set transfer time if set (not null)
-        station.getStops().forEach(stop -> {
+        // Set transfer time if set
+        for (Stop stop : station.getStops()){
             if (stop.getTransferTo() != null){
                 stationDto.setTransferTime(stop.getTransferTo().getTime());
+                break;
+            }else{
+                stationDto.setTransferTime(0L);
             }
-        });
-
+        }
 
         return stationDto;
     }

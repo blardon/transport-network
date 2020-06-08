@@ -8,7 +8,6 @@ import java.util.LinkedHashSet;
 
 public class Schedule {
 
-    @Valid
     private LinkedHashSet<Station> stops;
 
     private LinkedHashSet<Line> trafficLines;

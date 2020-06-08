@@ -20,7 +20,7 @@ public class StationSerializer extends JsonSerializer<Station> {
         gen.writeNumberField("stopId", station.getStationId());
         gen.writeStringField("name", station.getName());
         gen.writeStringField("city", station.getCity());
-        gen.writeStringField("state", station.getState().name());
+        gen.writeStringField("state", station.getState().toString());
 
         gen.writeArrayFieldStart("types");
         for (Stop stop : station.getStops()){

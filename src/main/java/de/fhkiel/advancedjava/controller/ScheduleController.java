@@ -7,11 +7,14 @@ import de.fhkiel.advancedjava.model.node.dto.LineDto;
 import de.fhkiel.advancedjava.model.node.dto.ScheduleDto;
 import de.fhkiel.advancedjava.model.node.dto.StationDto;
 import de.fhkiel.advancedjava.service.*;
+import org.neo4j.ogm.config.ObjectMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,7 @@ public class ScheduleController {
     }
 
     @PostMapping(path = "/importtest", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Schedule> testImportSchedule(@Valid @RequestBody Schedule schedule){
+    public ResponseEntity<Schedule> testImportSchedule(@RequestBody Schedule schedule){
 
         return ResponseEntity.ok(schedule);
     }
