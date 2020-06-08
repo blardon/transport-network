@@ -1,73 +1,151 @@
 package de.fhkiel.advancedjava.service;
 
+import de.fhkiel.advancedjava.model.AccessState;
+import de.fhkiel.advancedjava.model.StopType;
 import de.fhkiel.advancedjava.model.Vehicle;
 import de.fhkiel.advancedjava.model.VehicleDto;
 import de.fhkiel.advancedjava.model.node.Leg;
 import de.fhkiel.advancedjava.model.node.Line;
 import de.fhkiel.advancedjava.model.node.Station;
+import de.fhkiel.advancedjava.model.node.Stop;
 import de.fhkiel.advancedjava.model.node.dto.LegDto;
 import de.fhkiel.advancedjava.model.node.dto.LineDto;
 import de.fhkiel.advancedjava.model.node.dto.StationDto;
+import de.fhkiel.advancedjava.model.relationship.ConnectingTo;
+import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import de.fhkiel.advancedjava.model.statistics.LegStatistics;
 import de.fhkiel.advancedjava.model.statistics.StationStatistics;
 import de.fhkiel.advancedjava.model.statistics.dto.LegStatisticsDto;
 import de.fhkiel.advancedjava.model.statistics.dto.StationStatisticsDto;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 @Service
 public class DtoConversionService {
 
-    private GenericConversionService genericConversionService;
+    private StopService stopService;
 
     @Autowired
-    public void setGenericConversionService(GenericConversionService genericConversionService){
-        this.genericConversionService = genericConversionService;
+    public DtoConversionService(StopService stopService) {
+        this.stopService = stopService;
     }
 
     public Station convert(StationDto stationDto){
-        if (this.genericConversionService.canConvert(StationDto.class, Station.class)){
-            return this.genericConversionService.convert(stationDto, Station.class);
-        }
-        throw new RuntimeException("Wrong input");
+        Station newStation = new Station();
+
+        newStation.setStationId(stationDto.getStationId());
+        newStation.setCity(stationDto.getCity());
+        newStation.setName(stationDto.getName());
+        newStation.setState(stationDto.getState());
+
+        // Create a new stop entity and transfer relationship for every StopType in the station
+        stationDto.getTypes().forEach(stopType -> {
+            Stop newStop = new Stop();
+            TransferTo transferTo = new TransferTo();
+
+            newStop.setType(stopType);
+
+            transferTo.setFromStop(newStop);
+            transferTo.setToStation(newStation);
+            transferTo.setTime(stationDto.getTransferTime());
+            newStop.setTransferTo(transferTo);
+
+            newStation.getStops().add(newStop);
+        });
+        return newStation;
     }
 
     public StationDto convert(Station station){
-        if (this.genericConversionService.canConvert(Station.class, StationDto.class)){
-            return this.genericConversionService.convert(station, StationDto.class);
-        }
-        throw new RuntimeException("Wrong input");
+        StationDto stationDto = new StationDto();
+
+        stationDto.setCity(station.getCity());
+        stationDto.setName(station.getName());
+        stationDto.setState(station.getState());
+        stationDto.setStationId(station.getStationId());
+
+        // Set types array with all types that are possible for the stop
+        ArrayList<StopType> types = station.getStops().stream()
+                .map(Stop::getType).collect(Collectors.toCollection(ArrayList::new));
+        stationDto.setTypes(types);
+
+        // Set transfer time if set (not null)
+        station.getStops().forEach(stop -> {
+            if (stop.getTransferTo() != null){
+                stationDto.setTransferTime(stop.getTransferTo().getTime());
+            }
+        });
+
+
+        return stationDto;
     }
 
     public Line convert(LineDto lineDto){
-        if (this.genericConversionService.canConvert(LineDto.class, Line.class)){
-            return this.genericConversionService.convert(lineDto, Line.class);
-        }
-        throw new RuntimeException("Wrong input");
+        Line newLine = new Line();
+
+        newLine.setLineId(lineDto.getLineId());
+        newLine.setName(lineDto.getName());
+        newLine.setType(lineDto.getType());
+
+        // Create a new leg entity for every section in the line
+        lineDto.getLegDTOs().forEach(legDto -> {
+            Leg newLeg = new Leg();
+            Stop fromStop = this.stopService.findStopByTypeAtStationById(legDto.getBeginStopId(), lineDto.getType());
+
+            newLeg.setState(AccessState.OPENED);
+            newLeg.setCost(legDto.getCost());
+            newLeg.setStop(fromStop);
+
+            ConnectingTo connectingTo = new ConnectingTo();
+            Stop toStop = this.stopService.findStopByTypeAtStationById(legDto.getEndStopId(), lineDto.getType());
+            connectingTo.setTime(legDto.getTime());
+            connectingTo.setConnectingWithLeg(newLeg);
+            connectingTo.setConnectingToStop(toStop);
+
+            newLeg.setConnectingTo(connectingTo);
+
+            newLine.getLegs().add(newLeg);
+        });
+        return newLine;
     }
 
     public LineDto convert(Line line){
-        if (this.genericConversionService.canConvert(Line.class, LineDto.class)){
-            return this.genericConversionService.convert(line, LineDto.class);
-        }
-        throw new RuntimeException("Wrong input");
+        LineDto lineDto = new LineDto();
+
+        lineDto.setType(line.getType());
+        lineDto.setName(line.getName());
+        lineDto.setLineId(line.getLineId());
+
+        // Collect all legDtos for Legs in the Line
+        ArrayList<LegDto> legDtos = line.getLegs().stream()
+                .map(this::convert)
+                .collect(Collectors.toCollection(ArrayList::new));
+        lineDto.setLegs(legDtos);
+
+        return lineDto;
     }
 
     public LegDto convert(Leg leg){
-        if (this.genericConversionService.canConvert(Leg.class, LegDto.class)){
-            return this.genericConversionService.convert(leg, LegDto.class);
-        }
-        throw new RuntimeException("Wrong input");
+        LegDto legDto = new LegDto();
+
+        legDto.setCost(leg.getCost());
+        legDto.setTime(leg.getConnectingTo().getTime());
+        legDto.setBeginStopId(leg.getStop().getTransferTo().getToStation().getStationId());
+        legDto.setEndStopId(leg.getConnectingTo().getConnectingToStop().getTransferTo().getToStation().getStationId());
+
+        return legDto;
     }
 
     public VehicleDto convert(Vehicle vehicle){
-        if (this.genericConversionService.canConvert(Vehicle.class, VehicleDto.class)){
-            VehicleDto vehicleDto = this.genericConversionService.convert(vehicle, VehicleDto.class);
-            vehicleDto.setLocatedAtStop(this.convert(vehicle.getLocatedAtStop().getTransferTo().getToStation()));
-            return vehicleDto;
-        }
-        throw new RuntimeException("Wrong input");
+        VehicleDto vehicleDto = new VehicleDto();
+        vehicleDto.setVehicleId(vehicle.getId());
+        vehicleDto.setServesForLineId(vehicle.getServesForLine().getLineId());
+        vehicleDto.setLocatedAtStop(this.convert(vehicle.getLocatedAtStop().getTransferTo().getToStation()));
+        return vehicleDto;
     }
 
     public LegStatisticsDto convert(LegStatistics legStatistics){
