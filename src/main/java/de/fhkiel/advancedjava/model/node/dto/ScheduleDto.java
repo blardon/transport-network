@@ -1,5 +1,6 @@
 package de.fhkiel.advancedjava.model.node.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,8 @@ import java.util.LinkedHashSet;
         setterVisibility = JsonAutoDetect.Visibility.NONE)
 public class ScheduleDto {
 
-    @JsonProperty("stops")
+    @JsonProperty("stations")
+    @JsonAlias({"stops"})
     @Valid
     private ArrayList<StationDto> stations;
 
