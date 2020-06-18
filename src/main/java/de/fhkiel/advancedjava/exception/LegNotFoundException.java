@@ -6,4 +6,7 @@ public class LegNotFoundException extends RuntimeException{
     public LegNotFoundException(StopType type, String fromStation, String toStation){
         super(String.format("Connection with type %s between %s and %s not found.", type.toString(), fromStation, toStation));
     }
+    public LegNotFoundException(Long id){
+        super(String.format("Connection with ID %d not found.", id));
+    }
 }

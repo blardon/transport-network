@@ -56,7 +56,7 @@ public class StationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/{name}/set/outoforder")
+    @GetMapping(path = "/{name}/set/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StationDto> setStationOutOfOrder(@PathVariable String name){
         Station newStation = this.stationService.setStationOutOfOrder(name, true);
         this.statisticsService.addDisturbanceCreated(newStation);
@@ -65,7 +65,7 @@ public class StationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/{name}/resolve/outoforder")
+    @GetMapping(path = "/{name}/resolve/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StationDto> resolveStationOutOfOrder(@PathVariable String name){
         Station newStation = this.stationService.setStationOutOfOrder(name, false);
 

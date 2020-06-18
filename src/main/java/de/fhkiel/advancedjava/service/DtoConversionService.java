@@ -132,6 +132,7 @@ public class DtoConversionService {
     public LegDto convert(Leg leg){
         LegDto legDto = new LegDto();
 
+        legDto.setLegId(leg.getLegId());
         legDto.setCost(leg.getCost());
         legDto.setTime(leg.getConnectingTo().getTime());
         legDto.setBeginStopId(leg.getStop().getTransferTo().getToStation().getStationId());

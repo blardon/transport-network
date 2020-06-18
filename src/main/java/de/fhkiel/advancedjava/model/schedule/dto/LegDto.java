@@ -1,6 +1,7 @@
 package de.fhkiel.advancedjava.model.schedule.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,10 @@ import java.math.BigDecimal;
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE)
 public class LegDto {
+
+    @JsonProperty("legId")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long legId;
 
     @JsonProperty("beginStopId")
     @NotNull
@@ -36,6 +41,10 @@ public class LegDto {
     @JsonProperty("cost")
     @Min(0)
     private BigDecimal cost = BigDecimal.valueOf(0.00);
+
+    public void setLegId(Long legId) {
+        this.legId = legId;
+    }
 
     public Long getBeginStopId() {
         return beginStopId;

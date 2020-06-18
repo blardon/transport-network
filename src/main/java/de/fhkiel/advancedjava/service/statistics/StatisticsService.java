@@ -38,6 +38,11 @@ public class StatisticsService {
         this.legService = legService;
     }
 
+    public void deleteAll(){
+        this.legStatisticsRepository.deleteAll();
+        this.stationStatisticsRepository.deleteAll();
+    }
+
     public LegStatistics saveLegStatistics(LegStatistics legStatistics){
         return this.legStatisticsRepository.save(Optional.ofNullable(legStatistics).orElseThrow( () -> new WrongInputException("No statistic supplied")));
     }

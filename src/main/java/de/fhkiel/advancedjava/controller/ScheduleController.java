@@ -7,6 +7,7 @@ import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
 import de.fhkiel.advancedjava.model.schedule.dto.ScheduleDto;
 import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.service.*;
+import de.fhkiel.advancedjava.service.statistics.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +25,18 @@ public class ScheduleController {
     private StopService stopService;
     private LineService lineService;
     private LegService legService;
+    private StatisticsService statisticsService;
 
     private DtoConversionService conversionService;
 
     @Autowired
     public ScheduleController(StationService stationService, StopService stopService, LineService lineService,
-                              LegService legService, DtoConversionService conversionService){
+                              LegService legService, StatisticsService statisticsService, DtoConversionService conversionService){
         this.stationService = stationService;
         this.stopService = stopService;
         this.lineService = lineService;
         this.legService = legService;
+        this.statisticsService = statisticsService;
         this.conversionService = conversionService;
     }
 
@@ -45,6 +48,7 @@ public class ScheduleController {
 
     @PostMapping(path = "/import", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduleDto> importSchedule(@Valid @RequestBody ScheduleDto scheduleDto){
+        this.statisticsService.deleteAll();
         this.stationService.deleteAllStations();
         this.stopService.deleteAllStops();
         this.lineService.deleteAllLines();
