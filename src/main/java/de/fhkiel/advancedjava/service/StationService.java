@@ -69,12 +69,6 @@ public class StationService {
             stop.getTransferTo().setTime(time);
         });
 
-        /*Collection<TransferTo> transferTos = this.transferToRepository.findAllToStationByStationName(name);
-        ArrayList<TransferTo> newTransferTos = transferTos.stream()
-                .peek(transferTo -> transferTo.setTime(time))
-                .collect(Collectors.toCollection(ArrayList::new));
-        this.transferToRepository.saveAll(newTransferTos);*/
-
         return this.saveStationWithStops(station);
     }
 
@@ -90,12 +84,16 @@ public class StationService {
 
     public Station addNewStation(Station station){
         Optional<Station> optionalStation = this.stationRepository.findById(station.getStationId());
+        Optional<Station> optionalStationName = this.stationRepository.findStationByName(station.getName());
 
         if (optionalStation.isPresent()){
             throw new WrongInputException(String.format("Station with ID %d already exists.", station.getStationId()));
         }
 
-        station.setState(AccessState.CLOSED);
+        if (optionalStationName.isPresent()){
+            throw new WrongInputException(String.format("Station with name %s already exists.", station.getName()));
+        }
+
         return this.saveStationWithStops(station);
     }
 

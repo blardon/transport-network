@@ -1,6 +1,7 @@
 package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.exception.LineNotFoundException;
+import de.fhkiel.advancedjava.exception.WrongInputException;
 import de.fhkiel.advancedjava.model.schedule.Line;
 import de.fhkiel.advancedjava.repository.LineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,18 @@ public class LineService {
     }
 
     public Line addNewLine(Line line){
-        Optional<Line> optionalLine = this.lineRepository.findById(line.getLineId(), 3);
+        Optional<Line> optionalLine = this.lineRepository.findById(line.getLineId());
+        Optional<Line> optionalLineName = this.lineRepository.findLineByName(line.getName());
 
-        if (optionalLine.isEmpty()){
-            return this.saveLine(line);
-        }else{
-            return optionalLine.get();
+        if (optionalLine.isPresent()){
+            throw new WrongInputException(String.format("Line with ID %d already exists.", line.getLineId()));
         }
+
+        if (optionalLineName.isPresent()){
+            throw new WrongInputException(String.format("Line with name %s already exists.", line.getName()));
+        }
+
+        return this.saveLine(line);
     }
 
     public Iterable<Line> saveAllLines(Collection<Line> lines){

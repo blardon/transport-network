@@ -1,5 +1,6 @@
 package de.fhkiel.advancedjava.controller;
 
+import de.fhkiel.advancedjava.model.schedule.AccessState;
 import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.service.DtoConversionService;
@@ -38,8 +39,9 @@ public class StationController {
 
     @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StationDto> addNewStation(@Valid @RequestBody StationDto stationDto){
-
         Station newStation = this.conversionService.convert(stationDto);
+        newStation.setState(AccessState.CLOSED);
+
         Station savedStation = this.stationService.addNewStation(newStation);
 
         StationDto response = this.conversionService.convert(savedStation);

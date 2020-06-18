@@ -51,15 +51,13 @@ public class ScheduleController {
         this.legService.deleteAllLegs();
 
         scheduleDto.getStationDTOs().forEach(stationDto -> {
-            //Station newStation = conversionService.convert(stationDto, Station.class);
             Station newStation = this.conversionService.convert(stationDto);
-            this.stationService.saveStation(newStation);
+            this.stationService.addNewStation(newStation);
         });
 
         scheduleDto.getLineDTOs().forEach(lineDto -> {
-            //Line newLine = conversionService.convert(lineDto, Line.class);
             Line newLine = this.conversionService.convert(lineDto);
-            this.lineService.saveLine(newLine);
+            this.lineService.addNewLine(newLine);
         });
 
         return ResponseEntity.ok(scheduleDto);

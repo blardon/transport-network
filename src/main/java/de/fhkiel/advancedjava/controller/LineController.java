@@ -28,7 +28,9 @@ public class LineController {
     @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LineDto> addNewLine(@RequestBody LineDto lineDto){
         Line newLine = this.conversionService.convert(lineDto);
+
         this.lineService.addNewLine(newLine);
+
         return ResponseEntity.ok(lineDto);
     }
 
