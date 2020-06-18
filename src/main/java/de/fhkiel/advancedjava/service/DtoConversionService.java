@@ -1,5 +1,9 @@
 package de.fhkiel.advancedjava.service;
 
+import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
+import de.fhkiel.advancedjava.model.queryresult.ConnectionResultDto;
+import de.fhkiel.advancedjava.model.queryresult.LegResultDto;
+import de.fhkiel.advancedjava.model.queryresult.LineResultDto;
 import de.fhkiel.advancedjava.model.schedule.AccessState;
 import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.Vehicle;
@@ -23,6 +27,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+/**
+ * DtoConversionService is responsible to convert domain models into DTO representation
+ *
+ * @author Bennet v. Lardon
+ *
+ */
 @Service
 public class DtoConversionService {
 
@@ -141,6 +151,12 @@ public class DtoConversionService {
         return legDto;
     }
 
+    /**
+     * <p>Converts a model Vehicle into the VehicleDto presentation
+     * </p>
+     * @param vehicle The vehicle model to convert into a VehicleDto
+     * @return the converted Vehicle
+     */
     public VehicleDto convert(Vehicle vehicle){
         VehicleDto vehicleDto = new VehicleDto();
         vehicleDto.setVehicleId(vehicle.getId());
@@ -162,6 +178,45 @@ public class DtoConversionService {
         stationStatisticsDto.setNumberOfDisturbancesCreated(stationStatistics.getNumberOfDisturbancesCreated());
         stationStatisticsDto.setForStop(this.convert(stationStatistics.getForStation()));
         return stationStatisticsDto;
+    }
+
+    public ConnectionResultDto convertResult(ConnectionResult connectionResult){
+        ConnectionResultDto connectionResultDto = new ConnectionResultDto();
+
+        connectionResultDto.setLineResultDtos(connectionResult.getLines().stream()
+                .map(this::convertResult)
+                .collect(Collectors.toCollection(ArrayList::new)));
+
+        return connectionResultDto;
+    }
+
+    public LineResultDto convertResult(Line line){
+        LineResultDto lineResultDto = new LineResultDto();
+
+        lineResultDto.setName(line.getName());
+        lineResultDto.setType(line.getType());
+
+        lineResultDto.setLegResultDtos(line.getLegs().stream()
+                .map(this::convertResult)
+                .collect(Collectors.toCollection(ArrayList::new)));
+
+        return lineResultDto;
+    }
+
+    public LegResultDto convertResult(Leg leg){
+        Station fromStation = leg.getStop().getTransferTo().getToStation();
+        Station toStation = leg.getConnectingTo().getConnectingToStop().getTransferTo().getToStation();
+
+        StationDto fromStationDto = this.convert(fromStation);
+        StationDto toStationDto = this.convert(toStation);
+
+        LegResultDto legResultDto = new LegResultDto();
+        legResultDto.setFromStationDto(fromStationDto);
+        legResultDto.setToStationDto(toStationDto);
+        legResultDto.setCost(leg.getCost());
+        legResultDto.setTime(leg.getConnectingTo().getTime());
+
+        return legResultDto;
     }
 
 }

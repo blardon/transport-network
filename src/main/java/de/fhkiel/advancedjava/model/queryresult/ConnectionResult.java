@@ -3,6 +3,7 @@ package de.fhkiel.advancedjava.model.queryresult;
 import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.model.schedule.Line;
 import de.fhkiel.advancedjava.model.schedule.Station;
+import de.fhkiel.advancedjava.model.schedule.Stop;
 import org.springframework.data.neo4j.annotation.QueryResult;
 
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 public class ConnectionResult {
 
     private ArrayList<Station> stations;
+    private ArrayList<Stop> stops;
     private ArrayList<Leg> legs;
     private ArrayList<Line> lines;
 
@@ -36,6 +38,14 @@ public class ConnectionResult {
 
     public ArrayList<Station> getStations() {
         return stations;
+    }
+
+    public ArrayList<Stop> getStops() {
+        return stops;
+    }
+
+    public void setStops(ArrayList<Stop> stops) {
+        this.stops = stops;
     }
 
     public void setStations(ArrayList<Station> stations) {

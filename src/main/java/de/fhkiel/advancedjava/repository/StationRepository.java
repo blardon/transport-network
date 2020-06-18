@@ -33,17 +33,17 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
             "   relationshipWeightProperty: 'time'" +
             " })" +
             " YIELD nodeId, cost" +
-            " WITH COLLECT(gds.util.asNode(nodeId)) as pathNodes" +
+            " WITH COLLECT(gds.util.asNode(nodeId)) as pathNodes, COLLECT(DISTINCT cost) as costs" +
             " MATCH (x)-[r]->(y)" +
             " WHERE x in pathNodes AND y in pathNodes" +
-            " WITH [station in pathNodes where station:Station] as stations, [stop in pathNodes where stop:Stop] as stops, [leg in pathNodes where leg:Leg] as legs, collect(r) as relationships" +
+            " WITH [station in pathNodes where station:Station] as stations, [stop in pathNodes where stop:Stop] as stops, [leg in pathNodes where leg:Leg] as legs, collect(r) as relationships, costs" +
             " UNWIND legs as leg" +
             " MATCH (leg)<-[co:CARRIES_OUT]-(line:Line)" +
-            " WITH COLLECT(DISTINCT line) as lines, stops, legs, relationships, COLLECT(co) as cos" +
+            " WITH COLLECT(DISTINCT line) as lines, stops, legs, relationships, COLLECT(co) as cos, costs, stations" +
             " UNWIND stops as stop" +
-            " MATCH (stop)-[r:HAS_STOP|TRANSFER_TO]-(station:Station)" +
-            " RETURN COLLECT(DISTINCT station) as stations, lines, stops, legs, relationships, COLLECT(r), cos"
-    )
-    ConnectionResult findFastestPathWithTransferTime(String fromStationName, String toStationName);
+            " MATCH (stop)<-[r:HAS_STOP]-(station:Station)" +
+            " RETURN COLLECT(DISTINCT station) as stations, lines, stops, legs, relationships, COLLECT(r), cos, toInteger(last(costs)) as totalTime"
+    )//COLLECT(DISTINCT station) as
+    Optional<ConnectionResult> findFastestPathWithTransferTime(String fromStationName, String toStationName);
 
 }

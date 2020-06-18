@@ -1,6 +1,7 @@
 package de.fhkiel.advancedjava.controller;
 
 import de.fhkiel.advancedjava.exception.WrongInputException;
+import de.fhkiel.advancedjava.model.queryresult.ConnectionResultDto;
 import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.Ticket;
 import de.fhkiel.advancedjava.model.schedule.Leg;
@@ -49,15 +50,11 @@ public class ConnectionController {
     }
 
     @GetMapping(path = "/from/{stationNameFrom}/to/{stationNameTo}/withTransferTime")
-    public ResponseEntity<ConnectionResult> getFastestConnectionWithTransferTime
+    public ResponseEntity<ConnectionResultDto> getFastestConnectionWithTransferTime
             (@PathVariable String stationNameFrom, @PathVariable String stationNameTo){
-        ConnectionResult result = this.stationService.findFastestPathWithTransferTime(stationNameFrom, stationNameTo);
+        ConnectionResult connectionResult = this.stationService.findFastestPathWithTransferTime(stationNameFrom, stationNameTo);
 
-        //ConnectionResultDto connectionResultDto = new ConnectionResultDto();
-        //connectionResultDto.setStationDtos(result.getStations()
-        //        .stream()
-        //        .map(station -> conversionService.convert(station, StationDto.class))
-        //        .collect(Collectors.toCollection(ArrayList::new)));
+        ConnectionResultDto result = this.conversionService.convertResult(connectionResult);
 
         return ResponseEntity.ok(result);
     }

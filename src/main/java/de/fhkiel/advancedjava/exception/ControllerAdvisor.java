@@ -52,6 +52,11 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ConnectionNotFoundException.class)
+    public ResponseEntity<Object> handleConnectionNotFoundException(ConnectionNotFoundException ex, WebRequest request){
+        return getExceptionResponseEntity(ex, HttpStatus.NOT_FOUND);
+    }
+
     private ResponseEntity<Object> getExceptionResponseEntity(RuntimeException ex, HttpStatus status) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());

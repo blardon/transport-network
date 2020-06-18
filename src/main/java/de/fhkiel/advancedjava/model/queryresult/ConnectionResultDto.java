@@ -30,4 +30,12 @@ public class ConnectionResultDto {
     public void setStationDtos(ArrayList<StationDto> stationDtos) {
         this.stationDtos = stationDtos;
     }
+
+    public ArrayList<LineResultDto> getLineResultDtos() {
+        return lineResultDtos;
+    }
+
+    public void setLineResultDtos(ArrayList<LineResultDto> lineResultDtos) {
+        this.lineResultDtos = lineResultDtos;
+    }
 }

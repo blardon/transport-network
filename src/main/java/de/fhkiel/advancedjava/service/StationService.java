@@ -1,15 +1,19 @@
 package de.fhkiel.advancedjava.service;
 
+import de.fhkiel.advancedjava.exception.ConnectionNotFoundException;
 import de.fhkiel.advancedjava.exception.StationNotFoundException;
 import de.fhkiel.advancedjava.exception.StationServiceException;
 import de.fhkiel.advancedjava.exception.WrongInputException;
+import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import de.fhkiel.advancedjava.model.schedule.AccessState;
+import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
 import de.fhkiel.advancedjava.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -105,16 +109,24 @@ public class StationService {
     }
 
     public ConnectionResult findFastestPathWithTransferTime(String from, String to){
-        ConnectionResult result = this.stationRepository.findFastestPathWithTransferTime(from, to);
+        Optional<ConnectionResult> optionalConnectionResult = this.stationRepository.findFastestPathWithTransferTime(from, to);
 
-        // Remove last transfer, depending if it should be included or not
-        //if (result.getStations() != null && result.getStations().size() > 0){
-        //    Station lastStation = result.getStations().get(result.getStations().size() - 1);
-        //    if (lastStation.getStops() != null && lastStation.getStops().size() > 0)
-        //    lastStation.getStops().get(0).setTransferTo(null);
-        //}
+        if (optionalConnectionResult.isEmpty()){
+            throw new ConnectionNotFoundException(from, to);
+        }
 
-        result.hashCode();
+        ConnectionResult result = optionalConnectionResult.get();
+
+        // Remove last transfer time, depending if it should be included or not
+        if (result.getStops() != null && result.getStops().size() > 1){
+            TransferTo lastTransfer = result.getStops().get(result.getStops().size() - 1).getTransferTo();
+            result.setTotalTime(result.getTotalTime() - lastTransfer.getTime());
+        }
+
+        // Calculate costs for the connection
+        BigDecimal totalCost = result.getLegs().stream().map(Leg::getCost).reduce(BigDecimal.ZERO, BigDecimal::add);
+        result.setTotalCost(totalCost);
+
         return result;
     }
 

@@ -86,3 +86,7 @@ pitest {
     targetClasses = ['de.fhkiel.advancedjava.*']
     timestampedReports = false
 }
+
+javadoc {
+    source = sourceSets.main.allJava
+}

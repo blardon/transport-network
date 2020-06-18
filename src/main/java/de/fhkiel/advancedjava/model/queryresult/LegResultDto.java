@@ -29,4 +29,35 @@ public class LegResultDto {
     @JsonProperty("cost")
     private BigDecimal cost;
 
+    public StationDto getFromStationDto() {
+        return fromStationDto;
+    }
+
+    public void setFromStationDto(StationDto fromStationDto) {
+        this.fromStationDto = fromStationDto;
+    }
+
+    public StationDto getToStationDto() {
+        return toStationDto;
+    }
+
+    public void setToStationDto(StationDto toStationDto) {
+        this.toStationDto = toStationDto;
+    }
+
+    public Long getTime() {
+        return time;
+    }
+
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
 }

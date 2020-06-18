@@ -26,4 +26,27 @@ public class LineResultDto {
     @JsonProperty("sections")
     private ArrayList<LegResultDto> legResultDtos;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public StopType getType() {
+        return type;
+    }
+
+    public void setType(StopType type) {
+        this.type = type;
+    }
+
+    public ArrayList<LegResultDto> getLegResultDtos() {
+        return legResultDtos;
+    }
+
+    public void setLegResultDtos(ArrayList<LegResultDto> legResultDtos) {
+        this.legResultDtos = legResultDtos;
+    }
 }
