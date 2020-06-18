@@ -3,7 +3,7 @@ package de.fhkiel.advancedjava.service;
 import de.fhkiel.advancedjava.exception.StationNotFoundException;
 import de.fhkiel.advancedjava.exception.StationServiceException;
 import de.fhkiel.advancedjava.exception.WrongInputException;
-import de.fhkiel.advancedjava.model.AccessState;
+import de.fhkiel.advancedjava.model.schedule.AccessState;
 import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
 import de.fhkiel.advancedjava.repository.StationRepository;

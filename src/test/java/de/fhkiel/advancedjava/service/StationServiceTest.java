@@ -2,8 +2,8 @@ package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.exception.StationNotFoundException;
 import de.fhkiel.advancedjava.exception.StationServiceException;
-import de.fhkiel.advancedjava.model.AccessState;
-import de.fhkiel.advancedjava.model.StopType;
+import de.fhkiel.advancedjava.model.schedule.AccessState;
+import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.schedule.Stop;
 import de.fhkiel.advancedjava.model.relationship.TransferTo;

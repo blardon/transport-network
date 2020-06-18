@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.converter;
 
-import de.fhkiel.advancedjava.model.AccessState;
-import de.fhkiel.advancedjava.model.StopType;
+import de.fhkiel.advancedjava.model.schedule.AccessState;
+import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.model.schedule.Line;
 import de.fhkiel.advancedjava.model.schedule.Station;

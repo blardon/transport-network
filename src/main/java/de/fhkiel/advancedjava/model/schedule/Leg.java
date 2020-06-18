@@ -1,6 +1,5 @@
 package de.fhkiel.advancedjava.model.schedule;
 
-import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.relationship.ConnectingTo;
 import lombok.*;
 import org.neo4j.ogm.annotation.GeneratedValue;

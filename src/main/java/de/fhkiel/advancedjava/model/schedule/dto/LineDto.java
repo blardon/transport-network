@@ -2,7 +2,7 @@ package de.fhkiel.advancedjava.model.schedule.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.fhkiel.advancedjava.model.StopType;
+import de.fhkiel.advancedjava.model.schedule.StopType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

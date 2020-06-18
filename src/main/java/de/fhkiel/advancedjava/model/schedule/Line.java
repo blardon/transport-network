@@ -1,6 +1,5 @@
 package de.fhkiel.advancedjava.model.schedule;
 
-import de.fhkiel.advancedjava.model.StopType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.controller;
 
 import de.fhkiel.advancedjava.exception.WrongInputException;
-import de.fhkiel.advancedjava.model.StopType;
+import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.Ticket;
 import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;

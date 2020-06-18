@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.exception.StopNotFoundException;
-import de.fhkiel.advancedjava.model.StopType;
+import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.schedule.Stop;
 import de.fhkiel.advancedjava.repository.StopRepository;
 import org.springframework.beans.factory.annotation.Autowired;

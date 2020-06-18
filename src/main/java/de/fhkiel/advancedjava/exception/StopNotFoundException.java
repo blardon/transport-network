@@ -1,6 +1,6 @@
 package de.fhkiel.advancedjava.exception;
 
-import de.fhkiel.advancedjava.model.StopType;
+import de.fhkiel.advancedjava.model.schedule.StopType;
 
 public class StopNotFoundException extends RuntimeException{
     public StopNotFoundException(Long id){

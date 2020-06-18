@@ -1,6 +1,5 @@
 package de.fhkiel.advancedjava.model.schedule;
 
-import de.fhkiel.advancedjava.model.AccessState;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.Id;

@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.service.statistics;
 
 import de.fhkiel.advancedjava.exception.WrongInputException;
-import de.fhkiel.advancedjava.model.StopType;
+import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.statistics.LegStatistics;

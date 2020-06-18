@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.service;
 
-import de.fhkiel.advancedjava.model.AccessState;
-import de.fhkiel.advancedjava.model.StopType;
+import de.fhkiel.advancedjava.model.schedule.AccessState;
+import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.Vehicle;
 import de.fhkiel.advancedjava.model.VehicleDto;
 import de.fhkiel.advancedjava.model.schedule.Leg;

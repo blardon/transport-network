@@ -1,6 +1,6 @@
 package de.fhkiel.advancedjava.controller;
 
-import de.fhkiel.advancedjava.model.StopType;
+import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.statistics.dto.LegStatisticsDto;
 import de.fhkiel.advancedjava.model.statistics.dto.StationStatisticsDto;
 import de.fhkiel.advancedjava.model.statistics.dto.StatisticsResultDto;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
