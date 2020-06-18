@@ -4,12 +4,11 @@ import de.fhkiel.advancedjava.exception.StationNotFoundException;
 import de.fhkiel.advancedjava.exception.StationServiceException;
 import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.StopType;
-import de.fhkiel.advancedjava.model.node.Station;
-import de.fhkiel.advancedjava.model.node.Stop;
+import de.fhkiel.advancedjava.model.schedule.Station;
+import de.fhkiel.advancedjava.model.schedule.Stop;
 import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import de.fhkiel.advancedjava.repository.StationRepository;
 import de.fhkiel.advancedjava.repository.TransferToRepository;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,10 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

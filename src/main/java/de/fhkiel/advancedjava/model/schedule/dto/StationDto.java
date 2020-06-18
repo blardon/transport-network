@@ -1,4 +1,4 @@
-package de.fhkiel.advancedjava.model.node.dto;
+package de.fhkiel.advancedjava.model.schedule.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,15 +7,12 @@ import de.fhkiel.advancedjava.model.StopType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.neo4j.ogm.annotation.typeconversion.EnumString;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Optional;
 
 @Data
 @AllArgsConstructor

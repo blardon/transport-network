@@ -1,6 +1,6 @@
 package de.fhkiel.advancedjava.model.statistics;
 
-import de.fhkiel.advancedjava.model.node.Station;
+import de.fhkiel.advancedjava.model.schedule.Station;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

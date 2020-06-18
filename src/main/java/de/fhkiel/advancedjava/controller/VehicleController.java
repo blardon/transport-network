@@ -2,9 +2,8 @@ package de.fhkiel.advancedjava.controller;
 
 import de.fhkiel.advancedjava.model.Vehicle;
 import de.fhkiel.advancedjava.model.VehicleDto;
-import de.fhkiel.advancedjava.model.node.Line;
-import de.fhkiel.advancedjava.model.node.Stop;
-import de.fhkiel.advancedjava.model.node.dto.StationDto;
+import de.fhkiel.advancedjava.model.schedule.Line;
+import de.fhkiel.advancedjava.model.schedule.Stop;
 import de.fhkiel.advancedjava.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

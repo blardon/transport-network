@@ -4,20 +4,13 @@ import de.fhkiel.advancedjava.exception.StationNotFoundException;
 import de.fhkiel.advancedjava.exception.StationServiceException;
 import de.fhkiel.advancedjava.exception.WrongInputException;
 import de.fhkiel.advancedjava.model.AccessState;
-import de.fhkiel.advancedjava.model.node.Station;
+import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
 import de.fhkiel.advancedjava.repository.StationRepository;
-import de.fhkiel.advancedjava.repository.TransferToRepository;
-import org.apache.commons.lang3.text.translate.NumericEntityUnescaper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class StationService {

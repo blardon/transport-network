@@ -1,18 +1,15 @@
 package de.fhkiel.advancedjava.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.fhkiel.advancedjava.model.node.Line;
-import de.fhkiel.advancedjava.model.node.Station;
-import de.fhkiel.advancedjava.model.node.dto.LineDto;
-import de.fhkiel.advancedjava.model.node.dto.ScheduleDto;
-import de.fhkiel.advancedjava.model.node.dto.StationDto;
+import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
+import de.fhkiel.advancedjava.model.schedule.dto.ScheduleDto;
+import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.service.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.neo4j.unsafe.impl.batchimport.stats.Stat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;

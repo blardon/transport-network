@@ -1,12 +1,9 @@
-package de.fhkiel.advancedjava.model.node;
+package de.fhkiel.advancedjava.model.schedule;
 
 import de.fhkiel.advancedjava.model.StopType;
 import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import lombok.*;
 import org.neo4j.ogm.annotation.*;
-
-import javax.validation.Valid;
-import java.util.HashSet;
 
 @NoArgsConstructor
 @AllArgsConstructor

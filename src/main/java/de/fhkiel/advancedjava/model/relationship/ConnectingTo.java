@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.model.relationship;
 
-import de.fhkiel.advancedjava.model.node.Leg;
-import de.fhkiel.advancedjava.model.node.Stop;
+import de.fhkiel.advancedjava.model.schedule.Leg;
+import de.fhkiel.advancedjava.model.schedule.Stop;
 import lombok.*;
 import org.neo4j.ogm.annotation.*;
 

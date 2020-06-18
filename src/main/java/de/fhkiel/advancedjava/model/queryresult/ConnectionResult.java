@@ -1,14 +1,12 @@
 package de.fhkiel.advancedjava.model.queryresult;
 
-import de.fhkiel.advancedjava.model.node.Leg;
-import de.fhkiel.advancedjava.model.node.Line;
-import de.fhkiel.advancedjava.model.node.Station;
-import de.fhkiel.advancedjava.model.node.Stop;
-import de.fhkiel.advancedjava.model.relationship.TransferTo;
+import de.fhkiel.advancedjava.model.schedule.Leg;
+import de.fhkiel.advancedjava.model.schedule.Line;
+import de.fhkiel.advancedjava.model.schedule.Station;
 import org.springframework.data.neo4j.annotation.QueryResult;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Set;
 
 @QueryResult
 public class ConnectionResult {
@@ -16,6 +14,9 @@ public class ConnectionResult {
     private ArrayList<Station> stations;
     private ArrayList<Leg> legs;
     private ArrayList<Line> lines;
+
+    private BigDecimal totalCost;
+    private Long totalTime;
 
     public ArrayList<Line> getLines() {
         return lines;
@@ -39,5 +40,21 @@ public class ConnectionResult {
 
     public void setStations(ArrayList<Station> stations) {
         this.stations = stations;
+    }
+
+    public BigDecimal getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(BigDecimal totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    public Long getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(Long totalTime) {
+        this.totalTime = totalTime;
     }
 }

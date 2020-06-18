@@ -1,4 +1,4 @@
-package de.fhkiel.advancedjava.model.node.dto;
+package de.fhkiel.advancedjava.model.schedule.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,10 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Data
 @AllArgsConstructor

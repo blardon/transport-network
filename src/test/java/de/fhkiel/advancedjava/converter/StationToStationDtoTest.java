@@ -2,9 +2,9 @@ package de.fhkiel.advancedjava.converter;
 
 import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.StopType;
-import de.fhkiel.advancedjava.model.node.Station;
-import de.fhkiel.advancedjava.model.node.Stop;
-import de.fhkiel.advancedjava.model.node.dto.StationDto;
+import de.fhkiel.advancedjava.model.schedule.Station;
+import de.fhkiel.advancedjava.model.schedule.Stop;
+import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import org.junit.jupiter.api.Test;
 

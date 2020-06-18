@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.controller;
 
-import de.fhkiel.advancedjava.model.node.Line;
-import de.fhkiel.advancedjava.model.node.dto.LineDto;
+import de.fhkiel.advancedjava.model.schedule.Line;
+import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
 import de.fhkiel.advancedjava.service.DtoConversionService;
 import de.fhkiel.advancedjava.service.LineService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package de.fhkiel.advancedjava.tasks;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.fhkiel.advancedjava.model.node.dto.LineDto;
-import de.fhkiel.advancedjava.model.node.dto.ScheduleDto;
-import de.fhkiel.advancedjava.model.node.dto.StationDto;
+import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
+import de.fhkiel.advancedjava.model.schedule.dto.ScheduleDto;
+import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.service.DtoConversionService;
 import de.fhkiel.advancedjava.service.LineService;
 import de.fhkiel.advancedjava.service.StationService;
@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.File;

@@ -3,8 +3,8 @@ package de.fhkiel.advancedjava.io.serializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import de.fhkiel.advancedjava.model.node.Station;
-import de.fhkiel.advancedjava.model.node.Stop;
+import de.fhkiel.advancedjava.model.schedule.Station;
+import de.fhkiel.advancedjava.model.schedule.Stop;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;

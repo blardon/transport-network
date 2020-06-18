@@ -1,6 +1,6 @@
 package de.fhkiel.advancedjava.model;
 
-import de.fhkiel.advancedjava.model.node.Leg;
+import de.fhkiel.advancedjava.model.schedule.Leg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

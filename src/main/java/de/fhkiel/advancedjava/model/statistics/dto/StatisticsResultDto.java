@@ -1,14 +1,10 @@
 package de.fhkiel.advancedjava.model.statistics.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.fhkiel.advancedjava.model.node.dto.LegDto;
-import de.fhkiel.advancedjava.model.statistics.dto.LegStatisticsDto;
-import de.fhkiel.advancedjava.model.statistics.dto.StationStatisticsDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.model;
 
-import de.fhkiel.advancedjava.model.node.Line;
-import de.fhkiel.advancedjava.model.node.Stop;
+import de.fhkiel.advancedjava.model.schedule.Line;
+import de.fhkiel.advancedjava.model.schedule.Stop;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GeneratedValue;

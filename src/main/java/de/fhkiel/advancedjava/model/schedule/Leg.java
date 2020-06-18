@@ -1,6 +1,5 @@
-package de.fhkiel.advancedjava.model.node;
+package de.fhkiel.advancedjava.model.schedule;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.relationship.ConnectingTo;
 import lombok.*;
@@ -10,7 +9,6 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Data
 @NoArgsConstructor

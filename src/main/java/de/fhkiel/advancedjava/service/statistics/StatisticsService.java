@@ -2,8 +2,8 @@ package de.fhkiel.advancedjava.service.statistics;
 
 import de.fhkiel.advancedjava.exception.WrongInputException;
 import de.fhkiel.advancedjava.model.StopType;
-import de.fhkiel.advancedjava.model.node.Leg;
-import de.fhkiel.advancedjava.model.node.Station;
+import de.fhkiel.advancedjava.model.schedule.Leg;
+import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.statistics.LegStatistics;
 import de.fhkiel.advancedjava.model.statistics.StationStatistics;
 import de.fhkiel.advancedjava.repository.statistics.LegStatisticsRepository;

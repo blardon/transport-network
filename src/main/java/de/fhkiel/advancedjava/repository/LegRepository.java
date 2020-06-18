@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.repository;
 
 import de.fhkiel.advancedjava.model.StopType;
-import de.fhkiel.advancedjava.model.node.Leg;
+import de.fhkiel.advancedjava.model.schedule.Leg;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;

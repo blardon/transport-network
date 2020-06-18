@@ -1,9 +1,8 @@
 package de.fhkiel.advancedjava.model;
 
-import de.fhkiel.advancedjava.model.node.Line;
-import de.fhkiel.advancedjava.model.node.Station;
+import de.fhkiel.advancedjava.model.schedule.Line;
+import de.fhkiel.advancedjava.model.schedule.Station;
 
-import javax.validation.Valid;
 import java.util.LinkedHashSet;
 
 public class Schedule {

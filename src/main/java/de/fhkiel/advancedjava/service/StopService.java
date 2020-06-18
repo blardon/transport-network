@@ -2,11 +2,10 @@ package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.exception.StopNotFoundException;
 import de.fhkiel.advancedjava.model.StopType;
-import de.fhkiel.advancedjava.model.node.Stop;
+import de.fhkiel.advancedjava.model.schedule.Stop;
 import de.fhkiel.advancedjava.repository.StopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,12 +1,9 @@
 package de.fhkiel.advancedjava.model.relationship;
 
-import de.fhkiel.advancedjava.model.node.Station;
-import de.fhkiel.advancedjava.model.node.Stop;
+import de.fhkiel.advancedjava.model.schedule.Station;
+import de.fhkiel.advancedjava.model.schedule.Stop;
 import lombok.*;
 import org.neo4j.ogm.annotation.*;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,4 +1,4 @@
-package de.fhkiel.advancedjava.model.node.dto;
+package de.fhkiel.advancedjava.model.schedule.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -8,9 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 
 @Data
 @AllArgsConstructor

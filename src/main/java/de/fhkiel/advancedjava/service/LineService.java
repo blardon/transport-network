@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.exception.LineNotFoundException;
-import de.fhkiel.advancedjava.model.node.Line;
+import de.fhkiel.advancedjava.model.schedule.Line;
 import de.fhkiel.advancedjava.repository.LineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

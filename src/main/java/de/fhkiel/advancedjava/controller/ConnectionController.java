@@ -3,7 +3,7 @@ package de.fhkiel.advancedjava.controller;
 import de.fhkiel.advancedjava.exception.WrongInputException;
 import de.fhkiel.advancedjava.model.StopType;
 import de.fhkiel.advancedjava.model.Ticket;
-import de.fhkiel.advancedjava.model.node.Leg;
+import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
 import de.fhkiel.advancedjava.service.DtoConversionService;
 import de.fhkiel.advancedjava.service.LegService;
@@ -21,8 +21,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 @RestController
 @RequestMapping("/api/connection")

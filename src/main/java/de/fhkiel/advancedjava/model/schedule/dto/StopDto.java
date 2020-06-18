@@ -1,8 +1,7 @@
-package de.fhkiel.advancedjava.model.node.dto;
+package de.fhkiel.advancedjava.model.schedule.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import de.fhkiel.advancedjava.model.AccessState;
 import de.fhkiel.advancedjava.model.StopType;
 import lombok.AllArgsConstructor;

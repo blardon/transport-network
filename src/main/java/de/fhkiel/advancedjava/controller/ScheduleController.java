@@ -1,25 +1,20 @@
 package de.fhkiel.advancedjava.controller;
 
 import de.fhkiel.advancedjava.model.Schedule;
-import de.fhkiel.advancedjava.model.node.Line;
-import de.fhkiel.advancedjava.model.node.Station;
-import de.fhkiel.advancedjava.model.node.dto.LineDto;
-import de.fhkiel.advancedjava.model.node.dto.ScheduleDto;
-import de.fhkiel.advancedjava.model.node.dto.StationDto;
+import de.fhkiel.advancedjava.model.schedule.Line;
+import de.fhkiel.advancedjava.model.schedule.Station;
+import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
+import de.fhkiel.advancedjava.model.schedule.dto.ScheduleDto;
+import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.service.*;
-import org.neo4j.ogm.config.ObjectMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/api/schedule")

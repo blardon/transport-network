@@ -2,7 +2,7 @@ package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.exception.LegNotFoundException;
 import de.fhkiel.advancedjava.model.StopType;
-import de.fhkiel.advancedjava.model.node.Leg;
+import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.repository.LegRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

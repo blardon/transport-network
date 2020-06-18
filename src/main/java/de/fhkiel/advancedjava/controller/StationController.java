@@ -1,7 +1,7 @@
 package de.fhkiel.advancedjava.controller;
 
-import de.fhkiel.advancedjava.model.node.Station;
-import de.fhkiel.advancedjava.model.node.dto.StationDto;
+import de.fhkiel.advancedjava.model.schedule.Station;
+import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.service.DtoConversionService;
 import de.fhkiel.advancedjava.service.StationService;
 import de.fhkiel.advancedjava.service.statistics.StatisticsService;
