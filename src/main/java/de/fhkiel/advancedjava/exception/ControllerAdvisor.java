@@ -1,8 +1,11 @@
 package de.fhkiel.advancedjava.exception;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import de.fhkiel.advancedjava.model.schedule.StopType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,6 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -70,6 +74,31 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         body.put("errors", errors);
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    protected  ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", status.value());
+        body.put("message", "Could not read HTTP request input");
+
+        Map<String, String> details = new LinkedHashMap<>();
+
+        if (ex.getCause() instanceof InvalidFormatException){
+            InvalidFormatException invalidFormatException = (InvalidFormatException) ex.getCause();
+            if (invalidFormatException.getTargetType().equals(StopType.class)){
+                String givenValue = invalidFormatException.getValue().toString();
+                String acceptedValues = Arrays.toString(StopType.values());
+                body.replace("message", "Given type is not accepted.");
+                details.put("givenValue", givenValue);
+                details.put("acceptedValues", acceptedValues);
+            }
+        }
+
+        body.put("details", details);
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
