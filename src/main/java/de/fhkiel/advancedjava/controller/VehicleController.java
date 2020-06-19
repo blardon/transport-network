@@ -7,10 +7,7 @@ import de.fhkiel.advancedjava.model.schedule.Stop;
 import de.fhkiel.advancedjava.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +36,7 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleDtos);
     }
 
-    @GetMapping(path = "/new/{atStationName}/{withLineName}")
+    @PutMapping(path = "/new/{atStationName}/{withLineName}")
     public ResponseEntity<VehicleDto> addNewVehicle(@PathVariable String atStationName, @PathVariable String withLineName){
         Line line = this.lineService.findLineByName(withLineName);
         Stop stop = this.stopService.findStopByTypeAtStationByName(atStationName, line.getType());
@@ -48,7 +45,7 @@ public class VehicleController {
         return ResponseEntity.ok(this.dtoConversionService.convert(newVehicle));
     }
 
-    @GetMapping(path = "/update/{id}/{atStationName}")
+    @PutMapping(path = "/update/{id}/{atStationName}")
     public ResponseEntity<VehicleDto> updateVehicleLocation(@PathVariable Long id, @PathVariable String atStationName){
         Vehicle vehicle = this.vehicleService.findById(id);
         Stop stop = this.stopService.findStopByTypeAtStationByName(atStationName, vehicle.getServesForLine().getType());

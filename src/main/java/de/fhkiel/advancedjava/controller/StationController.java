@@ -45,7 +45,7 @@ public class StationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/{name}/set/transfertime/{time}")
+    @PutMapping(path = "/{name}/set/transfertime/{time}")
     public ResponseEntity<StationDto> setStationTransferTime(@PathVariable String name, @PathVariable Long time){
         Station atStation = this.stationService.setStationTransferTime(name, time);
 
@@ -53,7 +53,7 @@ public class StationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/{name}/set/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{name}/set/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StationDto> setStationOutOfOrder(@PathVariable String name){
         Station newStation = this.stationService.setStationOutOfOrder(name, true);
         this.statisticsService.addDisturbanceCreated(newStation);
@@ -62,7 +62,7 @@ public class StationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/{name}/resolve/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{name}/resolve/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StationDto> resolveStationOutOfOrder(@PathVariable String name){
         Station newStation = this.stationService.setStationOutOfOrder(name, false);
 

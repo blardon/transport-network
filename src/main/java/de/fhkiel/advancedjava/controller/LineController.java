@@ -51,7 +51,7 @@ public class LineController {
         return ResponseEntity.ok(legDtos);
     }
 
-    @GetMapping(path = "/leg/{id}/set/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/leg/{id}/set/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LegDto> setLegOutOfOrder(@PathVariable Long id){
         Leg newLeg = this.legService.setLegOutOfOrder(id, true);
         this.statisticsService.addDisturbanceCreated(newLeg);
@@ -60,7 +60,7 @@ public class LineController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/leg/{id}/resolve/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/leg/{id}/resolve/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LegDto> resolveLegOutOfOrder(@PathVariable Long id){
         Leg newLeg = this.legService.setLegOutOfOrder(id, false);
 
