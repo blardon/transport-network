@@ -58,6 +58,11 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return getExceptionResponseEntity(ex, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BackupException.class)
+    public ResponseEntity<Object> handleBackupException(BackupException ex, WebRequest request){
+        return getExceptionResponseEntity(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private ResponseEntity<Object> getExceptionResponseEntity(RuntimeException ex, HttpStatus status) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());

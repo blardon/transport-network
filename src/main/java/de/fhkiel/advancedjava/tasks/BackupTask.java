@@ -1,6 +1,7 @@
 package de.fhkiel.advancedjava.tasks;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.fhkiel.advancedjava.exception.BackupException;
 import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
 import de.fhkiel.advancedjava.model.schedule.dto.ScheduleDto;
 import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
@@ -71,7 +72,7 @@ public class BackupTask {
                 log.warn("Could not save backup to " + target.getAbsolutePath());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new BackupException("Failed to backup schedule", e.getCause());
         }
     }
 
