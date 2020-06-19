@@ -5,6 +5,7 @@ import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
 import de.fhkiel.advancedjava.model.schedule.dto.ScheduleDto;
 import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.service.*;
+import de.fhkiel.advancedjava.service.statistics.StatisticsService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class ScheduleControllerTest {
+
+    @Mock
+    private StatisticsService statisticsService;
 
     @Mock
     private StationService stationService;
@@ -57,8 +61,8 @@ public class ScheduleControllerTest {
         File importFile = new File(getClass().getClassLoader().getResource("import.json").getFile());
         ScheduleDto scheduleDto = objectMapper.readValue(importFile, ScheduleDto.class);
 
-        when(stationService.saveStation(any())).thenReturn(null);
-        when(lineService.saveLine(any())).thenReturn(null);
+        when(stationService.addNewStation(any())).thenReturn(null);
+        when(lineService.addNewLine(any())).thenReturn(null);
 
         // when
         ResponseEntity<ScheduleDto> response = scheduleController.importSchedule(scheduleDto);
@@ -68,6 +72,7 @@ public class ScheduleControllerTest {
         assertNotNull(response.getBody());
 
         // Verify deletion
+        verify(statisticsService, times(1)).deleteAll();
         verify(stationService, times(1)).deleteAllStations();
         verify(stopService, times(1)).deleteAllStops();
         verify(lineService, times(1)).deleteAllLines();
@@ -78,9 +83,10 @@ public class ScheduleControllerTest {
         verify(conversionService, times(scheduleDto.getLineDTOs().size())).convert(any(LineDto.class));
 
         // Verify saving
-        verify(stationService, times(scheduleDto.getStationDTOs().size())).saveStation(any());
-        verify(lineService, times(scheduleDto.getLineDTOs().size())).saveLine(any());
+        verify(stationService, times(scheduleDto.getStationDTOs().size())).addNewStation(any());
+        verify(lineService, times(scheduleDto.getLineDTOs().size())).addNewLine(any());
 
+        verifyNoMoreInteractions(statisticsService);
         verifyNoMoreInteractions(stationService);
         verifyNoMoreInteractions(stopService);
         verifyNoMoreInteractions(lineService);

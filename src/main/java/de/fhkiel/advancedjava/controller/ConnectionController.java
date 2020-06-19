@@ -3,13 +3,11 @@ package de.fhkiel.advancedjava.controller;
 import de.fhkiel.advancedjava.exception.WrongInputException;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResultDto;
 import de.fhkiel.advancedjava.model.schedule.StopType;
-import de.fhkiel.advancedjava.model.Ticket;
 import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
 import de.fhkiel.advancedjava.service.DtoConversionService;
 import de.fhkiel.advancedjava.service.LegService;
 import de.fhkiel.advancedjava.service.StationService;
-import de.fhkiel.advancedjava.service.TicketService;
 import de.fhkiel.advancedjava.service.statistics.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +21,6 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,15 +29,13 @@ public class ConnectionController {
 
     private StationService stationService;
     private LegService legService;
-    private TicketService ticketService;
     private StatisticsService statisticsService;
     private DtoConversionService conversionService;
 
     @Autowired
-    public ConnectionController(StationService stationService, LegService legService, TicketService ticketService, StatisticsService statisticsService, DtoConversionService conversionService){
+    public ConnectionController(StationService stationService, LegService legService, StatisticsService statisticsService, DtoConversionService conversionService){
         this.stationService = stationService;
         this.legService = legService;
-        this.ticketService = ticketService;
         this.statisticsService = statisticsService;
         this.conversionService = conversionService;
     }
@@ -83,13 +78,6 @@ public class ConnectionController {
 
         if (amount < 1 || amount > 20){
             throw new WrongInputException("Amount must be at least 1 and max. 20");
-        }
-
-        for (int i = 0; i < amount; i++){
-            Ticket ticket = new Ticket();
-            ticket.setDateTime(LocalDateTime.now());
-            ticket.setForLeg(leg);
-            this.ticketService.saveTicket(ticket);
         }
 
         this.statisticsService.addTicketBought(leg, amount);

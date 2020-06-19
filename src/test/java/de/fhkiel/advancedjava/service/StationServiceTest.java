@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,9 +29,6 @@ public class StationServiceTest {
 
     @Mock
     private StationRepository stationRepository;
-
-    @Mock
-    private TransferToRepository transferToRepository;
 
     @InjectMocks
     private StationService stationService;
@@ -102,6 +100,41 @@ public class StationServiceTest {
     }
 
     @Test
+    @DisplayName("when the service finds a station by name it is returned")
+    void testFindStationByNameWithStops_valid() {
+        // given
+        Station station = new Station();
+        station.setState(AccessState.OPENED);
+        station.setStops(new ArrayList<>());
+        station.setCity("TestCity");
+        station.setName("TestName");
+        station.setStationId(1L);
+
+        when(stationRepository.findStationByName("TestName", 2)).thenReturn(Optional.of(station));
+
+        //when
+        Station result = stationService.findStationByNameWithStops("TestName");
+
+        //then
+        assertNotNull(result);
+        assertEquals(station, result);
+
+        verify(stationRepository, times(1)).findStationByName("TestName", 2);
+        verifyNoMoreInteractions(stationRepository);
+    }
+
+    @Test
+    @DisplayName("when the service finds a station by name it is returned")
+    void testFindStationByNameWithStops_invalid() {
+        when(stationRepository.findStationByName("TestName", 2)).thenReturn(Optional.empty());
+
+        assertThrows(StationNotFoundException.class, () -> {stationService.findStationByNameWithStops("TestName");});
+
+        verify(stationRepository, times(1)).findStationByName("TestName", 2);
+        verifyNoMoreInteractions(stationRepository);
+    }
+
+    @Test
     @DisplayName("when the service finds a station by id it is returned")
     void testFindStationByID_valid(){
         // given
@@ -120,6 +153,16 @@ public class StationServiceTest {
         //then
         assertNotNull(result);
         assertEquals(station, result);
+
+        verify(stationRepository, times(1)).findById(1L, 2);
+        verifyNoMoreInteractions(stationRepository);
+    }
+
+    @Test
+    void testFindStationByID_invalid(){
+        when(stationRepository.findById(1L, 2)).thenReturn(Optional.empty());
+
+        assertThrows(StationNotFoundException.class, () -> {stationService.findStationById(1L);});
 
         verify(stationRepository, times(1)).findById(1L, 2);
         verifyNoMoreInteractions(stationRepository);
@@ -190,5 +233,49 @@ public class StationServiceTest {
         assertThrows(StationServiceException.class, () -> {stationService.saveStationWithStops(null);});
 
         verifyNoMoreInteractions(stationRepository);
+    }
+
+    @Test
+    void testFindAllStations(){
+        // given
+        Station station = new Station();
+        station.setState(AccessState.OPENED);
+        station.setStops(new ArrayList<>());
+        station.setCity("TestCity");
+        station.setName("TestName");
+        station.setStationId(1L);
+
+        when(stationRepository.findAll()).thenReturn(List.of(station));
+
+        //when
+        Collection<Station> result = stationService.findAllStations();
+
+        //then
+        assertNotNull(result);
+        assertEquals(result.size(), 1);
+
+        verify(stationRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testFindAllStationsWithStops(){
+        // given
+        Station station = new Station();
+        station.setState(AccessState.OPENED);
+        station.setStops(new ArrayList<>());
+        station.setCity("TestCity");
+        station.setName("TestName");
+        station.setStationId(1L);
+
+        when(stationRepository.findAll(2)).thenReturn(List.of(station));
+
+        //when
+        Collection<Station> result = stationService.findAllStationsWithStops();
+
+        //then
+        assertNotNull(result);
+        assertEquals(result.size(), 1);
+
+        verify(stationRepository, times(1)).findAll(2);
     }
 }

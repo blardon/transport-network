@@ -33,10 +33,6 @@ public class LegService {
         return this.legRepository.save(Optional.ofNullable(leg).orElseThrow( () -> new LegServiceException("Could not save leg.")));
     }
 
-    public Iterable<Leg> saveAllLegs(Collection<Leg> legs){
-        return this.legRepository.saveAll(legs);
-    }
-
     public Collection<Leg> findAll(){
         final ArrayList<Leg> result = new ArrayList<>();
         this.legRepository.findAll().forEach(result::add);

@@ -107,8 +107,6 @@ public class DtoConversionService {
             if (stop.getTransferTo() != null){
                 stationDto.setTransferTime(stop.getTransferTo().getTime());
                 break;
-            }else{
-                stationDto.setTransferTime(0L);
             }
         }
 

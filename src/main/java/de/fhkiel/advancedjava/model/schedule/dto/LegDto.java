@@ -46,6 +46,10 @@ public class LegDto {
     @JsonProperty("state")
     private AccessState state = AccessState.OPENED;
 
+    public Long getLegId() {
+        return legId;
+    }
+
     public void setLegId(Long legId) {
         this.legId = legId;
     }

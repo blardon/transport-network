@@ -6,16 +6,28 @@ import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.schedule.Stop;
 import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.model.relationship.TransferTo;
+import de.fhkiel.advancedjava.service.DtoConversionService;
+import de.fhkiel.advancedjava.service.StopService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 public class StationToStationDtoTest {
 
-    private final StationToStationDto converter = new StationToStationDto();
+    @Mock
+    private StopService stopService;
+
+    private final DtoConversionService converter = new DtoConversionService(stopService);
 
     @Test
     void testConvertStationToStationDto(){

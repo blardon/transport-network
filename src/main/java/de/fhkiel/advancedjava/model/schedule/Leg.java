@@ -28,6 +28,10 @@ public class Leg {
 
     private AccessState state;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getLegId() {
         return id;
     }
