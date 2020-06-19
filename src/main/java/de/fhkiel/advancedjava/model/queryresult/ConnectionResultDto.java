@@ -2,6 +2,7 @@ package de.fhkiel.advancedjava.model.queryresult;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
 import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +29,7 @@ public class ConnectionResultDto {
     private ArrayList<StationDto> stationDtos;
 
     @JsonProperty("lines")
-    private ArrayList<LineResultDto> lineResultDtos;
+    private ArrayList<LineDto> lineDtos;
 
     public ArrayList<StationDto> getStationDtos() {
         return stationDtos;
@@ -38,12 +39,12 @@ public class ConnectionResultDto {
         this.stationDtos = stationDtos;
     }
 
-    public ArrayList<LineResultDto> getLineResultDtos() {
-        return lineResultDtos;
+    public ArrayList<LineDto> getLineDtos() {
+        return lineDtos;
     }
 
-    public void setLineResultDtos(ArrayList<LineResultDto> lineResultDtos) {
-        this.lineResultDtos = lineResultDtos;
+    public void setLineDtos(ArrayList<LineDto> lineDtos) {
+        this.lineDtos = lineDtos;
     }
 
     public BigDecimal getTotalCost() {

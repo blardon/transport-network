@@ -2,8 +2,6 @@ package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResultDto;
-import de.fhkiel.advancedjava.model.queryresult.LegResultDto;
-import de.fhkiel.advancedjava.model.queryresult.LineResultDto;
 import de.fhkiel.advancedjava.model.schedule.AccessState;
 import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.Vehicle;
@@ -183,8 +181,8 @@ public class DtoConversionService {
     public ConnectionResultDto convertResult(ConnectionResult connectionResult){
         ConnectionResultDto connectionResultDto = new ConnectionResultDto();
 
-        connectionResultDto.setLineResultDtos(connectionResult.getLines().stream()
-                .map(this::convertResult)
+        connectionResultDto.setLineDtos(connectionResult.getLines().stream()
+                .map(this::convert)
                 .collect(Collectors.toCollection(ArrayList::new)));
 
         connectionResultDto.setStationDtos(connectionResult.getStations().stream()
@@ -195,35 +193,6 @@ public class DtoConversionService {
         connectionResultDto.setTotalTime(connectionResult.getTotalTime());
 
         return connectionResultDto;
-    }
-
-    public LineResultDto convertResult(Line line){
-        LineResultDto lineResultDto = new LineResultDto();
-
-        lineResultDto.setName(line.getName());
-        lineResultDto.setType(line.getType());
-
-        lineResultDto.setLegResultDtos(line.getLegs().stream()
-                .map(this::convertResult)
-                .collect(Collectors.toCollection(ArrayList::new)));
-
-        return lineResultDto;
-    }
-
-    public LegResultDto convertResult(Leg leg){
-        Station fromStation = leg.getStop().getTransferTo().getToStation();
-        Station toStation = leg.getConnectingTo().getConnectingToStop().getTransferTo().getToStation();
-
-        StationDto fromStationDto = this.convert(fromStation);
-        StationDto toStationDto = this.convert(toStation);
-
-        LegResultDto legResultDto = new LegResultDto();
-        legResultDto.setFromStationDto(fromStationDto);
-        legResultDto.setToStationDto(toStationDto);
-        legResultDto.setCost(leg.getCost());
-        legResultDto.setTime(leg.getConnectingTo().getTime());
-
-        return legResultDto;
     }
 
 }

@@ -27,7 +27,7 @@ public class LineDto {
     private Long lineId;
 
     @JsonProperty("name")
-    @NotBlank(message = "TEST")
+    @NotBlank
     private String name;
 
     @JsonProperty("type")
