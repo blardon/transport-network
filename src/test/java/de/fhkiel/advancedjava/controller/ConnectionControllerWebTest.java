@@ -1,29 +1,23 @@
 package de.fhkiel.advancedjava.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.fhkiel.advancedjava.exception.StationServiceException;
-import de.fhkiel.advancedjava.exception.WrongInputException;
-import de.fhkiel.advancedjava.model.schedule.AccessState;
-import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
-import de.fhkiel.advancedjava.service.DtoConversionService;
+import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
 import de.fhkiel.advancedjava.service.StationService;
-import de.fhkiel.advancedjava.service.statistics.StatisticsService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Collection;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,20 +27,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles({"test"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class StationControllerWebTest {
+public class ConnectionControllerWebTest {
 
     private final WebApplicationContext wac;
     private final ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
 
-    private StationController stationController;
+    private StationService stationService;
 
     @Autowired
-    public StationControllerWebTest(WebApplicationContext wac, ObjectMapper om, StationController stationController) {
+    public ConnectionControllerWebTest(WebApplicationContext wac, ObjectMapper om, StationService stationService) {
         this.wac = wac;
         this.objectMapper = om;
-        this.stationController = stationController;
+        this.stationService = stationService;
     }
 
     @BeforeEach
@@ -178,97 +172,26 @@ public class StationControllerWebTest {
     }
 
     @Test
-    void testFindStationNotExisting() throws Exception {
-        mockMvc.perform(get("/api/station/1000").accept(MediaType.ALL))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
+    void testFastestConnection() throws Exception {
+        ConnectionResult result = stationService.findFastestPathWithTransferTime("Hummelwiese", "Fachhochschule");
+
+        assertNotNull(result);
     }
 
     @Test
-    void testFindStation_validmvc() throws Exception {
-        mockMvc.perform(get("/api/station/1").accept(MediaType.APPLICATION_JSON_VALUE))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+    void testFindNStopsInMMinutes() throws Exception {
+        ConnectionResult result = stationService.findNStopsInMMinutes(4L, 10L);
+
+        assertNotNull(result);
+        assertTrue(result.getStations().size() >= 4);
+        assertTrue(result.getTotalTime() <= 10);
     }
 
     @Test
-    void testAddNewStation_invalid() throws JsonProcessingException {
-        //given
-        StationDto stationDto = objectMapper.readValue("        {\n" +
-                "            \"stopId\": 1,\n" +
-                "            \"types\": [\n" +
-                "                \"SUBURBAN_TRAIN\",\n" +
-                "                \"SUBWAY\",\n" +
-                "                \"BUS\"\n" +
-                "            ],\n" +
-                "            \"state\": \"OPENED\",\n" +
-                "            \"name\": \"New Name\",\n" +
-                "            \"city\": \"Kiel\",\n" +
-                "            \"transferTime\": 1\n" +
-                "        }", StationDto.class);
+    void testFind3Cheapest() throws Exception {
+        Collection<ConnectionResult> result = stationService.find3Cheapest("Hummelwiese", "Fachhochschule");
 
-        //when
-        assertThrows(WrongInputException.class, () -> {stationController.addNewStation(stationDto);});
+        assertNotNull(result);
+        assertTrue(result.size() > 0);
     }
-
-    @Test
-    void testAddNewStation_valid() throws JsonProcessingException {
-        //given
-        StationDto stationDto = objectMapper.readValue("        {\n" +
-                "            \"stopId\": 100,\n" +
-                "            \"types\": [\n" +
-                "                \"SUBURBAN_TRAIN\",\n" +
-                "                \"SUBWAY\",\n" +
-                "                \"BUS\"\n" +
-                "            ],\n" +
-                "            \"state\": \"OPENED\",\n" +
-                "            \"name\": \"New Name\",\n" +
-                "            \"city\": \"Kiel\",\n" +
-                "            \"transferTime\": 1\n" +
-                "        }", StationDto.class);
-
-        //when
-        ResponseEntity<StationDto> response = stationController.addNewStation(stationDto);
-
-        //then
-        assertNotNull(response.getBody());
-        assertEquals(response.getBody().getCity(), stationDto.getCity());
-        assertEquals(response.getBody().getName(), stationDto.getName());
-        assertEquals(response.getBody().getState(), AccessState.CLOSED);
-    }
-
-    @Test
-    void testSetStationTransferTime(){
-        //when
-        ResponseEntity<StationDto> response = stationController.setStationTransferTime("Hummelwiese", 10L);
-
-        //then
-        assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody().getTransferTime(), 10L);
-    }
-
-    @Test
-    void testSetStationOutOfOrder(){
-        //when
-        ResponseEntity<StationDto> response = stationController.setStationOutOfOrder("Hummelwiese");
-
-        //then
-        assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody().getState(), AccessState.OUT_OF_ORDER);
-    }
-
-    @Test
-    void testResolveStationOutOfOrder(){
-        //when
-        ResponseEntity<StationDto> response = stationController.resolveStationOutOfOrder("Hummelwiese");
-
-        //then
-        assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody().getState(), AccessState.OPENED);
-    }
-
 }

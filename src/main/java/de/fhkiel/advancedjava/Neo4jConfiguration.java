@@ -44,17 +44,7 @@ public class Neo4jConfiguration {
 
     @Bean
     @Profile("test")
-    public GraphDatabaseService graphDatabaseServiceTest(){
-        return new GraphDatabaseFactory()
-                .newEmbeddedDatabaseBuilder(new File("testing-db/test.db"))
-                .setConfig(GraphDatabaseSettings.forbid_shortestpath_common_nodes, "false")
-                .newGraphDatabase();
-    }
-
-    @Bean
-    @Profile("test")
     public org.neo4j.ogm.config.Configuration configurationTest(){
-        //return new org.neo4j.ogm.config.Configuration.Builder().build();
         return new org.neo4j.ogm.config.Configuration.Builder()
                 .credentials("neo4j", "4321").uri("bolt://localhost:7688").build();
     }
@@ -72,18 +62,5 @@ public class Neo4jConfiguration {
         return new Neo4jTransactionManager(sessionFactoryTest());
     }
 
-    private void registerProcedures(GraphDatabaseService db, Class<?>... procedures) throws KernelException {
-        Procedures proceduresService  = ((GraphDatabaseAPI) db).getDependencyResolver().resolveDependency(Procedures.class, DependencyResolver.SelectionStrategy.FIRST);
-        for (Class<?> procedure : procedures){
-            proceduresService.registerProcedure(procedure);
-        }
-    }
-
-    private void registerFunctions(GraphDatabaseService db, Class<?>... functions) throws KernelException {
-        Procedures proceduresService  = ((GraphDatabaseAPI) db).getDependencyResolver().resolveDependency(Procedures.class, DependencyResolver.SelectionStrategy.FIRST);
-        for (Class<?> function : functions){
-            proceduresService.registerFunction(function);
-        }
-    }
 
 }

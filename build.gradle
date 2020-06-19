@@ -83,9 +83,10 @@ test {
 pitest {
     testPlugin = 'junit5'
     junit5PluginVersion = '0.12'
-    targetClasses = ['de.fhkiel.advancedjava.service.*', 'de.fhkiel.advancedjava.converter.*']
+    targetClasses = ['de.fhkiel.advancedjava.*']
+    //targetClasses = ['de.fhkiel.advancedjava.service.*', 'de.fhkiel.advancedjava.converter.*', 'de.fhkiel.advancedjava.controller.*']
     timestampedReports = false
-    threads = 4
+    threads = 6
 }
 
 javadoc {

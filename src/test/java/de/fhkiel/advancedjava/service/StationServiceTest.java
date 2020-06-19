@@ -110,7 +110,7 @@ public class StationServiceTest {
         station.setName("TestName");
         station.setStationId(1L);
 
-        when(stationRepository.findStationByName("TestName", 2)).thenReturn(Optional.of(station));
+        when(stationRepository.findStationByNameWithStops("TestName")).thenReturn(Optional.of(station));
 
         //when
         Station result = stationService.findStationByNameWithStops("TestName");
@@ -119,18 +119,18 @@ public class StationServiceTest {
         assertNotNull(result);
         assertEquals(station, result);
 
-        verify(stationRepository, times(1)).findStationByName("TestName", 2);
+        verify(stationRepository, times(1)).findStationByNameWithStops("TestName");
         verifyNoMoreInteractions(stationRepository);
     }
 
     @Test
     @DisplayName("when the service finds a station by name it is returned")
     void testFindStationByNameWithStops_invalid() {
-        when(stationRepository.findStationByName("TestName", 2)).thenReturn(Optional.empty());
+        when(stationRepository.findStationByNameWithStops("TestName")).thenReturn(Optional.empty());
 
         assertThrows(StationNotFoundException.class, () -> {stationService.findStationByNameWithStops("TestName");});
 
-        verify(stationRepository, times(1)).findStationByName("TestName", 2);
+        verify(stationRepository, times(1)).findStationByNameWithStops("TestName");
         verifyNoMoreInteractions(stationRepository);
     }
 

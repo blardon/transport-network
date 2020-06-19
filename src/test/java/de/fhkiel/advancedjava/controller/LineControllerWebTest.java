@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fhkiel.advancedjava.exception.StationServiceException;
 import de.fhkiel.advancedjava.exception.WrongInputException;
 import de.fhkiel.advancedjava.model.schedule.AccessState;
+import de.fhkiel.advancedjava.model.schedule.dto.LegDto;
+import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
 import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.service.DtoConversionService;
 import de.fhkiel.advancedjava.service.StationService;
@@ -33,20 +35,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles({"test"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class StationControllerWebTest {
+public class LineControllerWebTest {
 
     private final WebApplicationContext wac;
     private final ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
 
-    private StationController stationController;
+    private LineController lineController;
 
     @Autowired
-    public StationControllerWebTest(WebApplicationContext wac, ObjectMapper om, StationController stationController) {
+    public LineControllerWebTest(WebApplicationContext wac, ObjectMapper om, LineController lineController) {
         this.wac = wac;
         this.objectMapper = om;
-        this.stationController = stationController;
+        this.lineController = lineController;
     }
 
     @BeforeEach
@@ -177,98 +179,35 @@ public class StationControllerWebTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
-    @Test
-    void testFindStationNotExisting() throws Exception {
-        mockMvc.perform(get("/api/station/1000").accept(MediaType.ALL))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-    }
 
     @Test
-    void testFindStation_validmvc() throws Exception {
-        mockMvc.perform(get("/api/station/1").accept(MediaType.APPLICATION_JSON_VALUE))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-    }
-
-    @Test
-    void testAddNewStation_invalid() throws JsonProcessingException {
+    void addNewLine_valid() throws JsonProcessingException {
         //given
-        StationDto stationDto = objectMapper.readValue("        {\n" +
-                "            \"stopId\": 1,\n" +
-                "            \"types\": [\n" +
-                "                \"SUBURBAN_TRAIN\",\n" +
-                "                \"SUBWAY\",\n" +
-                "                \"BUS\"\n" +
-                "            ],\n" +
-                "            \"state\": \"OPENED\",\n" +
-                "            \"name\": \"New Name\",\n" +
-                "            \"city\": \"Kiel\",\n" +
-                "            \"transferTime\": 1\n" +
-                "        }", StationDto.class);
+        LineDto lineDto = objectMapper.readValue("        {\n" +
+                "            \"lineId\": 55,\n" +
+                "            \"name\": \"Test\",\n" +
+                "            \"type\": \"SUBWAY\",\n" +
+                "            \"sections\": [\n" +
+                "                {\n" +
+                "                    \"beginStopId\": 1,\n" +
+                "                    \"endStopId\": 6,\n" +
+                "                    \"durationInMinutes\": 8,\n" +
+                "                    \"STATE\": \"CLOSED\",\n" +
+                "                    \"cost\": 2.4\n" +
+                "                }\n" +
+                "            ]\n" +
+                "        }", LineDto.class);
 
         //when
-        assertThrows(WrongInputException.class, () -> {stationController.addNewStation(stationDto);});
-    }
-
-    @Test
-    void testAddNewStation_valid() throws JsonProcessingException {
-        //given
-        StationDto stationDto = objectMapper.readValue("        {\n" +
-                "            \"stopId\": 100,\n" +
-                "            \"types\": [\n" +
-                "                \"SUBURBAN_TRAIN\",\n" +
-                "                \"SUBWAY\",\n" +
-                "                \"BUS\"\n" +
-                "            ],\n" +
-                "            \"state\": \"OPENED\",\n" +
-                "            \"name\": \"New Name\",\n" +
-                "            \"city\": \"Kiel\",\n" +
-                "            \"transferTime\": 1\n" +
-                "        }", StationDto.class);
-
-        //when
-        ResponseEntity<StationDto> response = stationController.addNewStation(stationDto);
+        ResponseEntity<LineDto> response = lineController.addNewLine(lineDto);
 
         //then
         assertNotNull(response.getBody());
-        assertEquals(response.getBody().getCity(), stationDto.getCity());
-        assertEquals(response.getBody().getName(), stationDto.getName());
-        assertEquals(response.getBody().getState(), AccessState.CLOSED);
+        assertEquals(response.getBody().getLegDTOs(), lineDto.getLegDTOs());
+        assertEquals(response.getBody().getName(), lineDto.getName());
+        assertEquals(response.getBody().getLineId(), lineDto.getLineId());
+        assertEquals(response.getBody().getLegDTOs().get(0).getState(), lineDto.getLegDTOs().get(0).getState());
     }
 
-    @Test
-    void testSetStationTransferTime(){
-        //when
-        ResponseEntity<StationDto> response = stationController.setStationTransferTime("Hummelwiese", 10L);
-
-        //then
-        assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody().getTransferTime(), 10L);
-    }
-
-    @Test
-    void testSetStationOutOfOrder(){
-        //when
-        ResponseEntity<StationDto> response = stationController.setStationOutOfOrder("Hummelwiese");
-
-        //then
-        assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody().getState(), AccessState.OUT_OF_ORDER);
-    }
-
-    @Test
-    void testResolveStationOutOfOrder(){
-        //when
-        ResponseEntity<StationDto> response = stationController.resolveStationOutOfOrder("Hummelwiese");
-
-        //then
-        assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody().getState(), AccessState.OPENED);
-    }
 
 }

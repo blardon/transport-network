@@ -48,7 +48,7 @@ public class StationService {
     }
 
     public Station findStationByNameWithStops(String name){
-        return this.stationRepository.findStationByName(name, 2).orElseThrow( () -> new StationNotFoundException(name));
+        return this.stationRepository.findStationByNameWithStops(name).orElseThrow( () -> new StationNotFoundException(name));
     }
 
     public Collection<Station> findAllStations(){

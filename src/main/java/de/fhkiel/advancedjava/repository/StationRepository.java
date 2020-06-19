@@ -15,7 +15,8 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
 
     Optional<Station> findStationByName(String name);
 
-    Optional<Station> findStationByName(String name, int depth);
+    @Query("MATCH (station:Station {name:$name})-[r:HAS_STOP|TRANSFER_TO]-(stop:Stop) RETURN station, COLLECT(stop), COLLECT(r)")
+    Optional<Station> findStationByNameWithStops(String name);
 
     @Query( " MATCH (start:Station {name: $fromStationName}), (end:Station {name: $toStationName})" +
             " CALL gds.alpha.shortestPath.stream({" +
