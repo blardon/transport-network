@@ -2,6 +2,8 @@ package de.fhkiel.advancedjava.tasks;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fhkiel.advancedjava.exception.BackupException;
+import de.fhkiel.advancedjava.model.schedule.Line;
+import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
 import de.fhkiel.advancedjava.model.schedule.dto.ScheduleDto;
 import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,21 +48,10 @@ public class BackupTask {
     private void doBackup(){
         log.info("DOING BACKUP...");
 
-        ScheduleDto scheduleDto = new ScheduleDto();
+        Collection<Station> allStations = this.stationService.findAllStationsWithStops();
+        Collection<Line> allLines = this.lineService.findAllLinesWithLegs();
 
-        // Convert all Stations to StationDTOs and collect them
-        ArrayList<StationDto> stationDtos = this.stationService.findAllStationsWithStops()
-                .stream()
-                .map(station -> this.conversionService.convert(station))
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        // Convert all Lines to LineDTOs and collect them
-        ArrayList<LineDto> lineDtos = this.lineService.findAllLinesWithLegs().stream()
-                .map(line -> this.conversionService.convert(line))
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        scheduleDto.setStations(stationDtos);
-        scheduleDto.setLines(lineDtos);
+        ScheduleDto scheduleDto = this.conversionService.convert(allStations, allLines);
 
         try {
             File target = new File(EXPORT_FILE_PATH);

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 @RestController
@@ -63,21 +64,10 @@ public class ScheduleController {
 
     @GetMapping(path = "/export", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduleDto> exportSchedule(){
-        ScheduleDto scheduleDto = new ScheduleDto();
+        Collection<Station> allStations = this.stationService.findAllStationsWithStops();
+        Collection<Line> allLines = this.lineService.findAllLinesWithLegs();
 
-        // Convert all Stations to StationDTOs and collect them
-        ArrayList<StationDto> stationDtos = this.stationService.findAllStationsWithStops()
-                .stream()
-                .map(station -> this.conversionService.convert(station))
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        // Convert all Lines to LineDTOs and collect them
-        ArrayList<LineDto> lineDtos = this.lineService.findAllLinesWithLegs().stream()
-                .map(line -> this.conversionService.convert(line))
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        scheduleDto.setStations(stationDtos);
-        scheduleDto.setLines(lineDtos);
+        ScheduleDto scheduleDto = this.conversionService.convert(allStations, allLines);
 
         return ResponseEntity.ok(scheduleDto);
     }

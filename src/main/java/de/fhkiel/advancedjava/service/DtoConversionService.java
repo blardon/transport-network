@@ -12,6 +12,7 @@ import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.schedule.Stop;
 import de.fhkiel.advancedjava.model.schedule.dto.LegDto;
 import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
+import de.fhkiel.advancedjava.model.schedule.dto.ScheduleDto;
 import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.model.relationship.ConnectingTo;
 import de.fhkiel.advancedjava.model.relationship.TransferTo;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +41,27 @@ public class DtoConversionService {
     @Autowired
     public DtoConversionService(StopService stopService) {
         this.stopService = stopService;
+    }
+
+    public ScheduleDto convert(Collection<Station> allStations, Collection<Line> allLines){
+        ScheduleDto scheduleDto = new ScheduleDto();
+
+        // Convert all Stations to StationDTOs and collect them
+        ArrayList<StationDto> stationDtos = allStations
+                .stream()
+                .map(this::convert)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        // Convert all Lines to LineDTOs and collect them
+        ArrayList<LineDto> lineDtos = allLines
+                .stream()
+                .map(this::convert)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        scheduleDto.setStations(stationDtos);
+        scheduleDto.setLines(lineDtos);
+
+        return scheduleDto;
     }
 
     public Station convert(StationDto stationDto){
