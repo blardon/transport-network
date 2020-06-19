@@ -56,7 +56,7 @@ public class ConnectionControllerTest {
         ResponseEntity<Object> response = connectionController.buyTicketsForLeg(10L, "From", "To", StopType.BUS);
 
         //then
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         verify(legService, times(1)).findLegByTypeBetweenStations(StopType.BUS, "From", "To");
         verify(statisticsService, times(1)).addTicketBought(leg, 10L);

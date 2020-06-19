@@ -184,7 +184,7 @@ public class ConnectionControllerWebTest {
         assertTrue(result.getStations().size() > 0);
         assertTrue(result.getLegs().size() > 0);
         assertTrue(result.getLegs().size() > 0);
-        assertEquals(result.getTotalTime(), 8L);
+        assertEquals(8L, result.getTotalTime());
     }
 
     @Test
@@ -196,8 +196,8 @@ public class ConnectionControllerWebTest {
         assertTrue(result.getBody().getStationDtos().size() > 0);
         assertTrue(result.getBody().getLineDtos().get(0).getLegDTOs().size() > 0);
         assertTrue(result.getBody().getLineDtos().size() > 0);
-        assertEquals(result.getBody().getTotalTime(), 8L);
-        assertEquals(result.getStatusCode(), HttpStatus.OK);
+        assertEquals(8L, result.getBody().getTotalTime());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
@@ -217,7 +217,7 @@ public class ConnectionControllerWebTest {
         assertNotNull(result.getBody());
         assertTrue(result.getBody().getStationDtos().size() >= 4);
         assertTrue(result.getBody().getTotalTime() <= 10);
-        assertEquals(result.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK,result.getStatusCode());
     }
 
     @Test
@@ -236,6 +236,6 @@ public class ConnectionControllerWebTest {
         assertNotNull(result.getBody());
         assertTrue(result.getBody().size() > 0);
         assertFalse(result.getBody().contains(null));
-        assertEquals(result.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 }

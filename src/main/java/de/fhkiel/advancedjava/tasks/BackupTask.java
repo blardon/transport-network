@@ -56,12 +56,12 @@ public class BackupTask {
         try {
             File target = new File(EXPORT_FILE_PATH);
             if (target.exists())
-                target.delete();
+                java.nio.file.Files.delete(target.toPath());
             if (target.createNewFile()){
                 this.objectMapper.writeValue(target, scheduleDto);
-                log.info("Saved backup to " + target.getAbsolutePath());
+                log.info(String.format("Saved backup to %s", target.getAbsolutePath()));
             }else{
-                log.warn("Could not save backup to " + target.getAbsolutePath());
+                log.warn(String.format("Could not save backup to %s", target.getAbsolutePath()));
             }
         } catch (IOException e) {
             throw new BackupException("Failed to backup schedule", e.getCause());

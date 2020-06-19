@@ -84,6 +84,7 @@ pitest {
     testPlugin = 'junit5'
     junit5PluginVersion = '0.12'
     targetClasses = ['de.fhkiel.advancedjava.*']
+    excludedMethods = ['hashCode', 'equals', 'canEqual', 'toString']
     //targetClasses = ['de.fhkiel.advancedjava.service.*', 'de.fhkiel.advancedjava.converter.*', 'de.fhkiel.advancedjava.controller.*']
     timestampedReports = false
     threads = 6

@@ -12,7 +12,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,7 +29,7 @@ public class StationDto {
 
     @JsonProperty("types")
     @NotEmpty
-    private ArrayList<StopType> types;
+    private List<StopType> types;
 
     @JsonProperty("state")
     @NotNull
@@ -51,7 +51,7 @@ public class StationDto {
         return stationId;
     }
 
-    public ArrayList<StopType> getTypes() {
+    public List<StopType> getTypes() {
         return types;
     }
 
@@ -75,7 +75,7 @@ public class StationDto {
         this.stationId = stationId;
     }
 
-    public void setTypes(ArrayList<StopType> types) {
+    public void setTypes(List<StopType> types) {
         this.types = types;
     }
 

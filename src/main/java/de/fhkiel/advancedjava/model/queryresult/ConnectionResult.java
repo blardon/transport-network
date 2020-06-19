@@ -9,50 +9,50 @@ import de.fhkiel.advancedjava.model.schedule.Stop;
 import org.springframework.data.neo4j.annotation.QueryResult;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.List;
 
 @QueryResult
 public class ConnectionResult {
 
-    private ArrayList<Station> stations;
-    private ArrayList<Stop> stops;
-    private ArrayList<Leg> legs;
-    private ArrayList<Line> lines;
-    private ArrayList<TransferTo> transfers;
-    private ArrayList<ConnectingTo> connections;
+    private List<Station> stations;
+    private List<Stop> stops;
+    private List<Leg> legs;
+    private List<Line> lines;
+    private List<TransferTo> transfers;
+    private List<ConnectingTo> connections;
 
     private BigDecimal totalCost;
     private Long totalTime;
 
-    public ArrayList<Line> getLines() {
+    public List<Line> getLines() {
         return lines;
     }
 
-    public void setLines(ArrayList<Line> lines) {
+    public void setLines(List<Line> lines) {
         this.lines = lines;
     }
 
-    public ArrayList<Leg> getLegs() {
+    public List<Leg> getLegs() {
         return legs;
     }
 
-    public void setLegs(ArrayList<Leg> legs) {
+    public void setLegs(List<Leg> legs) {
         this.legs = legs;
     }
 
-    public ArrayList<Station> getStations() {
+    public List<Station> getStations() {
         return stations;
     }
 
-    public ArrayList<Stop> getStops() {
+    public List<Stop> getStops() {
         return stops;
     }
 
-    public void setStops(ArrayList<Stop> stops) {
+    public void setStops(List<Stop> stops) {
         this.stops = stops;
     }
 
-    public void setStations(ArrayList<Station> stations) {
+    public void setStations(List<Station> stations) {
         this.stations = stations;
     }
 
@@ -72,19 +72,19 @@ public class ConnectionResult {
         this.totalTime = totalTime;
     }
 
-    public ArrayList<TransferTo> getTransfers() {
+    public List<TransferTo> getTransfers() {
         return transfers;
     }
 
-    public void setTransfers(ArrayList<TransferTo> transfers) {
+    public void setTransfers(List<TransferTo> transfers) {
         this.transfers = transfers;
     }
 
-    public ArrayList<ConnectingTo> getConnections() {
+    public List<ConnectingTo> getConnections() {
         return connections;
     }
 
-    public void setConnections(ArrayList<ConnectingTo> connections) {
+    public void setConnections(List<ConnectingTo> connections) {
         this.connections = connections;
     }
 }
