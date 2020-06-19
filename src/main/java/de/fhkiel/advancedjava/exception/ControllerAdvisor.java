@@ -23,6 +23,10 @@ import java.util.Map;
 @RestControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
+    private static final String TIMESTAMP_KEY = "timestamp";
+    private static final String MESSAGE_KEY = "message";
+    private static final String STATUS_KEY = "status";
+
     @ExceptionHandler(StationNotFoundException.class)
     public ResponseEntity<Object> handleStationNotFoundException(StationNotFoundException ex, WebRequest request){
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
@@ -65,9 +69,9 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> getExceptionResponseEntity(RuntimeException ex, HttpStatus status) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", status);
-        body.put("message", ex.getMessage());
+        body.put(TIMESTAMP_KEY, LocalDateTime.now());
+        body.put(STATUS_KEY, status);
+        body.put(MESSAGE_KEY, ex.getMessage());
 
         return new ResponseEntity<>(body, status);
     }
@@ -75,8 +79,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", status.value());
+        body.put(TIMESTAMP_KEY, LocalDateTime.now());
+        body.put(STATUS_KEY, status.value());
         
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach(error -> {
@@ -92,9 +96,9 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     @Override
     protected  ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", status.value());
-        body.put("message", "Could not read HTTP request input");
+        body.put(TIMESTAMP_KEY, LocalDateTime.now());
+        body.put(STATUS_KEY, status.value());
+        body.put(MESSAGE_KEY, "Could not read HTTP request input");
 
         Map<String, String> details = new LinkedHashMap<>();
 
@@ -103,7 +107,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
             if (invalidFormatException.getTargetType().equals(StopType.class)){
                 String givenValue = invalidFormatException.getValue().toString();
                 String acceptedValues = Arrays.toString(StopType.values());
-                details.put("message", "Given stop type is not accepted.");
+                details.put(MESSAGE_KEY, "Given stop type is not accepted.");
                 details.put("givenValue", givenValue);
                 details.put("acceptedValues", acceptedValues);
             }
@@ -111,7 +115,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
             if (invalidFormatException.getTargetType().equals(AccessState.class)){
                 String givenValue = invalidFormatException.getValue().toString();
                 String acceptedValues = Arrays.toString(AccessState.values());
-                details.put("message", "Given access type is not accepted.");
+                details.put(MESSAGE_KEY, "Given access type is not accepted.");
                 details.put("givenValue", givenValue);
                 details.put("acceptedValues", acceptedValues);
             }

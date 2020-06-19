@@ -69,7 +69,7 @@ public class StationToStationDtoTest {
         assertEquals(stationDto.getState(), station.getState());
         assertEquals(stationDto.getStationId(), station.getStationId());
         assertEquals(stationDto.getTypes().size(), station.getStops().size());
-        assertEquals(stationDto.getTypes().size(), 2);
+        assertEquals(2, stationDto.getTypes().size());
         assertEquals(stationDto.getTransferTime(), station.getStops().get(0).getTransferTo().getTime());
         assertEquals(stationDto.getTransferTime(), station.getStops().get(1).getTransferTo().getTime());
         assertIterableEquals(stationDto.getTypes(), List.of(station.getStops().get(0).getType(), station.getStops().get(1).getType()));

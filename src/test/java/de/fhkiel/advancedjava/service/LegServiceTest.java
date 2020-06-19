@@ -73,7 +73,7 @@ public class LegServiceTest {
 
         //then
         assertNotNull(result);
-        assertEquals(result.size(), 1);
+        assertEquals(1, result.size());
         assertTrue(result.contains(leg));
 
         verify(legRepository, times(1)).findAll();
@@ -91,7 +91,7 @@ public class LegServiceTest {
 
         //then
         assertNotNull(result);
-        assertEquals(result.size(), 1);
+        assertEquals(1, result.size());
         assertTrue(result.contains(leg));
 
         verify(legRepository, times(1)).findAll(2);
@@ -111,7 +111,7 @@ public class LegServiceTest {
 
         //then
         assertNotNull(result);
-        assertEquals(result.getState(), AccessState.OUT_OF_ORDER);
+        assertEquals(AccessState.OUT_OF_ORDER, result.getState());
 
         verify(legRepository, times(1)).findById(1L, 2);
         verify(legRepository, times(1)).save(leg);
@@ -132,7 +132,7 @@ public class LegServiceTest {
 
         //then
         assertNotNull(result);
-        assertEquals(result.getState(), AccessState.OPENED);
+        assertEquals(AccessState.OPENED, result.getState());
 
         verify(legRepository, times(1)).findById(1L, 2);
         verify(legRepository, times(1)).save(leg);

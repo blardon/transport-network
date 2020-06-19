@@ -1,6 +1,5 @@
 package de.fhkiel.advancedjava.repository.statistics;
 
-import de.fhkiel.advancedjava.model.statistics.LegStatistics;
 import de.fhkiel.advancedjava.model.statistics.StationStatistics;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;

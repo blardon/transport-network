@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,24 +26,24 @@ public class ConnectionResultDto {
     private Long totalTime;
 
     @JsonProperty("stations")
-    private ArrayList<StationDto> stationDtos;
+    private List<StationDto> stationDtos;
 
     @JsonProperty("lines")
-    private ArrayList<LineDto> lineDtos;
+    private List<LineDto> lineDtos;
 
-    public ArrayList<StationDto> getStationDtos() {
+    public List<StationDto> getStationDtos() {
         return stationDtos;
     }
 
-    public void setStationDtos(ArrayList<StationDto> stationDtos) {
+    public void setStationDtos(List<StationDto> stationDtos) {
         this.stationDtos = stationDtos;
     }
 
-    public ArrayList<LineDto> getLineDtos() {
+    public List<LineDto> getLineDtos() {
         return lineDtos;
     }
 
-    public void setLineDtos(ArrayList<LineDto> lineDtos) {
+    public void setLineDtos(List<LineDto> lineDtos) {
         this.lineDtos = lineDtos;
     }
 

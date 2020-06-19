@@ -2,9 +2,7 @@ package de.fhkiel.advancedjava.service;
 
 import de.fhkiel.advancedjava.exception.LegNotFoundException;
 import de.fhkiel.advancedjava.exception.LegServiceException;
-import de.fhkiel.advancedjava.exception.StationServiceException;
 import de.fhkiel.advancedjava.model.schedule.AccessState;
-import de.fhkiel.advancedjava.model.schedule.Station;
 import de.fhkiel.advancedjava.model.schedule.StopType;
 import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.repository.LegRepository;

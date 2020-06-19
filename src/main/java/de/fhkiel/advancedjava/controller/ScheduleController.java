@@ -1,11 +1,8 @@
 package de.fhkiel.advancedjava.controller;
 
-import de.fhkiel.advancedjava.model.Schedule;
 import de.fhkiel.advancedjava.model.schedule.Line;
 import de.fhkiel.advancedjava.model.schedule.Station;
-import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
 import de.fhkiel.advancedjava.model.schedule.dto.ScheduleDto;
-import de.fhkiel.advancedjava.model.schedule.dto.StationDto;
 import de.fhkiel.advancedjava.service.*;
 import de.fhkiel.advancedjava.service.statistics.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/schedule")

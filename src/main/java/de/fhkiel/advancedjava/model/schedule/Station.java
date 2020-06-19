@@ -7,6 +7,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class Station {
     private AccessState state;
 
     @Relationship(type = "HAS_STOP", direction = Relationship.OUTGOING)
-    private ArrayList<Stop> stops = new ArrayList<>();
+    private List<Stop> stops = new ArrayList<>();
 
     public Long getStationId() {
         return stationId;
@@ -57,11 +58,11 @@ public class Station {
         this.state = state;
     }
 
-    public ArrayList<Stop> getStops() {
+    public List<Stop> getStops() {
         return stops;
     }
 
-    public void setStops(ArrayList<Stop> stops) {
+    public void setStops(List<Stop> stops) {
         this.stops = stops;
     }
 }

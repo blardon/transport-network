@@ -95,7 +95,7 @@ public class LineToLineDtoTest {
         assertEquals(lineDto.getLineId(), line.getLineId());
         assertEquals(lineDto.getName(), line.getName());
         assertEquals(lineDto.getType(), line.getType());
-        assertEquals(lineDto.getLegDTOs().size(), 1);
+        assertEquals(1, lineDto.getLegDTOs().size());
         assertEquals(lineDto.getLegDTOs().get(0).getLegId(), leg.getLegId());
         assertEquals(lineDto.getLegDTOs().get(0).getState(), leg.getState());
         assertEquals(lineDto.getLegDTOs().get(0).getCost(), line.getLegs().get(0).getCost());

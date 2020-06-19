@@ -66,7 +66,7 @@ public class LineDtoToLineTest {
         assertEquals(line.getLineId(), lineDto.getLineId());
         assertEquals(line.getName(), lineDto.getName());
         assertEquals(line.getType(), lineDto.getType());
-        assertEquals(line.getLegs().size(), 1);
+        assertEquals(1, line.getLegs().size());
         assertNotNull(line.getLegs().get(0).getConnectingTo());
         assertNotNull(line.getLegs().get(0).getStop());
         assertEquals(line.getLegs().get(0).getStop(), stop1);

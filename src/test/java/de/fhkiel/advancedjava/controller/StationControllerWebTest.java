@@ -235,7 +235,7 @@ public class StationControllerWebTest {
         assertNotNull(response.getBody());
         assertEquals(response.getBody().getCity(), stationDto.getCity());
         assertEquals(response.getBody().getName(), stationDto.getName());
-        assertEquals(response.getBody().getState(), AccessState.CLOSED);
+        assertEquals(AccessState.CLOSED, response.getBody().getState());
     }
 
     @Test
@@ -245,8 +245,8 @@ public class StationControllerWebTest {
 
         //then
         assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody().getTransferTime(), 10L);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(10L, response.getBody().getTransferTime());
     }
 
     @Test
@@ -256,8 +256,8 @@ public class StationControllerWebTest {
 
         //then
         assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody().getState(), AccessState.OUT_OF_ORDER);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(AccessState.OUT_OF_ORDER, response.getBody().getState());
     }
 
     @Test
@@ -267,8 +267,8 @@ public class StationControllerWebTest {
 
         //then
         assertNotNull(response.getBody());
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody().getState(), AccessState.OPENED);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(AccessState.OPENED, response.getBody().getState());
     }
 
 }

@@ -70,9 +70,9 @@ public class StationService {
             throw new WrongInputException("Transfer time cannot be negative.");
         }
 
-        station.getStops().forEach(stop -> {
-            stop.getTransferTo().setTime(time);
-        });
+        station.getStops().forEach(stop ->
+            stop.getTransferTo().setTime(time)
+        );
 
         return this.saveStationWithStops(station);
     }

@@ -1,13 +1,5 @@
 package de.fhkiel.advancedjava;
 
-import org.neo4j.graphdb.DependencyResolver;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.neo4j.graphdb.factory.GraphDatabaseSettings;
-import org.neo4j.internal.kernel.api.exceptions.KernelException;
-import org.neo4j.kernel.impl.proc.Procedures;
-import org.neo4j.kernel.internal.GraphDatabaseAPI;
-import org.neo4j.ogm.drivers.embedded.driver.EmbeddedDriver;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +8,6 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.transaction.Neo4jTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.io.File;
 
 @Configuration
 @EnableNeo4jRepositories
@@ -52,7 +43,6 @@ public class Neo4jConfiguration {
     @Bean("sessionFactory")
     @Profile("test")
     public SessionFactory sessionFactoryTest(){
-        //EmbeddedDriver embeddedDriver = new EmbeddedDriver(graphDatabaseServiceTest(), configurationTest());
         return new SessionFactory(configurationTest(), "de.fhkiel.advancedjava.model");
     }
 

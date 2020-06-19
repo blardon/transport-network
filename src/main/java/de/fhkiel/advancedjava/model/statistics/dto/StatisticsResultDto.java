@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,10 +17,10 @@ public class StatisticsResultDto {
     private Long totalNumberOfDisturbancesCreated;
 
     @JsonProperty("perConnectionList")
-    private ArrayList<LegStatisticsDto> perConnectionList;
+    private List<LegStatisticsDto> perConnectionList;
 
     @JsonProperty("perStopList")
-    private ArrayList<StationStatisticsDto> perStopList;
+    private List<StationStatisticsDto> perStopList;
 
     @JsonProperty("totalNumberOfStops")
     private Long totalNumberOfStops;
@@ -53,19 +53,19 @@ public class StatisticsResultDto {
         this.totalNumberOfDisturbancesCreated = totalNumberOfDisturbancesCreated;
     }
 
-    public ArrayList<LegStatisticsDto> getPerConnectionList() {
+    public List<LegStatisticsDto> getPerConnectionList() {
         return perConnectionList;
     }
 
-    public void setPerConnectionList(ArrayList<LegStatisticsDto> perConnectionList) {
+    public void setPerConnectionList(List<LegStatisticsDto> perConnectionList) {
         this.perConnectionList = perConnectionList;
     }
 
-    public ArrayList<StationStatisticsDto> getPerStopList() {
+    public List<StationStatisticsDto> getPerStopList() {
         return perStopList;
     }
 
-    public void setPerStopList(ArrayList<StationStatisticsDto> perStopList) {
+    public void setPerStopList(List<StationStatisticsDto> perStopList) {
         this.perStopList = perStopList;
     }
 

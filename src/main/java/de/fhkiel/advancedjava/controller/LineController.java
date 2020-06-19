@@ -4,7 +4,6 @@ import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.model.schedule.Line;
 import de.fhkiel.advancedjava.model.schedule.dto.LegDto;
 import de.fhkiel.advancedjava.model.schedule.dto.LineDto;
-import de.fhkiel.advancedjava.model.statistics.StationStatistics;
 import de.fhkiel.advancedjava.service.DtoConversionService;
 import de.fhkiel.advancedjava.service.LegService;
 import de.fhkiel.advancedjava.service.LineService;
@@ -14,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -252,7 +252,7 @@ public class StationServiceTest {
 
         //then
         assertNotNull(result);
-        assertEquals(result.size(), 1);
+        assertEquals(1, result.size());
 
         verify(stationRepository, times(1)).findAll();
     }
@@ -274,7 +274,7 @@ public class StationServiceTest {
 
         //then
         assertNotNull(result);
-        assertEquals(result.size(), 1);
+        assertEquals(1, result.size());
 
         verify(stationRepository, times(1)).findAll(2);
     }

@@ -8,6 +8,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class Line {
     private StopType type;
 
     @Relationship(type = "CARRIES_OUT", direction = Relationship.OUTGOING)
-    private ArrayList<Leg> legs = new ArrayList<>();
+    private List<Leg> legs = new ArrayList<>();
 
     public Long getLineId() {
         return lineId;
@@ -49,11 +50,11 @@ public class Line {
         this.type = type;
     }
 
-    public ArrayList<Leg> getLegs() {
+    public List<Leg> getLegs() {
         return legs;
     }
 
-    public void setLegs(ArrayList<Leg> legs) {
+    public void setLegs(List<Leg> legs) {
         this.legs = legs;
     }
 

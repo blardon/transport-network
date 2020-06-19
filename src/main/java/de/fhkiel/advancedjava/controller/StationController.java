@@ -32,9 +32,6 @@ public class StationController {
     public ResponseEntity<Station> findStation(@PathVariable Long id){
         Station station = this.stationService.findStationById(id);
         return ResponseEntity.ok(station);
-        //StationDto response = this.conversionService.convert(station);
-
-        //return ResponseEntity.ok(response);
     }
 
     @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -36,7 +36,7 @@ public class LineDto {
 
     @JsonProperty("sections")
     @Valid
-    private ArrayList<LegDto> legs;
+    private List<LegDto> legs;
 
     public Long getLineId() {
         return lineId;
@@ -50,7 +50,7 @@ public class LineDto {
         return type;
     }
 
-    public ArrayList<LegDto> getLegDTOs() {
+    public List<LegDto> getLegDTOs() {
         return legs;
     }
 
@@ -66,7 +66,7 @@ public class LineDto {
         this.type = type;
     }
 
-    public void setLegs(ArrayList<LegDto> legs) {
+    public void setLegs(List<LegDto> legs) {
         this.legs = legs;
     }
 }

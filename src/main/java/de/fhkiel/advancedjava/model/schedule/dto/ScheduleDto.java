@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,25 +21,25 @@ public class ScheduleDto {
     @JsonProperty("stations")
     @JsonAlias({"stops"})
     @Valid
-    private ArrayList<StationDto> stations;
+    private List<StationDto> stations;
 
     @JsonProperty("trafficLines")
     @Valid
-    private ArrayList<LineDto> lines;
+    private List<LineDto> lines;
 
-    public ArrayList<StationDto> getStationDTOs() {
+    public List<StationDto> getStationDTOs() {
         return stations;
     }
 
-    public ArrayList<LineDto> getLineDTOs() {
+    public List<LineDto> getLineDTOs() {
         return lines;
     }
 
-    public void setStations(ArrayList<StationDto> stations) {
+    public void setStations(List<StationDto> stations) {
         this.stations = stations;
     }
 
-    public void setLines(ArrayList<LineDto> lines) {
+    public void setLines(List<LineDto> lines) {
         this.lines = lines;
     }
 }

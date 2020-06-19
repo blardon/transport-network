@@ -42,7 +42,7 @@ public class ScheduleControllerWebTest {
         // and pass mocked arguments (partially integrated test)
     }
 
-    //@Test
+    @Test
     void testImportSchedule() throws Exception {
         mockMvc.perform(post("/api/schedule/import").content("{\n" +
                 "  \"stops\": [\n" +
