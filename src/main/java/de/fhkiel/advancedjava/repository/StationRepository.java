@@ -16,6 +16,14 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
     @Query("MATCH (station:Station {name:$name})-[r:HAS_STOP|TRANSFER_TO]-(stop:Stop) RETURN station, COLLECT(stop), COLLECT(r)")
     Optional<Station> findStationByNameWithStops(String name);
 
+    /**
+     * <p>Cypher query to find the fatest path between two Stations (uses and requires Graph Data Science library v.1.2.1 installed in the neo4j databse)
+     * </p>
+     *
+     * @param fromStationName the name of the Station to start from
+     * @param toStationName the name of the Station to go to
+     * @return the found path as a ConnectionResult
+     */
     @Query(" MATCH (start:Station {name: $fromStationName}), (end:Station {name: $toStationName})" +
             " CALL gds.alpha.shortestPath.stream({" +
             "   nodeQuery: 'MATCH (n) WHERE n:Station OR (n:Stop)-[:TRANSFER_TO]->(:Station {state:\"OPENED\"}) OR (n:Leg AND n.state=\"OPENED\") RETURN id(n) AS id'," +
@@ -40,6 +48,14 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
     )
     Optional<ConnectionResult> findFastestPathWithTransferTime(String fromStationName, String toStationName);
 
+    /**
+     * <p>Cypher query to find a path with min. nStops in max. mMinutes
+     * </p>
+     *
+     * @param stops how many stops should be visited min.
+     * @param minutes how much time should be spent max.
+     * @return the found path as a ConnectionResult
+     */
     @Query(" MATCH p=(start:Station)-[:HAS_STOP|TRANSFER_TO|HAS_LEG|CONNECTING_TO*1..]->(end:Station)" +
             " WHERE NONE (x in nodes(p) WHERE ( (x:Stop)-[:TRANSFER_TO]->(:Station {state:'CLOSED'}) ) OR ( (x:Stop)-[:TRANSFER_TO]->(:Station {state:'OUT_OF_ORDER'}) ) )" +
             " AND NONE (x in nodes(p) WHERE x:Leg and (x.state='CLOSED' OR x.state='OUT_OF_ORDER') )" +
@@ -60,6 +76,14 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
             " LIMIT 1")
     Optional<ConnectionResult> findNStopsInMMinutes(Long stops, Long minutes);
 
+    /**
+     * <p>Cypher query to find the paths with the 3 lowest costs
+     * </p>
+     *
+     * @param fromStationName the name of the Station to start from
+     * @param toStationName the name of the Station to go to
+     * @return max. 3 ConnectionResults, ordered by the total price
+     */
     @Query(" MATCH p=(start:Station {name:$fromStationName})-[:HAS_STOP|TRANSFER_TO|HAS_LEG|CONNECTING_TO*1..]->(end:Station {name:$toStationName})" +
             " WHERE NONE (x in nodes(p) WHERE (x:Stop)-[:TRANSFER_TO]->(:Station {state:'CLOSED'}) )" +
             " AND NONE (x in nodes(p) WHERE x:Leg and (x.state='CLOSED' OR x.state='OUT_OF_ORDER') )" +

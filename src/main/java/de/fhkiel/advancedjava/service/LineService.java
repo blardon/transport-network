@@ -34,6 +34,13 @@ public class LineService {
         return this.lineRepository.save(line, 2);
     }
 
+    /**
+     * <p>Adds a new Line to the schedule in the database
+     * </p>
+     *
+     * @param line the new Line
+     * @return the saved new Line
+     */
     public Line addNewLine(Line line) {
         Optional<Line> optionalLine = this.lineRepository.findById(line.getLineId());
         Optional<Line> optionalLineName = this.lineRepository.findLineByName(line.getName());

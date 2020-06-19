@@ -71,7 +71,7 @@ public class DtoConversionService {
     }
 
     /**
-     * <p>Convert a StationDto into a Station
+     * <p>Converts a StationDto into a Station
      * </p>
      *
      * @param stationDto the StationDto to be converted to a Station
@@ -102,6 +102,13 @@ public class DtoConversionService {
         return newStation;
     }
 
+    /**
+     * <p>Converts a Station into a StationDto
+     * </p>
+     *
+     * @param station the Station to be converted to a StationDto
+     * @return the converted StationDto
+     */
     public StationDto convert(Station station) {
         StationDto stationDto = new StationDto();
 
@@ -126,6 +133,13 @@ public class DtoConversionService {
         return stationDto;
     }
 
+    /**
+     * <p>Converts a LineDto into a Line
+     * </p>
+     *
+     * @param lineDto the LineDto to be converted to a Line
+     * @return the converted Line
+     */
     public Line convert(LineDto lineDto) {
         Line newLine = new Line();
 
@@ -155,6 +169,13 @@ public class DtoConversionService {
         return newLine;
     }
 
+    /**
+     * <p>Converts a Line into a LineDto
+     * </p>
+     *
+     * @param line the Line to be converted to a LineDto
+     * @return the converted LineDto
+     */
     public LineDto convert(Line line) {
         LineDto lineDto = new LineDto();
 
@@ -171,6 +192,13 @@ public class DtoConversionService {
         return lineDto;
     }
 
+    /**
+     * <p>Converts a Leg into a LegDto
+     * </p>
+     *
+     * @param leg the leg to be converted to a LegDto
+     * @return the converted LegDto
+     */
     public LegDto convert(Leg leg) {
         LegDto legDto = new LegDto();
 
@@ -214,6 +242,13 @@ public class DtoConversionService {
         return stationStatisticsDto;
     }
 
+    /**
+     * <p>Converts a ConnectionResult into a ConnectionResultDto representation
+     * </p>
+     *
+     * @param connectionResult The ConnectionResult to be converted into a ConnectionResultDto
+     * @return the converted ConnectionResultDto
+     */
     public ConnectionResultDto convertResult(ConnectionResult connectionResult) {
         ConnectionResultDto connectionResultDto = new ConnectionResultDto();
 

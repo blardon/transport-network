@@ -68,6 +68,14 @@ public class StationService {
         return stations;
     }
 
+    /**
+     * <p>Sets the transfer time for a station
+     * </p>
+     *
+     * @param name the name of the Station
+     * @param time the new transfer time for the station
+     * @return the saved new Station
+     */
     public Station setStationTransferTime(String name, Long time) {
         Station station = this.findStationByNameWithStops(name);
 
@@ -82,6 +90,14 @@ public class StationService {
         return this.saveStationWithStops(station);
     }
 
+    /**
+     * <p>Sets a Station out of order or or opens the Station
+     * </p>
+     *
+     * @param name the name of the Station
+     * @param set if true, the Station will be set to OUT_OF_ORDER, if false, it will be set to OPENED
+     * @return the saved new Station
+     */
     public Station setStationOutOfOrder(String name, boolean set) {
         Station station = this.findStationByName(name);
         if (set) {
@@ -92,6 +108,13 @@ public class StationService {
         return this.saveStation(station);
     }
 
+    /**
+     * <p>Adds a new Station to the schedule in the database
+     * </p>
+     *
+     * @param station the new Station
+     * @return the saved new Station
+     */
     public Station addNewStation(Station station) {
         Optional<Station> optionalStation = this.stationRepository.findById(station.getStationId());
         Optional<Station> optionalStationName = this.stationRepository.findStationByName(station.getName());
