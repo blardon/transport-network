@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/connection")
@@ -43,13 +46,6 @@ public class ConnectionController {
     }
 
     @GetMapping(path = "/from/{stationNameFrom}/to/{stationNameTo}")
-    public ResponseEntity<Object> getFastestConnectionWithoutTransferTime
-            (@PathVariable String stationNameFrom, @PathVariable String stationNameTo){
-        Iterable<Map<String, Object>> result = this.stationService.findFastestPathWithoutTransferTime(stationNameFrom, stationNameTo);
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping(path = "/from/{stationNameFrom}/to/{stationNameTo}/withTransferTime")
     public ResponseEntity<ConnectionResultDto> getFastestConnectionWithTransferTime
             (@PathVariable String stationNameFrom, @PathVariable String stationNameTo){
         ConnectionResult connectionResult = this.stationService.findFastestPathWithTransferTime(stationNameFrom, stationNameTo);
@@ -57,6 +53,28 @@ public class ConnectionController {
         ConnectionResultDto result = this.conversionService.convertResult(connectionResult);
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping(path = "/stops/{nStops}/minutes/{mMinutes}")
+    public ResponseEntity<ConnectionResultDto> getNStopsInMMinutes
+            (@PathVariable Long nStops, @PathVariable Long mMinutes){
+        ConnectionResult connectionResult = this.stationService.findNStopsInMMinutes(nStops, mMinutes);
+
+        ConnectionResultDto result = this.conversionService.convertResult(connectionResult);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping(path = "/cheapest/from/{stationNameFrom}/to/{stationNameTo}")
+    public ResponseEntity<Collection<ConnectionResultDto>> find3CheapestConnections
+            (@PathVariable String stationNameFrom, @PathVariable String stationNameTo){
+        Collection<ConnectionResult> connectionResults = this.stationService.find3Cheapest(stationNameFrom, stationNameTo);
+
+        Collection<ConnectionResultDto> results = connectionResults.stream()
+                .map(result -> this.conversionService.convertResult(result))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        return ResponseEntity.ok(results);
     }
 
     @GetMapping(path = "buytickets/{amount}/from/{stationNameFrom}/to/{stationNameTo}/with/{type}")

@@ -6,6 +6,7 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,12 +16,6 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
     Optional<Station> findStationByName(String name);
 
     Optional<Station> findStationByName(String name, int depth);
-
-    @Query( "MATCH (from:Station {name:$fromStationName}), (to:Station {name:$toStationName})" +
-            " CALL apoc.algo.dijkstra(from, to, 'HAS_STOP|HAS_LEG>|CONNECTING_TO>', 'time') yield path as path" +
-            " RETURN nodes(path) AS nodes, relationships(path) AS relationships"
-    )
-    Iterable<Map<String, Object>> findFastestPathWithoutTransferTime(String fromStationName, String toStationName);
 
     @Query( " MATCH (start:Station {name: $fromStationName}), (end:Station {name: $toStationName})" +
             " CALL gds.alpha.shortestPath.stream({" +
@@ -41,9 +36,44 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
             " MATCH (leg)<-[co:CARRIES_OUT]-(line:Line)" +
             " WITH COLLECT(DISTINCT line) as lines, stops, legs, relationships, COLLECT(co) as cos, costs, stations" +
             " UNWIND stops as stop" +
-            " MATCH (stop)<-[r:HAS_STOP]-(station:Station)" +
+            " MATCH (stop)-[r:HAS_STOP|TRANSFER_TO]-(station:Station)" +
             " RETURN COLLECT(DISTINCT station) as stations, lines, stops, legs, relationships, COLLECT(r), cos, toInteger(last(costs)) as totalTime"
-    )//COLLECT(DISTINCT station) as
+    )
     Optional<ConnectionResult> findFastestPathWithTransferTime(String fromStationName, String toStationName);
+
+    @Query( " MATCH p=(start:Station)-[:HAS_STOP|TRANSFER_TO|HAS_LEG|CONNECTING_TO*1..]->(end:Station)" +
+            " WITH [r in relationships(p)] as relationships, [stop in nodes(p) WHERE stop:Stop] as stops, p" +
+            " UNWIND relationships as r " +
+            " WITH SUM (CASE WHEN r.time IS NULL THEN 0 ELSE r.time END) as totalTimeForPath, p, stops " +
+            " UNWIND stops as stop " +
+            " MATCH (stop)-[hs:HAS_STOP|TRANSFER_TO]-(station:Station) " +
+            " WITH COUNT(DISTINCT station) as stationCount, COLLECT(DISTINCT station) as stations, totalTimeForPath, p, stops, collect(hs) as hs " +
+            " WHERE stationCount >= $stops AND totalTimeForPath <= $minutes " +
+            " WITH [leg in nodes(p) WHERE leg:Leg] as legs, stations, totalTimeForPath, stationCount, p, stops, hs " +
+            " UNWIND legs as leg " +
+            " MATCH (leg)<-[co:CARRIES_OUT]-(line:Line) " +
+            " WITH COLLECT(DISTINCT line) as lines, COLLECT(co) as cos, stations, legs, totalTimeForPath, stationCount, p, stops, hs " +
+            " RETURN stops, hs, stations, lines, legs, cos, totalTimeForPath as totalTime, stationCount, relationships(p) " +
+            " ORDER BY stationCount" +
+            " LIMIT 1")
+    Optional<ConnectionResult> findNStopsInMMinutes(Long stops, Long minutes);
+
+    @Query( " MATCH p=(start:Station {name:$fromStationName})-[:HAS_STOP|TRANSFER_TO|HAS_LEG|CONNECTING_TO*1..]->(end:Station {name:$toStationName})" +
+            " WITH p" +
+            " MATCH (leg:Leg)<-[co:CARRIES_OUT]-(line:Line) WHERE leg in nodes(p)" +
+            " WITH p, COLLECT(DISTINCT line) as lines, COLLECT(DISTINCT co) as cos" +
+            " UNWIND NODES(p) as n" +
+            " WITH lines, cos, p, SIZE(COLLECT(DISTINCT n)) as testLength" +
+            " WHERE testLength = LENGTH(p) + 1" +
+            " WITH lines, cos, [leg in nodes(p) WHERE leg:Leg] as legs, p" +
+            " UNWIND legs as leg" +
+            " WITH lines, cos, SUM (CASE WHEN toFloat(leg.cost) IS NULL THEN 0 ELSE toFloat(leg.cost) END) as totalPriceForPath, p, legs" +
+            " WITH lines, cos, legs, totalPriceForPath, p, [stop in nodes(p) WHERE stop:Stop] as stops" +
+            " UNWIND stops as stop" +
+            " MATCH (stop)-[hs:HAS_STOP|TRANSFER_TO]-(station:Station)" +
+            " RETURN lines, cos, legs, COLLECT(DISTINCT station) as stations, stops, COLLECT(DISTINCT hs) as hs, relationships(p), [r in relationships(p) WHERE TYPE(r) = 'TRANSFER_TO'] as transfers, [r in relationships(p) WHERE TYPE(r) = 'CONNECTING_TO'] as connections, totalPriceForPath, p" +
+            " ORDER BY totalPriceForPath" +
+            " LIMIT 3")
+    Iterable<ConnectionResult> find3LowestCosts(String fromStationName, String toStationName);
 
 }

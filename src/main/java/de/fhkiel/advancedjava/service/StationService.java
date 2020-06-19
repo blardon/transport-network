@@ -4,6 +4,7 @@ import de.fhkiel.advancedjava.exception.ConnectionNotFoundException;
 import de.fhkiel.advancedjava.exception.StationNotFoundException;
 import de.fhkiel.advancedjava.exception.StationServiceException;
 import de.fhkiel.advancedjava.exception.WrongInputException;
+import de.fhkiel.advancedjava.model.relationship.ConnectingTo;
 import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import de.fhkiel.advancedjava.model.schedule.AccessState;
 import de.fhkiel.advancedjava.model.schedule.Leg;
@@ -101,13 +102,6 @@ public class StationService {
         return this.saveStationWithStops(station);
     }
 
-    public Iterable<Map<String, Object>> findFastestPathWithoutTransferTime(String from, String to){
-        // TODO: REFINE RETURN OBJECT
-        Iterable<Map<String, Object>> result = this.stationRepository.findFastestPathWithoutTransferTime(from, to);
-
-        return null;
-    }
-
     public ConnectionResult findFastestPathWithTransferTime(String from, String to){
         Optional<ConnectionResult> optionalConnectionResult = this.stationRepository.findFastestPathWithTransferTime(from, to);
 
@@ -128,6 +122,46 @@ public class StationService {
         result.setTotalCost(totalCost);
 
         return result;
+    }
+
+    public ConnectionResult findNStopsInMMinutes(Long nStops, Long mMinutes){
+        Optional<ConnectionResult> optionalConnectionResult = this.stationRepository.findNStopsInMMinutes(nStops, mMinutes);
+
+        if (optionalConnectionResult.isEmpty()){
+            throw new ConnectionNotFoundException(nStops, mMinutes);
+        }
+
+        ConnectionResult result = optionalConnectionResult.get();
+
+        // Calculate costs for the connection
+        BigDecimal totalCost = result.getLegs().stream().map(Leg::getCost).reduce(BigDecimal.ZERO, BigDecimal::add);
+        result.setTotalCost(totalCost);
+
+        return result;
+    }
+
+    public Collection<ConnectionResult> find3Cheapest(String from, String to){
+        final Collection<ConnectionResult> connectionResults = new ArrayList<>();
+        this.stationRepository.find3LowestCosts(from, to).forEach(connectionResults::add);
+
+        if (connectionResults.isEmpty()){
+            throw new ConnectionNotFoundException(from, to);
+        }
+
+        // Calculate costs for the connections
+        connectionResults.forEach(result -> {
+            BigDecimal totalCost = result.getLegs().stream().map(Leg::getCost).reduce(BigDecimal.ZERO, BigDecimal::add);
+            result.setTotalCost(totalCost);
+        });
+
+        // Calculate total time for the connections
+        connectionResults.forEach(connectionResult -> {
+            Long totalTransferTime = connectionResult.getTransfers().stream().mapToLong(TransferTo::getTime).sum();
+            Long totalConnectionTime = connectionResult.getConnections().stream().mapToLong(ConnectingTo::getTime).sum();
+            connectionResult.setTotalTime(totalTransferTime + totalConnectionTime);
+        });
+
+        return connectionResults;
     }
 
 }

@@ -187,6 +187,13 @@ public class DtoConversionService {
                 .map(this::convertResult)
                 .collect(Collectors.toCollection(ArrayList::new)));
 
+        connectionResultDto.setStationDtos(connectionResult.getStations().stream()
+                .map(this::convert)
+                .collect(Collectors.toCollection(ArrayList::new)));
+
+        connectionResultDto.setTotalCost(connectionResult.getTotalCost());
+        connectionResultDto.setTotalTime(connectionResult.getTotalTime());
+
         return connectionResultDto;
     }
 

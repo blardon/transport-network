@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 @Data
@@ -16,6 +17,12 @@ import java.util.ArrayList;
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE)
 public class ConnectionResultDto {
+
+    @JsonProperty("totalCost")
+    private BigDecimal totalCost;
+
+    @JsonProperty("totalTime")
+    private Long totalTime;
 
     @JsonProperty("stations")
     private ArrayList<StationDto> stationDtos;
@@ -37,5 +44,21 @@ public class ConnectionResultDto {
 
     public void setLineResultDtos(ArrayList<LineResultDto> lineResultDtos) {
         this.lineResultDtos = lineResultDtos;
+    }
+
+    public BigDecimal getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(BigDecimal totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    public Long getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(Long totalTime) {
+        this.totalTime = totalTime;
     }
 }

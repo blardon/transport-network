@@ -1,5 +1,7 @@
 package de.fhkiel.advancedjava.model.queryresult;
 
+import de.fhkiel.advancedjava.model.relationship.ConnectingTo;
+import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import de.fhkiel.advancedjava.model.schedule.Leg;
 import de.fhkiel.advancedjava.model.schedule.Line;
 import de.fhkiel.advancedjava.model.schedule.Station;
@@ -16,6 +18,8 @@ public class ConnectionResult {
     private ArrayList<Stop> stops;
     private ArrayList<Leg> legs;
     private ArrayList<Line> lines;
+    private ArrayList<TransferTo> transfers;
+    private ArrayList<ConnectingTo> connections;
 
     private BigDecimal totalCost;
     private Long totalTime;
@@ -66,5 +70,21 @@ public class ConnectionResult {
 
     public void setTotalTime(Long totalTime) {
         this.totalTime = totalTime;
+    }
+
+    public ArrayList<TransferTo> getTransfers() {
+        return transfers;
+    }
+
+    public void setTransfers(ArrayList<TransferTo> transfers) {
+        this.transfers = transfers;
+    }
+
+    public ArrayList<ConnectingTo> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(ArrayList<ConnectingTo> connections) {
+        this.connections = connections;
     }
 }
