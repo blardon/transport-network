@@ -2,13 +2,16 @@ package de.fhkiel.advancedjava.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fhkiel.advancedjava.model.queryresult.ConnectionResult;
+import de.fhkiel.advancedjava.model.queryresult.ConnectionResultDto;
 import de.fhkiel.advancedjava.service.StationService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,12 +38,14 @@ public class ConnectionControllerWebTest {
     private MockMvc mockMvc;
 
     private StationService stationService;
+    private ConnectionController connectionController;
 
     @Autowired
-    public ConnectionControllerWebTest(WebApplicationContext wac, ObjectMapper om, StationService stationService) {
+    public ConnectionControllerWebTest(WebApplicationContext wac, ObjectMapper om, StationService stationService, ConnectionController connectionController) {
         this.wac = wac;
         this.objectMapper = om;
         this.stationService = stationService;
+        this.connectionController = connectionController;
     }
 
     @BeforeEach
@@ -176,6 +181,23 @@ public class ConnectionControllerWebTest {
         ConnectionResult result = stationService.findFastestPathWithTransferTime("Hummelwiese", "Fachhochschule");
 
         assertNotNull(result);
+        assertTrue(result.getStations().size() > 0);
+        assertTrue(result.getLegs().size() > 0);
+        assertTrue(result.getLegs().size() > 0);
+        assertEquals(result.getTotalTime(), 8L);
+    }
+
+    @Test
+    void testFastestConnection_mvc() throws Exception {
+        ResponseEntity<ConnectionResultDto> result = connectionController.getFastestConnectionWithTransferTime("Hummelwiese", "Fachhochschule");
+
+        assertNotNull(result);
+        assertNotNull(result.getBody());
+        assertTrue(result.getBody().getStationDtos().size() > 0);
+        assertTrue(result.getBody().getLineDtos().get(0).getLegDTOs().size() > 0);
+        assertTrue(result.getBody().getLineDtos().size() > 0);
+        assertEquals(result.getBody().getTotalTime(), 8L);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
@@ -188,10 +210,32 @@ public class ConnectionControllerWebTest {
     }
 
     @Test
+    void testFindNStopsInMMinutes_mvc(){
+        ResponseEntity<ConnectionResultDto> result = connectionController.getNStopsInMMinutes(4L, 10L);
+
+        assertNotNull(result);
+        assertNotNull(result.getBody());
+        assertTrue(result.getBody().getStationDtos().size() >= 4);
+        assertTrue(result.getBody().getTotalTime() <= 10);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
+    }
+
+    @Test
     void testFind3Cheapest() throws Exception {
         Collection<ConnectionResult> result = stationService.find3Cheapest("Hummelwiese", "Fachhochschule");
 
         assertNotNull(result);
         assertTrue(result.size() > 0);
+    }
+
+    @Test
+    void testFind3Cheapest_mvc(){
+        ResponseEntity<Collection<ConnectionResultDto>> result = connectionController.find3CheapestConnections("Hummelwiese", "Fachhochschule");
+
+        assertNotNull(result);
+        assertNotNull(result.getBody());
+        assertTrue(result.getBody().size() > 0);
+        assertFalse(result.getBody().contains(null));
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
     }
 }
