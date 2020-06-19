@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface StationStatisticsRepository extends Neo4jRepository<StationStatistics, Long> {
 
-    @Query( " MATCH (res:StationStatistics)-[:FOR_STATION]->(station:Station {stationId:$id}) " +
+    @Query(" MATCH (res:StationStatistics)-[:FOR_STATION]->(station:Station {stationId:$id}) " +
             " RETURN res")
     Optional<StationStatistics> findForStationById(Long id);
 

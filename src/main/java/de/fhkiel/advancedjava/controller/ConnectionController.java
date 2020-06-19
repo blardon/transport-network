@@ -18,11 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+/**
+ * ConnectionController manages connections.
+ *
+ * @author Bennet v. Lardon
+ */
 @RestController
 @RequestMapping("/api/connection")
 public class ConnectionController {
@@ -33,7 +37,7 @@ public class ConnectionController {
     private DtoConversionService conversionService;
 
     @Autowired
-    public ConnectionController(StationService stationService, LegService legService, StatisticsService statisticsService, DtoConversionService conversionService){
+    public ConnectionController(StationService stationService, LegService legService, StatisticsService statisticsService, DtoConversionService conversionService) {
         this.stationService = stationService;
         this.legService = legService;
         this.statisticsService = statisticsService;
@@ -42,7 +46,7 @@ public class ConnectionController {
 
     @GetMapping(path = "/from/{stationNameFrom}/to/{stationNameTo}")
     public ResponseEntity<ConnectionResultDto> getFastestConnectionWithTransferTime
-            (@PathVariable String stationNameFrom, @PathVariable String stationNameTo){
+            (@PathVariable String stationNameFrom, @PathVariable String stationNameTo) {
         ConnectionResult connectionResult = this.stationService.findFastestPathWithTransferTime(stationNameFrom, stationNameTo);
 
         ConnectionResultDto result = this.conversionService.convertResult(connectionResult);
@@ -52,7 +56,7 @@ public class ConnectionController {
 
     @GetMapping(path = "/stops/{nStops}/minutes/{mMinutes}")
     public ResponseEntity<ConnectionResultDto> getNStopsInMMinutes
-            (@PathVariable Long nStops, @PathVariable Long mMinutes){
+            (@PathVariable Long nStops, @PathVariable Long mMinutes) {
         ConnectionResult connectionResult = this.stationService.findNStopsInMMinutes(nStops, mMinutes);
 
         ConnectionResultDto result = this.conversionService.convertResult(connectionResult);
@@ -62,7 +66,7 @@ public class ConnectionController {
 
     @GetMapping(path = "/cheapest/from/{stationNameFrom}/to/{stationNameTo}")
     public ResponseEntity<Collection<ConnectionResultDto>> find3CheapestConnections
-            (@PathVariable String stationNameFrom, @PathVariable String stationNameTo){
+            (@PathVariable String stationNameFrom, @PathVariable String stationNameTo) {
         Collection<ConnectionResult> connectionResults = this.stationService.find3Cheapest(stationNameFrom, stationNameTo);
 
         Collection<ConnectionResultDto> results = connectionResults.stream()
@@ -73,10 +77,10 @@ public class ConnectionController {
     }
 
     @GetMapping(path = "buytickets/{amount}/from/{stationNameFrom}/to/{stationNameTo}/with/{type}")
-    public ResponseEntity<Object> buyTicketsForLeg(@PathVariable Long amount, @PathVariable String stationNameFrom, @PathVariable String stationNameTo, @PathVariable StopType type){
+    public ResponseEntity<Object> buyTicketsForLeg(@PathVariable Long amount, @PathVariable String stationNameFrom, @PathVariable String stationNameTo, @PathVariable StopType type) {
         Leg leg = this.legService.findLegByTypeBetweenStations(type, stationNameFrom, stationNameTo);
 
-        if (amount < 1 || amount > 20){
+        if (amount < 1 || amount > 20) {
             throw new WrongInputException("Amount must be at least 1 and max. 20");
         }
 

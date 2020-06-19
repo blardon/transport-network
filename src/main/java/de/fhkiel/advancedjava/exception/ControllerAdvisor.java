@@ -28,42 +28,42 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     private static final String STATUS_KEY = "status";
 
     @ExceptionHandler(StationNotFoundException.class)
-    public ResponseEntity<Object> handleStationNotFoundException(StationNotFoundException ex, WebRequest request){
+    public ResponseEntity<Object> handleStationNotFoundException(StationNotFoundException ex, WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(StopNotFoundException.class)
-    public ResponseEntity<Object> handleStopNotFoundException(StopNotFoundException ex, WebRequest request){
+    public ResponseEntity<Object> handleStopNotFoundException(StopNotFoundException ex, WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(LegNotFoundException.class)
-    public ResponseEntity<Object> handleLegNotFoundException(LegNotFoundException ex, WebRequest request){
+    public ResponseEntity<Object> handleLegNotFoundException(LegNotFoundException ex, WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(WrongInputException.class)
-    public ResponseEntity<Object> handleWrongInputException(WrongInputException ex, WebRequest request){
+    public ResponseEntity<Object> handleWrongInputException(WrongInputException ex, WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(LineNotFoundException.class)
-    public ResponseEntity<Object> handleLineNotFoundException(LineNotFoundException ex, WebRequest request){
+    public ResponseEntity<Object> handleLineNotFoundException(LineNotFoundException ex, WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(VehicleNotFoundException.class)
-    public ResponseEntity<Object> handleVehicleNotFoundException(VehicleNotFoundException ex, WebRequest request){
+    public ResponseEntity<Object> handleVehicleNotFoundException(VehicleNotFoundException ex, WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConnectionNotFoundException.class)
-    public ResponseEntity<Object> handleConnectionNotFoundException(ConnectionNotFoundException ex, WebRequest request){
+    public ResponseEntity<Object> handleConnectionNotFoundException(ConnectionNotFoundException ex, WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BackupException.class)
-    public ResponseEntity<Object> handleBackupException(BackupException ex, WebRequest request){
+    public ResponseEntity<Object> handleBackupException(BackupException ex, WebRequest request) {
         return getExceptionResponseEntity(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -77,11 +77,11 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put(TIMESTAMP_KEY, LocalDateTime.now());
         body.put(STATUS_KEY, status.value());
-        
+
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
@@ -94,7 +94,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected  ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put(TIMESTAMP_KEY, LocalDateTime.now());
         body.put(STATUS_KEY, status.value());
@@ -102,9 +102,9 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         Map<String, String> details = new LinkedHashMap<>();
 
-        if (ex.getCause() instanceof InvalidFormatException){
+        if (ex.getCause() instanceof InvalidFormatException) {
             InvalidFormatException invalidFormatException = (InvalidFormatException) ex.getCause();
-            if (invalidFormatException.getTargetType().equals(StopType.class)){
+            if (invalidFormatException.getTargetType().equals(StopType.class)) {
                 String givenValue = invalidFormatException.getValue().toString();
                 String acceptedValues = Arrays.toString(StopType.values());
                 details.put(MESSAGE_KEY, "Given stop type is not accepted.");
@@ -112,7 +112,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                 details.put("acceptedValues", acceptedValues);
             }
 
-            if (invalidFormatException.getTargetType().equals(AccessState.class)){
+            if (invalidFormatException.getTargetType().equals(AccessState.class)) {
                 String givenValue = invalidFormatException.getValue().toString();
                 String acceptedValues = Arrays.toString(AccessState.values());
                 details.put(MESSAGE_KEY, "Given access type is not accepted.");

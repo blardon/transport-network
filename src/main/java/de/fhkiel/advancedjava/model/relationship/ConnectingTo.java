@@ -10,7 +10,8 @@ import org.neo4j.ogm.annotation.*;
 @RelationshipEntity(type = "CONNECTING_TO")
 public class ConnectingTo {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @StartNode

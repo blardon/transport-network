@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
  * DtoConversionService is responsible to convert domain models into DTO representation
  *
  * @author Bennet v. Lardon
- *
  */
 @Service
 public class DtoConversionService {
@@ -42,7 +41,15 @@ public class DtoConversionService {
         this.stopService = stopService;
     }
 
-    public ScheduleDto convert(Collection<Station> allStations, Collection<Line> allLines){
+    /**
+     * <p>Converts stations and lines into a ScheduleDto
+     * </p>
+     *
+     * @param allStations the stations to be included in the output
+     * @param allLines    the lines to be included in the output
+     * @return the converted ScheduleDto
+     */
+    public ScheduleDto convert(Collection<Station> allStations, Collection<Line> allLines) {
         ScheduleDto scheduleDto = new ScheduleDto();
 
         // Convert all Stations to StationDTOs and collect them
@@ -63,7 +70,14 @@ public class DtoConversionService {
         return scheduleDto;
     }
 
-    public Station convert(StationDto stationDto){
+    /**
+     * <p>Convert a StationDto into a Station
+     * </p>
+     *
+     * @param stationDto the StationDto to be converted to a Station
+     * @return the converted StationDto
+     */
+    public Station convert(StationDto stationDto) {
         Station newStation = new Station();
 
         newStation.setStationId(stationDto.getStationId());
@@ -88,7 +102,7 @@ public class DtoConversionService {
         return newStation;
     }
 
-    public StationDto convert(Station station){
+    public StationDto convert(Station station) {
         StationDto stationDto = new StationDto();
 
         stationDto.setCity(station.getCity());
@@ -102,8 +116,8 @@ public class DtoConversionService {
         stationDto.setTypes(types);
 
         // Set transfer time if set
-        for (Stop stop : station.getStops()){
-            if (stop.getTransferTo() != null){
+        for (Stop stop : station.getStops()) {
+            if (stop.getTransferTo() != null) {
                 stationDto.setTransferTime(stop.getTransferTo().getTime());
                 break;
             }
@@ -112,7 +126,7 @@ public class DtoConversionService {
         return stationDto;
     }
 
-    public Line convert(LineDto lineDto){
+    public Line convert(LineDto lineDto) {
         Line newLine = new Line();
 
         newLine.setLineId(lineDto.getLineId());
@@ -141,7 +155,7 @@ public class DtoConversionService {
         return newLine;
     }
 
-    public LineDto convert(Line line){
+    public LineDto convert(Line line) {
         LineDto lineDto = new LineDto();
 
         lineDto.setType(line.getType());
@@ -157,7 +171,7 @@ public class DtoConversionService {
         return lineDto;
     }
 
-    public LegDto convert(Leg leg){
+    public LegDto convert(Leg leg) {
         LegDto legDto = new LegDto();
 
         legDto.setLegId(leg.getLegId());
@@ -173,10 +187,11 @@ public class DtoConversionService {
     /**
      * <p>Converts a model Vehicle into the VehicleDto presentation
      * </p>
+     *
      * @param vehicle The vehicle model to convert into a VehicleDto
      * @return the converted Vehicle
      */
-    public VehicleDto convert(Vehicle vehicle){
+    public VehicleDto convert(Vehicle vehicle) {
         VehicleDto vehicleDto = new VehicleDto();
         vehicleDto.setVehicleId(vehicle.getId());
         vehicleDto.setServesForLineId(vehicle.getServesForLine().getLineId());
@@ -184,7 +199,7 @@ public class DtoConversionService {
         return vehicleDto;
     }
 
-    public LegStatisticsDto convert(LegStatistics legStatistics){
+    public LegStatisticsDto convert(LegStatistics legStatistics) {
         LegStatisticsDto legStatisticsDto = new LegStatisticsDto();
         legStatisticsDto.setNumberOfDisturbancesCreated(legStatistics.getNumberOfDisturbancesCreated());
         legStatisticsDto.setNumberOfTicketsSold(legStatistics.getNumberOfTicketsSold());
@@ -192,14 +207,14 @@ public class DtoConversionService {
         return legStatisticsDto;
     }
 
-    public StationStatisticsDto convert(StationStatistics stationStatistics){
+    public StationStatisticsDto convert(StationStatistics stationStatistics) {
         StationStatisticsDto stationStatisticsDto = new StationStatisticsDto();
         stationStatisticsDto.setNumberOfDisturbancesCreated(stationStatistics.getNumberOfDisturbancesCreated());
         stationStatisticsDto.setForStop(this.convert(stationStatistics.getForStation()));
         return stationStatisticsDto;
     }
 
-    public ConnectionResultDto convertResult(ConnectionResult connectionResult){
+    public ConnectionResultDto convertResult(ConnectionResult connectionResult) {
         ConnectionResultDto connectionResultDto = new ConnectionResultDto();
 
         connectionResultDto.setLineDtos(connectionResult.getLines().stream()

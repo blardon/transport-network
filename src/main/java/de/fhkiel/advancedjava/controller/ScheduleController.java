@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collection;
 
+/**
+ * ScheduleController manages the schedule.
+ *
+ * @author Bennet v. Lardon
+ */
 @RestController
 @RequestMapping("/api/schedule")
 public class ScheduleController {
@@ -27,7 +32,7 @@ public class ScheduleController {
 
     @Autowired
     public ScheduleController(StationService stationService, StopService stopService, LineService lineService,
-                              LegService legService, StatisticsService statisticsService, DtoConversionService conversionService){
+                              LegService legService, StatisticsService statisticsService, DtoConversionService conversionService) {
         this.stationService = stationService;
         this.stopService = stopService;
         this.lineService = lineService;
@@ -37,7 +42,7 @@ public class ScheduleController {
     }
 
     @PostMapping(path = "/import", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ScheduleDto> importSchedule(@Valid @RequestBody ScheduleDto scheduleDto){
+    public ResponseEntity<ScheduleDto> importSchedule(@Valid @RequestBody ScheduleDto scheduleDto) {
         this.statisticsService.deleteAll();
         this.stationService.deleteAllStations();
         this.stopService.deleteAllStops();
@@ -58,7 +63,7 @@ public class ScheduleController {
     }
 
     @GetMapping(path = "/export", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ScheduleDto> exportSchedule(){
+    public ResponseEntity<ScheduleDto> exportSchedule() {
         Collection<Station> allStations = this.stationService.findAllStationsWithStops();
         Collection<Line> allLines = this.lineService.findAllLinesWithLegs();
 

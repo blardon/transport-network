@@ -11,48 +11,53 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Manages lines.
+ *
+ * @author Bennet v. Lardon
+ */
 @Service
 public class LineService {
 
     private LineRepository lineRepository;
 
     @Autowired
-    public LineService(LineRepository lineRepository){
+    public LineService(LineRepository lineRepository) {
         this.lineRepository = lineRepository;
     }
 
-    public void deleteAllLines(){
+    public void deleteAllLines() {
         this.lineRepository.deleteAll();
     }
 
-    public Line saveLine(Line line){
+    public Line saveLine(Line line) {
         return this.lineRepository.save(line, 2);
     }
 
-    public Line addNewLine(Line line){
+    public Line addNewLine(Line line) {
         Optional<Line> optionalLine = this.lineRepository.findById(line.getLineId());
         Optional<Line> optionalLineName = this.lineRepository.findLineByName(line.getName());
 
-        if (optionalLine.isPresent()){
+        if (optionalLine.isPresent()) {
             throw new WrongInputException(String.format("Line with ID %d already exists.", line.getLineId()));
         }
 
-        if (optionalLineName.isPresent()){
+        if (optionalLineName.isPresent()) {
             throw new WrongInputException(String.format("Line with name %s already exists.", line.getName()));
         }
 
         return this.saveLine(line);
     }
 
-    public Iterable<Line> saveAllLines(Collection<Line> lines){
+    public Iterable<Line> saveAllLines(Collection<Line> lines) {
         return this.lineRepository.save(lines, 2);
     }
 
-    public Line findLineByName(String lineName){
-        return this.lineRepository.findLineByName(lineName).orElseThrow( () -> new LineNotFoundException(lineName) );
+    public Line findLineByName(String lineName) {
+        return this.lineRepository.findLineByName(lineName).orElseThrow(() -> new LineNotFoundException(lineName));
     }
 
-    public Collection<Line> findAllLinesWithLegs(){
+    public Collection<Line> findAllLinesWithLegs() {
         final Collection<Line> lines = new ArrayList<>();
         this.lineRepository.findAll(3).forEach(lines::add);
         return lines;

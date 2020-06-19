@@ -11,6 +11,11 @@ import org.springframework.data.neo4j.annotation.QueryResult;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * A ConnectionResult is the result of a connection finding and contains all stations, stops, legs, lines and the totalCost/totalTime of the connection.
+ *
+ * @author Bennet v. Lardon
+ */
 @QueryResult
 public class ConnectionResult {
 

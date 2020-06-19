@@ -16,7 +16,7 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
     @Query("MATCH (station:Station {name:$name})-[r:HAS_STOP|TRANSFER_TO]-(stop:Stop) RETURN station, COLLECT(stop), COLLECT(r)")
     Optional<Station> findStationByNameWithStops(String name);
 
-    @Query( " MATCH (start:Station {name: $fromStationName}), (end:Station {name: $toStationName})" +
+    @Query(" MATCH (start:Station {name: $fromStationName}), (end:Station {name: $toStationName})" +
             " CALL gds.alpha.shortestPath.stream({" +
             "   nodeQuery: 'MATCH (n) WHERE n:Station OR (n:Stop)-[:TRANSFER_TO]->(:Station {state:\"OPENED\"}) OR (n:Leg AND n.state=\"OPENED\") RETURN id(n) AS id'," +
             "   relationshipQuery: 'MATCH (n)-[r:HAS_STOP|HAS_LEG|TRANSFER_TO|CONNECTING_TO]->(m) " +
@@ -40,7 +40,7 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
     )
     Optional<ConnectionResult> findFastestPathWithTransferTime(String fromStationName, String toStationName);
 
-    @Query( " MATCH p=(start:Station)-[:HAS_STOP|TRANSFER_TO|HAS_LEG|CONNECTING_TO*1..]->(end:Station)" +
+    @Query(" MATCH p=(start:Station)-[:HAS_STOP|TRANSFER_TO|HAS_LEG|CONNECTING_TO*1..]->(end:Station)" +
             " WHERE NONE (x in nodes(p) WHERE ( (x:Stop)-[:TRANSFER_TO]->(:Station {state:'CLOSED'}) ) OR ( (x:Stop)-[:TRANSFER_TO]->(:Station {state:'OUT_OF_ORDER'}) ) )" +
             " AND NONE (x in nodes(p) WHERE x:Leg and (x.state='CLOSED' OR x.state='OUT_OF_ORDER') )" +
             " WITH p" +
@@ -60,7 +60,7 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
             " LIMIT 1")
     Optional<ConnectionResult> findNStopsInMMinutes(Long stops, Long minutes);
 
-    @Query( " MATCH p=(start:Station {name:$fromStationName})-[:HAS_STOP|TRANSFER_TO|HAS_LEG|CONNECTING_TO*1..]->(end:Station {name:$toStationName})" +
+    @Query(" MATCH p=(start:Station {name:$fromStationName})-[:HAS_STOP|TRANSFER_TO|HAS_LEG|CONNECTING_TO*1..]->(end:Station {name:$toStationName})" +
             " WHERE NONE (x in nodes(p) WHERE (x:Stop)-[:TRANSFER_TO]->(:Station {state:'CLOSED'}) )" +
             " AND NONE (x in nodes(p) WHERE x:Leg and (x.state='CLOSED' OR x.state='OUT_OF_ORDER') )" +
             " WITH p" +

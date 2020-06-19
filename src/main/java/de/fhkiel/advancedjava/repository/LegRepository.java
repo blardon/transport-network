@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface LegRepository extends Neo4jRepository<Leg, Long> {
 
-    @Query( " MATCH (:Station {name:$fromStation})-[:HAS_STOP]->(:Stop)-[:HAS_LEG]->(leg:Leg)-[:CONNECTING_TO]->(:Stop)-[:TRANSFER_TO]->(:Station {name:$toStation})" +
+    @Query(" MATCH (:Station {name:$fromStation})-[:HAS_STOP]->(:Stop)-[:HAS_LEG]->(leg:Leg)-[:CONNECTING_TO]->(:Stop)-[:TRANSFER_TO]->(:Station {name:$toStation})" +
             " WITH leg " +
             " MATCH (leg)<-[:CARRIES_OUT]-(line:Line {type:$type}) " +
             " RETURN leg")

@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+/**
+ * VehicleController manages vehicles.
+ *
+ * @author Bennet v. Lardon
+ */
 @RestController
 @RequestMapping("/api/vehicle")
 public class VehicleController {
@@ -31,13 +36,13 @@ public class VehicleController {
     }
 
     @GetMapping(path = "/get/all")
-    public ResponseEntity<Collection<VehicleDto>> getAllVehicles(){
+    public ResponseEntity<Collection<VehicleDto>> getAllVehicles() {
         ArrayList<VehicleDto> vehicleDtos = this.vehicleService.findAll().stream().map(vehicle -> this.dtoConversionService.convert(vehicle)).collect(Collectors.toCollection(ArrayList::new));
         return ResponseEntity.ok(vehicleDtos);
     }
 
     @PutMapping(path = "/new/{atStationName}/{withLineName}")
-    public ResponseEntity<VehicleDto> addNewVehicle(@PathVariable String atStationName, @PathVariable String withLineName){
+    public ResponseEntity<VehicleDto> addNewVehicle(@PathVariable String atStationName, @PathVariable String withLineName) {
         Line line = this.lineService.findLineByName(withLineName);
         Stop stop = this.stopService.findStopByTypeAtStationByName(atStationName, line.getType());
 
@@ -46,7 +51,7 @@ public class VehicleController {
     }
 
     @PutMapping(path = "/update/{id}/{atStationName}")
-    public ResponseEntity<VehicleDto> updateVehicleLocation(@PathVariable Long id, @PathVariable String atStationName){
+    public ResponseEntity<VehicleDto> updateVehicleLocation(@PathVariable Long id, @PathVariable String atStationName) {
         Vehicle vehicle = this.vehicleService.findById(id);
         Stop stop = this.stopService.findStopByTypeAtStationByName(atStationName, vehicle.getServesForLine().getType());
 

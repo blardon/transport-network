@@ -4,12 +4,18 @@ import de.fhkiel.advancedjava.model.relationship.TransferTo;
 import lombok.*;
 import org.neo4j.ogm.annotation.*;
 
+/**
+ * A Stop has a type and is located at a station
+ *
+ * @author Bennet v. Lardon
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @NodeEntity
 public class Stop {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     private StopType type;

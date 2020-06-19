@@ -14,7 +14,8 @@ import org.neo4j.ogm.annotation.Relationship;
 @NodeEntity
 public class Vehicle {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @Relationship(type = "SERVES_FOR", direction = Relationship.OUTGOING)

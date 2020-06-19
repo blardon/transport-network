@@ -9,6 +9,11 @@ import org.neo4j.ogm.annotation.Relationship;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A Station has different kind of Stops
+ *
+ * @author Bennet v. Lardon
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @NodeEntity

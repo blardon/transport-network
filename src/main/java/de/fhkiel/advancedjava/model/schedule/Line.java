@@ -10,6 +10,11 @@ import org.neo4j.ogm.annotation.Relationship;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A Leg has multiple Legs
+ *
+ * @author Bennet v. Lardon
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

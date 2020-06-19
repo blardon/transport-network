@@ -17,6 +17,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * LineController manages lines.
+ *
+ * @author Bennet v. Lardon
+ */
 @RestController
 @RequestMapping("/api")
 public class LineController {
@@ -27,7 +32,7 @@ public class LineController {
     private DtoConversionService conversionService;
 
     @Autowired
-    public LineController(LineService lineService, LegService legService, StatisticsService statisticsService, DtoConversionService conversionService){
+    public LineController(LineService lineService, LegService legService, StatisticsService statisticsService, DtoConversionService conversionService) {
         this.lineService = lineService;
         this.legService = legService;
         this.statisticsService = statisticsService;
@@ -35,7 +40,7 @@ public class LineController {
     }
 
     @PostMapping(path = "/line/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LineDto> addNewLine(@RequestBody LineDto lineDto){
+    public ResponseEntity<LineDto> addNewLine(@RequestBody LineDto lineDto) {
         Line newLine = this.conversionService.convert(lineDto);
 
         this.lineService.addNewLine(newLine);
@@ -44,7 +49,7 @@ public class LineController {
     }
 
     @GetMapping(path = "/leg/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<LegDto>> getAllLegs(){
+    public ResponseEntity<Collection<LegDto>> getAllLegs() {
         Collection<Leg> legs = this.legService.findAllWithStopsAndStations();
 
         List<LegDto> legDtos = legs.stream().map(leg -> this.conversionService.convert(leg)).collect(Collectors.toList());
@@ -52,7 +57,7 @@ public class LineController {
     }
 
     @PutMapping(path = "/leg/{id}/set/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LegDto> setLegOutOfOrder(@PathVariable Long id){
+    public ResponseEntity<LegDto> setLegOutOfOrder(@PathVariable Long id) {
         Leg newLeg = this.legService.setLegOutOfOrder(id, true);
         this.statisticsService.addDisturbanceCreated(newLeg);
 
@@ -61,7 +66,7 @@ public class LineController {
     }
 
     @PutMapping(path = "/leg/{id}/resolve/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LegDto> resolveLegOutOfOrder(@PathVariable Long id){
+    public ResponseEntity<LegDto> resolveLegOutOfOrder(@PathVariable Long id) {
         Leg newLeg = this.legService.setLegOutOfOrder(id, false);
 
         LegDto response = this.conversionService.convert(newLeg);

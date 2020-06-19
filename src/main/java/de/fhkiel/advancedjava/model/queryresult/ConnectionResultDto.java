@@ -11,6 +11,11 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * A ConnectionResultDto is the DTO representation of a ConnectionResult.
+ *
+ * @author Bennet v. Lardon
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

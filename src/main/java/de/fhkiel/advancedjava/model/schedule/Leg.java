@@ -9,13 +9,19 @@ import org.neo4j.ogm.annotation.Relationship;
 
 import java.math.BigDecimal;
 
+/**
+ * A Leg is a connection between two Stops
+ *
+ * @author Bennet v. Lardon
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @NodeEntity
 public class Leg {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @Relationship(type = "CONNECTING_TO", direction = Relationship.OUTGOING)

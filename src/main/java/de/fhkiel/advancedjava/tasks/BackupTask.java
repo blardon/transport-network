@@ -33,7 +33,7 @@ public class BackupTask {
     private DtoConversionService conversionService;
 
     @Autowired
-    public BackupTask(ObjectMapper objectMapper, StationService stationService, LineService lineService, DtoConversionService conversionService){
+    public BackupTask(ObjectMapper objectMapper, StationService stationService, LineService lineService, DtoConversionService conversionService) {
         this.objectMapper = objectMapper;
         this.stationService = stationService;
         this.lineService = lineService;
@@ -41,7 +41,7 @@ public class BackupTask {
     }
 
     @Scheduled(cron = "${backup.cron}")
-    private void doBackup(){
+    private void doBackup() {
         log.info("DOING BACKUP...");
 
         Collection<Station> allStations = this.stationService.findAllStationsWithStops();
@@ -53,11 +53,11 @@ public class BackupTask {
             File target = new File(EXPORT_FILE_PATH);
             if (target.exists())
                 java.nio.file.Files.delete(target.toPath());
-            if (target.createNewFile()){
+            if (target.createNewFile()) {
                 this.objectMapper.writeValue(target, scheduleDto);
                 String info = String.format("Saved backup to %s", target.getAbsolutePath());
                 log.info(info);
-            }else{
+            } else {
                 String warning = String.format("Could not save backup to %s", target.getAbsolutePath());
                 log.warn(warning);
             }

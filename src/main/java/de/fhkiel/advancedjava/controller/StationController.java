@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * StationController manages stations.
+ *
+ * @author Bennet v. Lardon
+ */
 @RestController
 @RequestMapping("/api/station")
 public class StationController {
@@ -22,20 +27,20 @@ public class StationController {
     private DtoConversionService conversionService;
 
     @Autowired
-    public StationController(StationService stationService, StatisticsService statisticsService, DtoConversionService conversionService){
+    public StationController(StationService stationService, StatisticsService statisticsService, DtoConversionService conversionService) {
         this.stationService = stationService;
         this.statisticsService = statisticsService;
         this.conversionService = conversionService;
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Station> findStation(@PathVariable Long id){
+    public ResponseEntity<Station> findStation(@PathVariable Long id) {
         Station station = this.stationService.findStationById(id);
         return ResponseEntity.ok(station);
     }
 
     @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StationDto> addNewStation(@Valid @RequestBody StationDto stationDto){
+    public ResponseEntity<StationDto> addNewStation(@Valid @RequestBody StationDto stationDto) {
         Station newStation = this.conversionService.convert(stationDto);
         newStation.setState(AccessState.CLOSED);
 
@@ -46,7 +51,7 @@ public class StationController {
     }
 
     @PutMapping(path = "/{name}/set/transfertime/{time}")
-    public ResponseEntity<StationDto> setStationTransferTime(@PathVariable String name, @PathVariable Long time){
+    public ResponseEntity<StationDto> setStationTransferTime(@PathVariable String name, @PathVariable Long time) {
         Station atStation = this.stationService.setStationTransferTime(name, time);
 
         StationDto response = this.conversionService.convert(atStation);
@@ -54,7 +59,7 @@ public class StationController {
     }
 
     @PutMapping(path = "/{name}/set/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StationDto> setStationOutOfOrder(@PathVariable String name){
+    public ResponseEntity<StationDto> setStationOutOfOrder(@PathVariable String name) {
         Station newStation = this.stationService.setStationOutOfOrder(name, true);
         this.statisticsService.addDisturbanceCreated(newStation);
 
@@ -63,7 +68,7 @@ public class StationController {
     }
 
     @PutMapping(path = "/{name}/resolve/outoforder", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StationDto> resolveStationOutOfOrder(@PathVariable String name){
+    public ResponseEntity<StationDto> resolveStationOutOfOrder(@PathVariable String name) {
         Station newStation = this.stationService.setStationOutOfOrder(name, false);
 
         StationDto response = this.conversionService.convert(newStation);

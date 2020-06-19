@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface LegStatisticsRepository extends Neo4jRepository<LegStatistics, Long> {
 
-    @Query( " MATCH (res:LegStatistics)-[:FOR_LEG]->(leg:Leg) " +
+    @Query(" MATCH (res:LegStatistics)-[:FOR_LEG]->(leg:Leg) " +
             " WHERE ID(leg) = $id " +
             " RETURN res")
     Optional<LegStatistics> findForLegById(Long id);

@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+/**
+ * StatisticsController manages statistics.
+ *
+ * @author Bennet v. Lardon
+ */
 @RestController
 @RequestMapping("/api/statistics")
 public class StatisticsController {
@@ -30,7 +35,7 @@ public class StatisticsController {
     }
 
     @GetMapping(path = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StatisticsResultDto> getStatistics(){
+    public ResponseEntity<StatisticsResultDto> getStatistics() {
         StatisticsResultDto result = new StatisticsResultDto();
 
         result.setTotalNumberOfStops(this.statisticsService.totalNumberOfStops());
