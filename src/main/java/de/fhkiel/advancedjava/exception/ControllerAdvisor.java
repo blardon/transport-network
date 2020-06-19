@@ -1,6 +1,7 @@
 package de.fhkiel.advancedjava.exception;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import de.fhkiel.advancedjava.model.schedule.AccessState;
 import de.fhkiel.advancedjava.model.schedule.StopType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -97,7 +98,15 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
             if (invalidFormatException.getTargetType().equals(StopType.class)){
                 String givenValue = invalidFormatException.getValue().toString();
                 String acceptedValues = Arrays.toString(StopType.values());
-                body.replace("message", "Given type is not accepted.");
+                details.put("message", "Given stop type is not accepted.");
+                details.put("givenValue", givenValue);
+                details.put("acceptedValues", acceptedValues);
+            }
+
+            if (invalidFormatException.getTargetType().equals(AccessState.class)){
+                String givenValue = invalidFormatException.getValue().toString();
+                String acceptedValues = Arrays.toString(AccessState.values());
+                details.put("message", "Given access type is not accepted.");
                 details.put("givenValue", givenValue);
                 details.put("acceptedValues", acceptedValues);
             }

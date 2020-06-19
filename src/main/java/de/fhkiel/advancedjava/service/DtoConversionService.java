@@ -104,7 +104,7 @@ public class DtoConversionService {
             Leg newLeg = new Leg();
             Stop fromStop = this.stopService.findStopByTypeAtStationById(legDto.getBeginStopId(), lineDto.getType());
 
-            newLeg.setState(AccessState.OPENED);
+            newLeg.setState(legDto.getState());
             newLeg.setCost(legDto.getCost());
             newLeg.setStop(fromStop);
 
@@ -141,6 +141,7 @@ public class DtoConversionService {
         LegDto legDto = new LegDto();
 
         legDto.setLegId(leg.getLegId());
+        legDto.setState(leg.getState());
         legDto.setCost(leg.getCost());
         legDto.setTime(leg.getConnectingTo().getTime());
         legDto.setBeginStopId(leg.getStop().getTransferTo().getToStation().getStationId());

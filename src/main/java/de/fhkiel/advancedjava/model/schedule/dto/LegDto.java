@@ -3,6 +3,7 @@ package de.fhkiel.advancedjava.model.schedule.dto;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.fhkiel.advancedjava.model.schedule.AccessState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,9 @@ public class LegDto {
     @Min(0)
     private BigDecimal cost = BigDecimal.valueOf(0.00);
 
+    @JsonProperty("state")
+    private AccessState state = AccessState.OPENED;
+
     public void setLegId(Long legId) {
         this.legId = legId;
     }
@@ -76,5 +80,13 @@ public class LegDto {
 
     public void setCost(BigDecimal cost) {
         this.cost = cost;
+    }
+
+    public AccessState getState() {
+        return state;
+    }
+
+    public void setState(AccessState state) {
+        this.state = state;
     }
 }
