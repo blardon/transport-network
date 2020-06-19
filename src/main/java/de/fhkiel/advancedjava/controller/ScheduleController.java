@@ -40,12 +40,6 @@ public class ScheduleController {
         this.conversionService = conversionService;
     }
 
-    @PostMapping(path = "/importtest", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Schedule> testImportSchedule(@RequestBody Schedule schedule){
-
-        return ResponseEntity.ok(schedule);
-    }
-
     @PostMapping(path = "/import", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduleDto> importSchedule(@Valid @RequestBody ScheduleDto scheduleDto){
         this.statisticsService.deleteAll();
