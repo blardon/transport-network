@@ -42,6 +42,9 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
     Optional<ConnectionResult> findFastestPathWithTransferTime(String fromStationName, String toStationName);
 
     @Query( " MATCH p=(start:Station)-[:HAS_STOP|TRANSFER_TO|HAS_LEG|CONNECTING_TO*1..]->(end:Station)" +
+            " WHERE NONE (x in nodes(p) WHERE ( (x:Stop)-[:TRANSFER_TO]->(:Station {state:'CLOSED'}) ) OR ( (x:Stop)-[:TRANSFER_TO]->(:Station {state:'OUT_OF_ORDER'}) ) )" +
+            " AND NONE (x in nodes(p) WHERE x:Leg and (x.state='CLOSED' OR x.state='OUT_OF_ORDER') )" +
+            " WITH p" +
             " WITH [r in relationships(p)] as relationships, [stop in nodes(p) WHERE stop:Stop] as stops, p" +
             " UNWIND relationships as r " +
             " WITH SUM (CASE WHEN r.time IS NULL THEN 0 ELSE r.time END) as totalTimeForPath, p, stops " +
@@ -59,6 +62,8 @@ public interface StationRepository extends Neo4jRepository<Station, Long> {
     Optional<ConnectionResult> findNStopsInMMinutes(Long stops, Long minutes);
 
     @Query( " MATCH p=(start:Station {name:$fromStationName})-[:HAS_STOP|TRANSFER_TO|HAS_LEG|CONNECTING_TO*1..]->(end:Station {name:$toStationName})" +
+            " WHERE NONE (x in nodes(p) WHERE (x:Stop)-[:TRANSFER_TO]->(:Station {state:'CLOSED'}) )" +
+            " AND NONE (x in nodes(p) WHERE x:Leg and (x.state='CLOSED' OR x.state='OUT_OF_ORDER') )" +
             " WITH p" +
             " MATCH (leg:Leg)<-[co:CARRIES_OUT]-(line:Line) WHERE leg in nodes(p)" +
             " WITH p, COLLECT(DISTINCT line) as lines, COLLECT(DISTINCT co) as cos" +
